@@ -1,0 +1,85 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import Icon from '../../../components/Icon.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+	const allCourses = await getCollection('courses');
+	const allChapters = await getCollection('chapters');
+
+	return allCourses.map((course) => {
+		const courseSlug = course.id.replace('/index', '');
+		const chapters = allChapters
+			.filter((ch) => ch.id.startsWith(courseSlug + '/'))
+			.sort((a, b) => a.id.localeCompare(b.id));
+		return {
+			params: { course: courseSlug },
+			props: { course, chapters },
+		};
+	});
+}
+
+const { course, chapters } = Astro.props;
+const courseSlug = course.id.replace('/index', '');
+
+const difficultyLabels: Record<string, string> = {
+	Beginner: 'Noob',
+	Intermediate: 'Dev',
+	Advanced: 'Ninja',
+};
+---
+
+<Layout title={`${course.data.technology} - Programierds`}>
+	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+		<Header />
+
+		<main class="flex-1 px-4 lg:px-20 py-12">
+			<div class="mx-auto max-w-4xl">
+				<a href="/cursos" class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8">
+					<Icon name="arrow_back" class="w-4 h-4" />
+					<span class="text-sm font-medium">Volver a cursos</span>
+				</a>
+
+				<div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-12">
+					<div class="size-20 flex items-center justify-center rounded-2xl bg-primary/10 text-primary">
+						<Icon name={course.data.technology.toLowerCase()} class="w-12 h-12" />
+					</div>
+					<div>
+						<h1 class="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-2">{course.data.technology}</h1>
+						<p class="text-lg text-slate-600 dark:text-slate-400 mb-3">{course.data.description}</p>
+						<div class="flex items-center gap-4">
+							<span class="px-3 py-1 text-xs font-black uppercase tracking-widest bg-primary/10 text-primary rounded-full border border-primary/20">
+								{difficultyLabels[course.data.difficulty]}
+							</span>
+							<span class="text-sm text-slate-500">{chapters.length} lecciones</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex flex-col gap-3">
+					{chapters.map((chapter, index) => {
+						const lessonSlug = chapter.id.replace(courseSlug + '/', '');
+						return (
+							<a
+								href={`/cursos/${courseSlug}/${lessonSlug}`}
+								class="group flex items-center gap-4 rounded-xl border border-primary/10 bg-background-light dark:bg-background-dark p-5 hover:border-primary/50 transition-all hover:shadow-[0_0_20px_-5px_rgba(13,242,89,0.1)]"
+							>
+								<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-sm">
+									{String(index + 1).padStart(2, '0')}
+								</div>
+								<span class="text-lg font-medium text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+									{chapter.data.title}
+								</span>
+								<Icon name="arrow_forward" class="w-5 h-5 text-slate-500 group-hover:text-primary transition-colors ml-auto" />
+							</a>
+						);
+					})}
+				</div>
+			</div>
+		</main>
+
+		<Footer />
+	</div>
+</Layout>

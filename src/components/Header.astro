@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+	{ label: 'Inicio', href: '/' },
+	{ label: 'Cursos', href: '/cursos' },
+	{ label: 'Playground', href: '/playground' },
+];
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 lg:px-20 py-4">
+	<div class="mx-auto flex max-w-7xl items-center justify-between">
+		<a class="flex items-center gap-2" href="/">
+			<span class="text-3xl">💩</span>
+			<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold tracking-tight">programierds</h2>
+		</a>
+		<nav class="hidden md:flex items-center gap-8">
+			{navLinks.map(({ label, href }) => {
+				const isActive = href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+				return (
+					<a
+						class={isActive
+							? 'text-primary transition-colors text-sm font-bold border-b-2 border-primary'
+							: 'hover:text-primary transition-colors text-sm font-medium'}
+						href={href}
+					>
+						{label}
+					</a>
+				);
+			})}
+		</nav>
+		<a href="/cursos" class="flex items-center justify-center rounded-xl bg-primary px-6 py-2 text-sm font-bold text-background-dark hover:brightness-110 transition-all">
+			Empieza ya
+		</a>
+	</div>
+</header>

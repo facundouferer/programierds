@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Playground - Programierds | Rompe cosas con código</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df259",
+                        "background-light": "#f5f8f6",
+                        "background-dark": "#0a140d",
+                        "editor-bg": "#0d1b11",
+                        "terminal-bg": "#050a06",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Fira Code", "monospace"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a140d;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #0df25933;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #0df25966;
+        }
+        .editor-container {
+            height: calc(100vh - 160px);
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-100 transition-colors duration-300 min-h-screen overflow-hidden">
+<div class="relative flex h-screen flex-col">
+<header class="w-full border-b border-primary/10 bg-background-dark px-4 lg:px-8 py-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2" href="/">
+<span class="text-3xl">💩</span>
+<h2 class="text-slate-100 text-xl font-bold tracking-tight">programierds</h2>
+</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Cursos</a>
+<a class="text-primary transition-colors text-sm font-bold border-b-2 border-primary" href="#">Playground</a>
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Proyectos</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/20">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-bold text-primary tracking-widest uppercase">Live Session</span>
+</div>
+<button class="size-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-primary">person</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex items-center justify-between px-4 lg:px-8 py-2 bg-background-dark border-b border-primary/5">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-xs font-mono text-slate-400">
+<span class="material-symbols-outlined text-sm">description</span>
+                main.js
+            </div>
+<div class="h-4 w-px bg-primary/10"></div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 hover:bg-white/5 rounded transition-colors text-slate-400 hover:text-white">
+<span class="material-symbols-outlined text-lg">save</span>
+</button>
+<button class="p-1.5 hover:bg-white/5 rounded transition-colors text-slate-400 hover:text-white">
+<span class="material-symbols-outlined text-lg">settings</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-background-dark font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_-5px_rgba(13,242,89,0.4)]">
+<span class="material-symbols-outlined">play_arrow</span>
+                RUN
+            </button>
+</div>
+</div>
+<main class="flex-1 flex overflow-hidden">
+<div class="flex-1 relative flex flex-col border-r border-primary/10">
+<div class="absolute top-0 left-0 w-12 h-full bg-editor-bg/50 border-r border-primary/5 flex flex-col items-center py-4 gap-2 text-[10px] font-mono text-slate-600 select-none">
+<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+</div>
+<textarea class="flex-1 w-full bg-editor-bg text-slate-300 p-4 pl-16 code-font text-sm leading-relaxed focus:outline-none resize-none custom-scrollbar" spellcheck="false">// Programierds Code Playground
+// Escribe tu código aquí y dale a RUN para ver la magia (o el error)
+function helloWorld() {
+    const msg = "JavaScript desde el barro 💩";
+    console.log(msg);
+    for(let i = 0; i &lt; 5; i++) {
+        console.log("Iteración número: " + (i + 1));
+    }
+    return "Listo para romper cosas.";
+}
+helloWorld();</textarea>
+</div>
+<div class="w-1/3 min-w-[350px] flex flex-col bg-terminal-bg">
+<div class="px-4 py-2 border-b border-primary/10 flex items-center justify-between bg-terminal-bg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">terminal</span>
+<span class="text-xs font-bold uppercase tracking-widest text-slate-400">Terminal Output</span>
+</div>
+<button class="text-slate-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">delete_sweep</span>
+</button>
+</div>
+<div class="flex-1 p-4 code-font text-sm custom-scrollbar overflow-y-auto">
+<div class="mb-2 text-slate-500 italic text-xs">// Esperando ejecución...</div>
+<div class="flex gap-2 mb-1">
+<span class="text-primary">➜</span>
+<span class="text-slate-300">node main.js</span>
+</div>
+<div class="text-primary font-medium mb-1">JavaScript desde el barro 💩</div>
+<div class="text-slate-400">Iteración número: 1</div>
+<div class="text-slate-400">Iteración número: 2</div>
+<div class="text-slate-400">Iteración número: 3</div>
+<div class="text-slate-400">Iteración número: 4</div>
+<div class="text-slate-400">Iteración número: 5</div>
+<div class="text-accent-blue mt-1">"Listo para romper cosas."</div>
+<div class="flex gap-2 mt-4">
+<span class="text-primary">➜</span>
+<span class="inline-block w-2 h-4 bg-primary/50 animate-pulse"></span>
+</div>
+</div>
+</div>
+</main>
+<footer class="h-8 border-t border-primary/10 bg-background-dark px-4 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">fork_right</span>
+<span>main*</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">sync</span>
+<span>In sync</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span>Ln 12, Col 14</span>
+<span>UTF-8</span>
+<span class="text-primary font-bold">JavaScript</span>
+</div>
+</footer>
+</div>
+
+</body></html>

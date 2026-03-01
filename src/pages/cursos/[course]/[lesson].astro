@@ -1,0 +1,100 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import Icon from '../../../components/Icon.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const allCourses = await getCollection('courses');
+	const allChapters = await getCollection('chapters');
+
+	const paths = [];
+
+	for (const course of allCourses) {
+		const courseSlug = course.id.replace('/index', '');
+		const chapters = allChapters
+			.filter((ch) => ch.id.startsWith(courseSlug + '/'))
+			.sort((a, b) => a.id.localeCompare(b.id));
+
+		for (let i = 0; i < chapters.length; i++) {
+			const chapter = chapters[i];
+			const lessonSlug = chapter.id.replace(courseSlug + '/', '');
+			paths.push({
+				params: { course: courseSlug, lesson: lessonSlug },
+				props: {
+					course,
+					chapter,
+					prev: chapters[i - 1] ?? null,
+					next: chapters[i + 1] ?? null,
+					currentIndex: i,
+					totalChapters: chapters.length,
+					courseSlug,
+				},
+			});
+		}
+	}
+
+	return paths;
+}
+
+const { course, chapter, prev, next, currentIndex, totalChapters, courseSlug } = Astro.props;
+const { Content } = await render(chapter);
+
+const prevSlug = prev ? prev.id.replace(courseSlug + '/', '') : null;
+const nextSlug = next ? next.id.replace(courseSlug + '/', '') : null;
+---
+
+<Layout title={`${chapter.data.title} - ${course.data.technology} - Programierds`}>
+	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+		<Header />
+
+		<main class="flex-1 px-4 lg:px-20 py-12">
+			<div class="mx-auto max-w-4xl">
+				<a href={`/cursos/${courseSlug}`} class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8">
+					<Icon name="arrow_back" class="w-4 h-4" />
+					<span class="text-sm font-medium">Volver a {course.data.technology}</span>
+				</a>
+
+				<div class="mb-8">
+					<span class="text-sm text-slate-500">Lección {currentIndex + 1} de {totalChapters}</span>
+				</div>
+
+				<article class="lesson-content prose prose-invert prose-lg max-w-none">
+					<Content />
+				</article>
+
+				<nav class="flex items-center justify-between mt-16 pt-8 border-t border-primary/10">
+					{prev ? (
+						<a href={`/cursos/${courseSlug}/${prevSlug}`} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors">
+							<Icon name="arrow_back" class="w-5 h-5" />
+							<div class="text-left">
+								<span class="text-xs uppercase tracking-widest block">Anterior</span>
+								<span class="font-medium text-slate-900 dark:text-white">{prev.data.title}</span>
+							</div>
+						</a>
+					) : <div />}
+					{next ? (
+						<a href={`/cursos/${courseSlug}/${nextSlug}`} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors ml-auto">
+							<div class="text-right">
+								<span class="text-xs uppercase tracking-widest block">Siguiente</span>
+								<span class="font-medium text-slate-900 dark:text-white">{next.data.title}</span>
+							</div>
+							<Icon name="arrow_forward" class="w-5 h-5" />
+						</a>
+					) : (
+						<a href={`/cursos/${courseSlug}`} class="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors ml-auto">
+							<div class="text-right">
+								<span class="text-xs uppercase tracking-widest block">Fin del curso</span>
+								<span class="font-bold">Volver al índice</span>
+							</div>
+							<Icon name="arrow_forward" class="w-5 h-5" />
+						</a>
+					)}
+				</nav>
+			</div>
+		</main>
+
+		<Footer />
+	</div>
+</Layout>
