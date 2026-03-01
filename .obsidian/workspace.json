@@ -1,0 +1,232 @@
+{
+  "main": {
+    "id": "5128a59177dbac2d",
+    "type": "split",
+    "children": [
+      {
+        "id": "2c824a2c5960be9d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "67aad103ac9844f1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "src/content/courses/java/01-introduccion.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01-introduccion"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fc38085b38f81183",
+    "type": "split",
+    "children": [
+      {
+        "id": "e8595013d22db6b8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "934995c6a903be93",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "adb0515a671bf8b2",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "0ee6ae1245ea47c2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "fee19f9a51e0b344",
+    "type": "split",
+    "children": [
+      {
+        "id": "42e9bb91ce03eee6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "906ddd812ea319b4",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "src/content/courses/java/01-introduccion.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 01-introduccion"
+            }
+          },
+          {
+            "id": "11b6674c93ffa747",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "src/content/courses/java/01-introduccion.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 01-introduccion"
+            }
+          },
+          {
+            "id": "1e1e162d775f1a87",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "6eb0253f1c9c7dbe",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "0bb019112e7010d0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "src/content/courses/java/01-introduccion.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 01-introduccion"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "934995c6a903be93",
+  "lastOpenFiles": [
+    "dist/index.html",
+    "dist/playground/index.html",
+    "dist/playground",
+    "dist/cursos/javascript/03-dom/index.html",
+    "dist/cursos/javascript/02-sintaxis-basica/index.html",
+    "dist/cursos/javascript/01-introduccion/index.html",
+    "dist/cursos/java/03-poo/index.html",
+    "dist/cursos/java/02-sintaxis-basica/index.html",
+    "dist/cursos/java/01-introduccion/index.html",
+    "dist/cursos/javascript/index.html",
+    "dist/cursos/javascript/03-dom",
+    "dist/images/hero-workspace.jpg",
+    "dist/favicon.svg",
+    "node_modules/@codemirror/language/README.md",
+    "node_modules/@codemirror/language/CHANGELOG.md",
+    "node_modules/@codemirror/autocomplete/README.md",
+    "node_modules/@codemirror/autocomplete/CHANGELOG.md",
+    "node_modules/@codemirror/lang-java/README.md",
+    "node_modules/@codemirror/lang-java/CHANGELOG.md",
+    "node_modules/@codemirror/commands/README.md",
+    "node_modules/@lezer/lr/README.md",
+    "node_modules/@codemirror/commands/CHANGELOG.md",
+    "node_modules/@codemirror/lint/README.md",
+    "node_modules/@codemirror/lint/CHANGELOG.md",
+    "node_modules/@lezer/highlight/README.md",
+    "node_modules/@codemirror/search/README.md",
+    "node_modules/@codemirror/search/CHANGELOG.md",
+    "node_modules/@lezer/javascript/README.md",
+    "node_modules/@codemirror/view/README.md",
+    "node_modules/@lezer/javascript/CHANGELOG.md",
+    "node_modules/@codemirror/view/CHANGELOG.md",
+    "node_modules/@codemirror/state/README.md",
+    "node_modules/@codemirror/state/CHANGELOG.md",
+    "node_modules/@lezer/common/README.md",
+    "node_modules/@lezer/java/README.md",
+    "node_modules/@lezer/java/CHANGELOG.md",
+    "node_modules/@codemirror/lang-javascript/README.md",
+    "node_modules/@codemirror/lang-javascript/CHANGELOG.md",
+    "src/content/courses/javascript/logo.svg",
+    "src/content/courses/java/logo.svg",
+    "courses/JavaScript/logo.svg",
+    "courses/React/logo.svg",
+    "courses/Java/logo.svg"
+  ]
+}
