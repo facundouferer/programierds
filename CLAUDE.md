@@ -16,9 +16,15 @@ npm run test         # Vitest (single run)
 npm run test:watch   # Vitest (watch mode)
 ```
 
-## TDD is Mandatory
+## TDD is Mandatory (Definition of Done)
 
-Every feature or change requires a test BEFORE implementation. Cycle: write failing test (red) → implement (green) → verify all tests pass. Framework: **Vitest**.
+A task is only considered complete if it follows the TDD circuit:
+1. **Test-First**: Write a failing test BEFORE any implementation.
+2. **Implementation**: Write the minimum code to make it pass.
+3. **Static Check**: Run `npm run astro check` to verify Astro/TypeScript.
+4. **Test Run**: Run `npm run test` (if applicable) to ensure no regressions.
+Framework: **Vitest**.
+
 
 ## Git Workflow
 
@@ -28,12 +34,18 @@ Every feature or change requires a test BEFORE implementation. Cycle: write fail
 
 ## Architecture
 
-- `src/pages/` — File-based routing (currently only `index.astro`)
-- `src/components/` — Astro components (`Icon.astro` provides inline SVG icons with a name-based map)
-- `src/layouts/Layout.astro` — Base layout with font imports, meta tags, dark mode (`<html class="dark">`)
-- `src/styles/global.css` — Tailwind directives + font-family
-- `src/templates/` — HTML mockups (Tailwind CDN + Material Symbols) used as visual specs before converting to Astro. Not part of the build.
-- `public/` — Static assets served as-is (images, favicons)
+- `src/pages/`:
+    - `index.astro`: Main landing page
+    - `cursos.astro`: Course list
+    - `playground.astro`: Code editor (CodeMirror 6, Judge0)
+    - `cursos/`: Dynamic routes for courses (`[course]/index.astro`) and lessons (`[course]/[lesson].astro`)
+- `src/components/`: Astro components (`Icon.astro` name-based map, Header, Footer)
+- `src/content/`: Content collections (courses info/metadata and chapters/lessons)
+- `src/utils/paths.ts`: Mandatory `getRelativePath` for GitHub Pages support.
+- `src/layouts/Layout.astro`: Base layout with font imports, meta tags, and `class="dark"`.
+- `src/styles/global.css`: Tailwind directives + font-family.
+- `src/templates/`: HTML mockups for design reference.
+- `public/`: Static assets (images, favicons).
 
 ## Design System (Tailwind)
 

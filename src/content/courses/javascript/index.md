@@ -1,5 +1,5 @@
 ---
-description: "Desde la sintaxis básica y los 'valores locos' hasta la manipulación avanzada del DOM y clases: el camino definitivo para dominar la web"
+description: "Domina JavaScript desde lo básico hasta el DOM y clases. El camino definitivo para conquistar la web moderna"
 technology: "JavaScript"
 difficulty: "Beginner"
 ---

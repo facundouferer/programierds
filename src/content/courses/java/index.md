@@ -1,5 +1,5 @@
 ---
-description: "De algoritmos básicos a patrones de diseño: un camino completo para dominar Java con buenas prácticas y enfoque profesional"
+description: "De algoritmos básicos a patrones de diseño: domina Java con buenas prácticas profesionales"
 technology: "Java"
 difficulty: "Beginner"
 ---
