@@ -24,8 +24,22 @@ npm run preview
 npm run astro -- [command]
 ```
 
-**Note**: No linting (ESLint) or testing (Jest/Vitest) is currently configured. 
-If adding tests, prefer Vitest for Astro projects.
+## Testing & TDD (Mandatory)
+
+Este proyecto sigue estrictamente **Test Driven Development (TDD)**:
+1. **Test Primero**: Cada acción solicitada por el usuario requiere el desarrollo de un test *antes* de la implementación.
+2. **Evitar Regresiones**: La idea fundamental de usar TDD es asegurar que una nueva tarea **no rompa** lo que se implementó anteriormente.
+3. **Ciclo Rojo-Verde**: La tarea no se da por terminada hasta que el test pase (Verde) y se verifique que todos los tests previos sigan pasando.
+4. **Framework**: Se utiliza **Vitest**.
+
+
+```bash
+# Ejecutar tests
+npm run test
+# Ejecutar tests en modo watch
+npm run test:watch
+```
+
 
 ## Project Structure
 
@@ -54,6 +68,8 @@ programierds/
 - Keep components **small and focused** (single responsibility)
 - Use **semantic HTML** elements
 - Prefer **file-based routing** in `src/pages/`
+- **TDD Obligatorio**: No se inicia ninguna implementación sin su respectivo test unitario o de integración.
+
 
 ### TypeScript
 
@@ -169,8 +185,10 @@ try {
   - `docs:` documentation
   - `refactor:` code restructuring
 
-- **Main branch** is the default and production branch
-- **Deploy** happens automatically via GitHub Actions on push to main
+- **Rama de Desarrollo**: Todos los cambios **deben** realizarse en la rama `desarrollo` y subirse allí.
+- **Integración con Main**: Al final del día, se deben realizar las Pull Requests (PR) desde `desarrollo` hacia `main` para ser mergeadas.
+- **Main branch** es la rama de producción.
+- **Deploy** ocurre automáticamente vía GitHub Actions al hacer push o merge en `main`.
 
 ## Adding New Dependencies
 
@@ -229,6 +247,8 @@ const sizeClasses = { sm: 'w-4 h-4', md: 'w-6 h-6', lg: 'w-8 h-8' };
 
 ---
 
-**Last updated**: 2026-03-01
-**Main branch**: main
+**Última actualización**: 2026-03-01
+**Rama de Desarrollo**: desarrollo (para todos los cambios)
+**Rama Principal**: main (para deploys)
 **Deploy URL**: https://facundouferer.github.io/
+

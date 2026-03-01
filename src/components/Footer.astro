@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+---
+
+<footer class="border-t border-primary/10 bg-background-light dark:bg-background-dark px-4 py-16 lg:px-20">
+	<div class="mx-auto max-w-7xl flex flex-col gap-12">
+		<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+			<div class="flex items-center gap-2">
+				<span class="text-2xl">💩</span>
+				<h2 class="text-xl font-bold">programierds</h2>
+			</div>
+			<div class="flex flex-col items-center md:items-end gap-2">
+				<p class="text-sm text-slate-400">
+					Creado por <span class="text-white font-bold">Facundo Uferer</span>
+				</p>
+				<p class="text-xs text-slate-500">Senior Full Stack Engineer | AI-Driven Architect | Tech Lead</p>
+				<div class="flex items-center gap-5 mt-2">
+					<a class="text-slate-500 hover:text-primary transition-all" href="https://www.linkedin.com/in/facundouferer" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Facundo Uferer">
+						<Icon name="linkedin" class="w-5 h-5" />
+					</a>
+					<a class="text-slate-500 hover:text-primary transition-all" href="https://github.com/facundouferer" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Facundo Uferer">
+						<Icon name="github" class="w-5 h-5" />
+					</a>
+					<a class="text-slate-500 hover:text-primary transition-all" href="https://facundouferer.ar" target="_blank" rel="noopener noreferrer" aria-label="Sitio web de Facundo Uferer">
+						<Icon name="language" class="w-5 h-5" />
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="text-center text-slate-500 text-sm">
+			<p>&copy; 2025 programierds. Todos los derechos reservados.</p>
+		</div>
+	</div>
+</footer>

@@ -1,0 +1,499 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Icon from '../components/Icon.astro';
+import '@fontsource/fira-code/400.css';
+import '@fontsource/fira-code/500.css';
+---
+
+<Layout title="Playground - Programierds | Rompe cosas con código">
+	<style>
+		.code-font {
+			font-family: 'Fira Code', monospace;
+		}
+		.custom-scrollbar::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+		}
+		.custom-scrollbar::-webkit-scrollbar-track {
+			background: #0a140d;
+		}
+		.custom-scrollbar::-webkit-scrollbar-thumb {
+			background: #0df25933;
+			border-radius: 10px;
+		}
+		.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+			background: #0df25966;
+		}
+		/* CodeMirror overrides para que ocupe todo el espacio */
+		#code-editor-container .cm-editor {
+			height: 100%;
+			font-family: 'Fira Code', monospace;
+			font-size: 0.875rem;
+		}
+		#code-editor-container .cm-scroller {
+			overflow: auto;
+		}
+		#code-editor-container .cm-gutters {
+			border-right: 1px solid rgba(13, 242, 89, 0.05);
+		}
+	</style>
+
+	<div class="relative flex h-screen flex-col overflow-hidden">
+		<Header />
+
+		<div class="flex items-center justify-between px-4 lg:px-8 py-2 bg-background-dark border-b border-primary/5">
+			<div class="flex items-center gap-4">
+				<div class="relative" id="lang-dropdown">
+					<button id="lang-toggle" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/20 hover:border-primary/40 transition-colors text-xs font-bold text-slate-300">
+						<span id="lang-label">JavaScript</span>
+						<Icon name="expand_more" class="w-4 h-4 text-primary" />
+					</button>
+					<div id="lang-menu" class="hidden absolute top-full left-0 mt-1 w-44 rounded-lg bg-background-dark border border-primary/20 shadow-lg shadow-black/50 overflow-hidden z-50">
+						<button data-lang="javascript" data-file="main.js" class="lang-option w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-300 hover:bg-primary/10 hover:text-primary transition-colors">
+							<Icon name="javascript" class="w-4 h-4" />
+							JavaScript
+						</button>
+						<button data-lang="java" data-file="Main.java" class="lang-option w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-300 hover:bg-primary/10 hover:text-primary transition-colors">
+							<Icon name="code" class="w-4 h-4" />
+							Java
+						</button>
+					</div>
+				</div>
+				<div class="h-4 w-px bg-primary/10"></div>
+				<div class="flex items-center gap-2 text-xs font-mono text-slate-400">
+					<Icon name="description" class="w-4 h-4" />
+					<span id="file-name">main.js</span>
+				</div>
+				<div class="h-4 w-px bg-primary/10"></div>
+				<div class="flex items-center gap-1">
+					<button class="p-1.5 hover:bg-white/5 rounded transition-colors text-slate-400 hover:text-white">
+						<Icon name="save" class="w-5 h-5" />
+					</button>
+					<button class="p-1.5 hover:bg-white/5 rounded transition-colors text-slate-400 hover:text-white">
+						<Icon name="settings" class="w-5 h-5" />
+					</button>
+				</div>
+			</div>
+			<div class="flex items-center gap-3">
+				<button id="run-btn" class="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-background-dark font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_-5px_rgba(13,242,89,0.4)]">
+					<Icon name="play_arrow" class="w-5 h-5" />
+					RUN
+				</button>
+			</div>
+		</div>
+
+		<main class="flex-1 flex overflow-hidden">
+			<div id="code-editor-container" class="flex-1 flex flex-col border-r border-primary/10">
+			</div>
+
+			<div class="w-1/3 min-w-[350px] flex flex-col bg-terminal-bg">
+				<div id="stdin-panel" class="hidden border-b border-primary/10">
+					<div class="px-4 py-2 border-b border-primary/5 flex items-center gap-2">
+						<Icon name="terminal" class="w-3 h-3 text-yellow-400" />
+						<span class="text-[10px] font-bold uppercase tracking-widest text-yellow-400">Stdin (entrada de datos)</span>
+					</div>
+					<textarea
+						id="stdin-input"
+						class="w-full bg-terminal-bg text-slate-400 p-3 code-font text-xs leading-relaxed focus:outline-none resize-none custom-scrollbar h-20"
+						spellcheck="false"
+						placeholder="Escribe aquí los datos de entrada (uno por línea)..."
+					></textarea>
+				</div>
+				<div class="px-4 py-2 border-b border-primary/10 flex items-center justify-between bg-terminal-bg">
+					<div class="flex items-center gap-2">
+						<Icon name="terminal" class="w-4 h-4 text-primary" />
+						<span class="text-xs font-bold uppercase tracking-widest text-slate-400">Terminal Output</span>
+					</div>
+					<button id="clear-btn" class="text-slate-500 hover:text-white transition-colors">
+						<Icon name="delete_sweep" class="w-4 h-4" />
+					</button>
+				</div>
+				<div id="terminal-output" class="flex-1 p-4 code-font text-sm custom-scrollbar overflow-y-auto">
+					<div class="text-slate-500 italic text-xs">// Esperando ejecución...</div>
+				</div>
+			</div>
+		</main>
+
+		<footer class="h-8 border-t border-primary/10 bg-background-dark px-4 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+			<div class="flex items-center gap-4">
+				<div class="flex items-center gap-1">
+					<Icon name="fork_right" class="w-3 h-3" />
+					<span>main*</span>
+				</div>
+				<div class="flex items-center gap-1">
+					<Icon name="sync" class="w-3 h-3" />
+					<span>In sync</span>
+				</div>
+			</div>
+			<div class="flex items-center gap-4">
+				<span id="footer-position">Ln 1, Col 1</span>
+				<span>UTF-8</span>
+				<span id="footer-lang" class="text-primary font-bold">JavaScript</span>
+			</div>
+		</footer>
+	</div>
+
+	<script>
+		import { EditorView, basicSetup } from 'codemirror';
+		import { EditorState, Compartment } from '@codemirror/state';
+		import { javascript } from '@codemirror/lang-javascript';
+		import { java } from '@codemirror/lang-java';
+		import { oneDark } from '@codemirror/theme-one-dark';
+		import { keymap } from '@codemirror/view';
+		import { indentWithTab } from '@codemirror/commands';
+
+		const JUDGE0_URL = 'https://ce.judge0.com';
+		const LANG_IDS: Record<string, number> = {
+			javascript: 102,
+			java: 91,
+		};
+
+		const defaultCodes: Record<string, string> = {
+			javascript: `// Programierds Code Playground
+// Escribe tu código aquí y dale a RUN
+
+function helloWorld() {
+    const msg = "JavaScript desde el barro";
+    console.log(msg);
+    for (let i = 0; i < 5; i++) {
+        console.log("Iteración número: " + (i + 1));
+    }
+    return "Listo para romper cosas.";
+}
+
+const resultado = helloWorld();
+console.log(resultado);`,
+
+			java: `// Programierds Code Playground
+// Escribe tu código Java aquí y dale a RUN
+
+public class Main {
+    public static void main(String[] args) {
+        String msg = "Java desde el barro";
+        System.out.println(msg);
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Iteración número: " + (i + 1));
+        }
+        System.out.println("Listo para romper cosas.");
+    }
+}`
+		};
+
+		let currentLang = 'javascript';
+
+		// CodeMirror setup
+		const langCompartment = new Compartment();
+		const editorContainer = document.getElementById('code-editor-container')!;
+
+		const editorView = new EditorView({
+			state: EditorState.create({
+				doc: defaultCodes.javascript,
+				extensions: [
+					basicSetup,
+					keymap.of([indentWithTab]),
+					oneDark,
+					langCompartment.of(javascript()),
+					EditorView.updateListener.of((update) => {
+						if (update.docChanged) {
+							onCodeChange();
+						}
+						if (update.selectionSet) {
+							updateFooterPosition();
+						}
+					}),
+				],
+			}),
+			parent: editorContainer,
+		});
+
+		// DOM refs
+		const stdinInput = document.getElementById('stdin-input') as HTMLTextAreaElement;
+		const stdinPanel = document.getElementById('stdin-panel')!;
+		const terminal = document.getElementById('terminal-output')!;
+		const runBtn = document.getElementById('run-btn')!;
+		const clearBtn = document.getElementById('clear-btn')!;
+		const toggle = document.getElementById('lang-toggle')!;
+		const menu = document.getElementById('lang-menu')!;
+		const langLabel = document.getElementById('lang-label')!;
+		const fileNameEl = document.getElementById('file-name')!;
+		const footerLang = document.getElementById('footer-lang')!;
+		const footerPos = document.getElementById('footer-position')!;
+
+		function getCode(): string {
+			return editorView.state.doc.toString();
+		}
+
+		function setCode(code: string) {
+			editorView.dispatch({
+				changes: { from: 0, to: editorView.state.doc.length, insert: code }
+			});
+		}
+
+		function onCodeChange() {
+			const code = getCode();
+			updateStdinVisibility(code);
+			if (currentLang === 'java') {
+				const className = extractJavaClassName(code);
+				fileNameEl.textContent = `${className}.java`;
+			}
+		}
+
+		function updateFooterPosition() {
+			const pos = editorView.state.selection.main.head;
+			const line = editorView.state.doc.lineAt(pos);
+			const ln = line.number;
+			const col = pos - line.from + 1;
+			footerPos.textContent = `Ln ${ln}, Col ${col}`;
+		}
+
+		function detectNeedsStdin(code: string): boolean {
+			if (currentLang === 'java') {
+				return /Scanner|System\.in|BufferedReader|readLine/.test(code);
+			}
+			if (currentLang === 'javascript') {
+				return /readline|process\.stdin|prompt\(/.test(code);
+			}
+			return false;
+		}
+
+		function updateStdinVisibility(code: string) {
+			stdinPanel.classList.toggle('hidden', !detectNeedsStdin(code));
+		}
+
+		function setTerminalContent(html: string) {
+			terminal.innerHTML = html;
+			terminal.scrollTop = terminal.scrollHeight;
+		}
+
+		function appendTerminalLine(text: string, className = 'text-slate-400') {
+			const div = document.createElement('div');
+			div.className = className;
+			div.textContent = text;
+			terminal.appendChild(div);
+			terminal.scrollTop = terminal.scrollHeight;
+		}
+
+		function showPrompt() {
+			const div = document.createElement('div');
+			div.className = 'flex gap-2 mt-2';
+			div.innerHTML = `<span class="text-primary">➜</span><span class="inline-block w-2 h-4 bg-primary/50 animate-pulse"></span>`;
+			terminal.appendChild(div);
+		}
+
+		function showCommand(cmd: string) {
+			const cmdDiv = document.createElement('div');
+			cmdDiv.className = 'flex gap-2 mb-2';
+			cmdDiv.innerHTML = `<span class="text-primary">➜</span><span class="text-slate-300">${cmd}</span>`;
+			terminal.appendChild(cmdDiv);
+		}
+
+		function extractJavaClassName(code: string): string {
+			const match = code.match(/public\s+class\s+(\w+)/);
+			return match ? match[1] : 'Main';
+		}
+
+		function prepareJavaCode(code: string): string {
+			let prepared = code;
+			prepared = prepared.replace(/^\s*package\s+[\w.]+\s*;\s*\n?/m, '');
+			prepared = prepared.replace(/public\s+class\s+(\w+)/, 'public class Main');
+			return prepared;
+		}
+
+		async function runJavaScript(code: string) {
+			const logs: string[] = [];
+			const originalLog = console.log;
+			const originalError = console.error;
+			const originalWarn = console.warn;
+
+			console.log = (...args) => logs.push(args.map(String).join(' '));
+			console.error = (...args) => logs.push(`[ERROR] ${args.map(String).join(' ')}`);
+			console.warn = (...args) => logs.push(`[WARN] ${args.map(String).join(' ')}`);
+
+			let result: unknown;
+			let error: string | null = null;
+
+			try {
+				result = new Function(code)();
+			} catch (e) {
+				error = e instanceof Error ? e.message : String(e);
+			} finally {
+				console.log = originalLog;
+				console.error = originalError;
+				console.warn = originalWarn;
+			}
+
+			setTerminalContent('');
+			showCommand('node main.js');
+
+			for (const line of logs) {
+				if (line.startsWith('[ERROR]')) {
+					appendTerminalLine(line, 'text-red-400');
+				} else if (line.startsWith('[WARN]')) {
+					appendTerminalLine(line, 'text-yellow-400');
+				} else {
+					appendTerminalLine(line, 'text-slate-300');
+				}
+			}
+
+			if (error) {
+				appendTerminalLine(error, 'text-red-400 font-medium');
+			} else if (result !== undefined) {
+				appendTerminalLine(JSON.stringify(result), 'text-accent-blue mt-1');
+			}
+
+			showPrompt();
+		}
+
+		async function runWithJudge0(code: string, lang: string) {
+			const langId = LANG_IDS[lang];
+			const isJava = lang === 'java';
+
+			let sourceCode = code;
+			let className = 'Main';
+
+			if (isJava) {
+				className = extractJavaClassName(code);
+				sourceCode = prepareJavaCode(code);
+			}
+
+			setTerminalContent('');
+			showCommand(isJava ? `javac ${className}.java && java ${className}` : 'node main.js');
+			appendTerminalLine(isJava ? 'Compilando y ejecutando...' : 'Ejecutando...', 'text-yellow-400 animate-pulse');
+
+			try {
+				const stdinValue = stdinInput.value.trim();
+				const body: Record<string, unknown> = {
+					language_id: langId,
+					source_code: btoa(unescape(encodeURIComponent(sourceCode))),
+				};
+				if (stdinValue) {
+					body.stdin = btoa(unescape(encodeURIComponent(stdinValue)));
+				}
+
+				const submitRes = await fetch(`${JUDGE0_URL}/submissions?base64_encoded=true&wait=true`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body)
+				});
+
+				if (!submitRes.ok) {
+					throw new Error(`HTTP ${submitRes.status}: ${submitRes.statusText}`);
+				}
+
+				let data = await submitRes.json();
+
+				while (data.status && (data.status.id === 1 || data.status.id === 2)) {
+					await new Promise(r => setTimeout(r, 1000));
+					const pollRes = await fetch(`${JUDGE0_URL}/submissions/${data.token}?base64_encoded=true`);
+					data = await pollRes.json();
+				}
+
+				const decode = (b64: string | null) => {
+					if (!b64) return '';
+					try {
+						return decodeURIComponent(escape(atob(b64)));
+					} catch {
+						return atob(b64);
+					}
+				};
+
+				const stdout = decode(data.stdout);
+				const stderr = decode(data.stderr);
+				const compileOutput = decode(data.compile_output);
+				const statusDesc = data.status?.description ?? '';
+
+				setTerminalContent('');
+				showCommand(isJava ? `javac ${className}.java && java ${className}` : 'node main.js');
+
+				if (compileOutput && data.status?.id !== 3) {
+					appendTerminalLine('Error de compilación:', 'text-red-400 font-medium mt-1');
+					for (const line of compileOutput.split('\n')) {
+						if (line.trim()) appendTerminalLine(line, 'text-red-400');
+					}
+				}
+
+				if (stdout) {
+					for (const line of stdout.split('\n')) {
+						if (line !== '') appendTerminalLine(line, 'text-slate-300');
+					}
+				}
+
+				if (stderr) {
+					for (const line of stderr.split('\n')) {
+						if (line.trim()) appendTerminalLine(line, 'text-red-400');
+					}
+				}
+
+				if (data.status?.id !== 3) {
+					appendTerminalLine(`[${statusDesc}]`, 'text-yellow-400 mt-1');
+				}
+
+				if (data.time) {
+					appendTerminalLine(`Tiempo: ${data.time}s`, 'text-slate-600 mt-1');
+				}
+
+			} catch (e) {
+				setTerminalContent('');
+				showCommand(isJava ? `javac ${className}.java && java ${className}` : 'node main.js');
+				appendTerminalLine('Error de conexión con el servidor:', 'text-red-400 font-medium');
+				appendTerminalLine(e instanceof Error ? e.message : String(e), 'text-red-400');
+			}
+
+			showPrompt();
+		}
+
+		// RUN button
+		runBtn.addEventListener('click', async () => {
+			runBtn.classList.add('opacity-50', 'pointer-events-none');
+			runBtn.innerHTML = `<span class="inline-block w-4 h-4 border-2 border-background-dark border-t-transparent rounded-full animate-spin"></span> RUN`;
+
+			const code = getCode();
+			if (currentLang === 'javascript') {
+				await runJavaScript(code);
+			} else {
+				await runWithJudge0(code, currentLang);
+			}
+
+			runBtn.classList.remove('opacity-50', 'pointer-events-none');
+			runBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M8 5v14l11-7z"/></svg> RUN`;
+		});
+
+		clearBtn.addEventListener('click', () => {
+			setTerminalContent('<div class="text-slate-500 italic text-xs">// Esperando ejecución...</div>');
+		});
+
+		// Language switcher
+		toggle.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+		document.querySelectorAll('.lang-option').forEach((option) => {
+			option.addEventListener('click', () => {
+				const lang = option.getAttribute('data-lang') ?? 'javascript';
+				const file = option.getAttribute('data-file') ?? 'main.js';
+				const label = lang === 'javascript' ? 'JavaScript' : 'Java';
+
+				currentLang = lang;
+				langLabel.textContent = label;
+				fileNameEl.textContent = file;
+				footerLang.textContent = label;
+
+				// Cambiar lenguaje de CodeMirror
+				editorView.dispatch({
+					effects: langCompartment.reconfigure(lang === 'java' ? java() : javascript())
+				});
+				setCode(defaultCodes[lang]);
+				stdinInput.value = '';
+				updateStdinVisibility(defaultCodes[lang]);
+				setTerminalContent('<div class="text-slate-500 italic text-xs">// Esperando ejecución...</div>');
+				menu.classList.add('hidden');
+			});
+		});
+
+		document.addEventListener('click', (e) => {
+			const dropdown = document.getElementById('lang-dropdown');
+			if (dropdown && !dropdown.contains(e.target as Node)) {
+				menu.classList.add('hidden');
+			}
+		});
+	</script>
+</Layout>

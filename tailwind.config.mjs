@@ -10,11 +10,14 @@ export default {
         'background-dark': '#102216',
         'accent-blue': '#3b82f6',
         'accent-brown': '#78350f',
+        'editor-bg': '#0d1b11',
+        'terminal-bg': '#050a06',
       },
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }
