@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import { getCollection } from 'astro:content';
+import { getRelativePath } from '../utils/paths';
 
 const allCourses = await getCollection('courses');
 const allChapters = await getCollection('chapters');
@@ -39,7 +40,7 @@ const coursesWithChapters = allCourses.map((course) => {
 						const config = difficultyConfig[course.data.difficulty];
 						const iconName = course.data.technology.toLowerCase();
 						return (
-							<a href={`/cursos/${course.slug}`} class="group flex flex-col rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark p-6 hover:border-primary/50 transition-all hover:shadow-[0_0_30px_-5px_rgba(13,242,89,0.15)]">
+							<a href={getRelativePath(`/cursos/${course.slug}`)} class="group flex flex-col rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark p-6 hover:border-primary/50 transition-all hover:shadow-[0_0_30px_-5px_rgba(13,242,89,0.15)]">
 								<div class="flex justify-between items-start mb-6">
 									<div class={`size-14 flex items-center justify-center rounded-xl ${config.bg} ${config.color}`}>
 										<Icon name={iconName} class="w-9 h-9" />

@@ -4,6 +4,7 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import Icon from '../../../components/Icon.astro';
 import { getCollection } from 'astro:content';
+import { getRelativePath } from '../../../utils/paths';
 
 export async function getStaticPaths() {
 	const allCourses = await getCollection('courses');
@@ -37,7 +38,7 @@ const difficultyLabels: Record<string, string> = {
 
 		<main class="flex-1 px-4 lg:px-20 py-12">
 			<div class="mx-auto max-w-4xl">
-				<a href="/cursos" class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8">
+				<a href={getRelativePath('/cursos')} class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8">
 					<Icon name="arrow_back" class="w-4 h-4" />
 					<span class="text-sm font-medium">Volver a cursos</span>
 				</a>
@@ -63,7 +64,7 @@ const difficultyLabels: Record<string, string> = {
 						const lessonSlug = chapter.id.replace(courseSlug + '/', '');
 						return (
 							<a
-								href={`/cursos/${courseSlug}/${lessonSlug}`}
+								href={getRelativePath(`/cursos/${courseSlug}/${lessonSlug}`)}
 								class="group flex items-center gap-4 rounded-xl border border-primary/10 bg-background-light dark:bg-background-dark p-5 hover:border-primary/50 transition-all hover:shadow-[0_0_20px_-5px_rgba(13,242,89,0.1)]"
 							>
 								<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-sm">
