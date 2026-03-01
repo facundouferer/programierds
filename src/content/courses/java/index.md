@@ -1,5 +1,5 @@
 ---
-description: "Aprende Java desde cero con fundamentos sólidos, ejemplos prácticos y bases de la programación orientada a objetos"
+description: "De algoritmos básicos a patrones de diseño: un camino completo para dominar Java con buenas prácticas y enfoque profesional"
 technology: "Java"
 difficulty: "Beginner"
 ---

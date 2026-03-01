@@ -2,63 +2,35 @@
 title: "Introducción a JavaScript"
 ---
 
-# Introducción a JavaScript
+# ¿Qué es JavaScript?
 
-JavaScript es el lenguaje de la web. Es el único lenguaje que corre nativamente en todos los navegadores y, gracias a Node.js, también en servidores, herramientas CLI y hasta aplicaciones de escritorio.
+JavaScript es el lenguaje de programación interpretado que da vida a la web. A diferencia de HTML (estructura) y CSS (diseño), JavaScript permite que las páginas sean interactivas y dinámicas.
 
-## ¿Por qué aprender JavaScript?
+## Un poco de historia
+Nació en 1995, creado por Brendan Eich en apenas 10 días. Aunque empezó como un "juguete" para pequeños trucos, hoy es uno de los lenguajes más potentes y versátiles del mundo.
 
-- **Ubicuo**: Corre en el navegador, en el servidor, en mobile, en IoT.
-- **Ecosistema gigante**: npm es el registro de paquetes más grande del mundo.
-- **Demanda laboral**: Frontend, backend, fullstack — JavaScript está en todos lados.
+## ¿Qué significa "del lado del cliente"?
+Cuando decimos que JS corre en el cliente, significa que se ejecuta directamente en el navegador de la persona que visita la web. Esto permite:
+- Modificar la página en tiempo real.
+- Validar formularios al instante.
+- Crear efectos visuales y animaciones.
+- Comunicarse con servidores sin recargar la página.
 
-## Tu primer script
+## ¿Y "del lado del servidor"?
+Gracias a entornos como **Node.js**, JavaScript también puede usarse para crear el "cerebro" de las aplicaciones que maneja bases de datos y archivos.
 
-Abrí la consola del navegador (F12 → Console) y escribí:
+## Ingresar o visualizar datos
 
+Existen varias formas de interactuar con el usuario:
+
+1. **`console.log()`**: Muestra mensajes en la consola del navegador (F12).
+2. **`alert()`**: Muestra una ventana emergente de aviso.
+3. **`prompt()`**: Abre un cuadro para que el usuario ingrese texto.
+4. **`document.write()`**: Escribe contenido directamente en el cuerpo del HTML (usar con precaución).
+
+### Ejemplo:
 ```javascript
-console.log("¡Hola, Mundo!");
-```
-
-## Dónde ejecutar JavaScript
-
-### En el navegador
-
-Creá un archivo `index.html`:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mi primer JS</title>
-</head>
-<body>
-    <script src="app.js"></script>
-</body>
-</html>
-```
-
-Y un archivo `app.js`:
-
-```javascript
-console.log("JavaScript cargado correctamente");
-```
-
-### Con Node.js
-
-Instalá Node.js desde [nodejs.org](https://nodejs.org) y ejecutá:
-
-```bash
-node app.js
-```
-
-## Strict mode
-
-Siempre usá strict mode para evitar errores silenciosos:
-
-```javascript
-"use strict";
-
-// Esto tira error en strict mode (variable no declarada)
-nombre = "Programierds"; // ReferenceError
+const nombre = prompt("¿Cómo te llamás?");
+console.log("Hola, " + nombre);
+alert("Bienvenido a Programierds");
 ```

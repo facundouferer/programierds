@@ -1,5 +1,5 @@
 ---
-description: "Domina JavaScript desde cero y aprende a crear aplicaciones dinámicas para la web con ejemplos y práctica"
+description: "Desde la sintaxis básica y los 'valores locos' hasta la manipulación avanzada del DOM y clases: el camino definitivo para dominar la web"
 technology: "JavaScript"
 difficulty: "Beginner"
 ---
