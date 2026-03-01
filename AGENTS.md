@@ -26,19 +26,18 @@ npm run astro -- [command]
 
 ## Testing & TDD (Mandatory)
 
-Este proyecto sigue estrictamente **Test Driven Development (TDD)**:
-1. **Test Primero**: Cada acción solicitada por el usuario requiere el desarrollo de un test *antes* de la implementación.
-2. **Evitar Regresiones**: La idea fundamental de usar TDD es asegurar que una nueva tarea **no rompa** lo que se implementó anteriormente.
-3. **Ciclo Rojo-Verde**: La tarea no se da por terminada hasta que el test pase (Verde) y se verifique que todos los tests previos sigan pasando.
-4. **Framework**: Se utiliza **Vitest**.
-
+Este proyecto sigue estrictamente **Test Driven Development (TDD)** y validación de tipos. Una tarea se considera completa **únicamente** cuando se ha seguido este circuito:
+1. **Test Primero**: Desarrollar un test que falle (Rojo) *antes* de cualquier implementación.
+2. **Implementación**: Realizar el código mínimo para que el test pase (Verde).
+3. **Validación**: Ejecutar `npm run astro check` para asegurar la integridad de Astro y TypeScript.
+4. **Verificación Total**: Correr `npm run test` (si los hay) para asegurar que no hay regresiones.
 
 ```bash
-# Ejecutar tests
+# Ejecutar validaciones y tests
+npm run astro check
 npm run test
-# Ejecutar tests en modo watch
-npm run test:watch
 ```
+
 
 
 ## Project Structure
@@ -46,29 +45,33 @@ npm run test:watch
 ```
 programierds/
 ├── src/
-│   ├── components/     # Reusable Astro components
-│   ├── layouts/        # Page layouts
-│   ├── pages/          # File-based routing (src/pages/*.astro)
-│   ├── styles/         # Global CSS
 │   ├── assets/         # Static assets (SVGs, images)
-│   └── templates/      # Reference templates (HTML mocks)
+│   ├── components/     # Reusable Astro components (Icon.astro, Header.astro, Footer.astro)
+│   ├── content/        # Content collections (courses, chapters)
+│   │   └── courses/    # Source of truth for all course data and lessons
+│   ├── content.config.ts # Configuration and schemas for content collections
+│   ├── layouts/        # Page layouts (Layout.astro)
+│   ├── pages/          # File-based routing (index, cursos, playground, etc.)
+│   ├── styles/         # Global CSS
+│   ├── templates/      # Reference templates (HTML mocks for design reference)
+│   └── utils/          # Utility functions (paths.ts)
 ├── public/             # Static files (favicons, images)
-├── .github/
-│   └── workflows/      # CI/CD pipelines
+├── docs/               # Project documentation and resources
 ├── astro.config.mjs    # Astro configuration
 ├── tailwind.config.mjs # Tailwind configuration
 └── tsconfig.json      # TypeScript configuration
 ```
+
 
 ## Code Style Guidelines
 
 ### General Principles
 
 - Use **Astro components** (.astro) for static UI
-- Keep components **small and focused** (single responsibility)
-- Use **semantic HTML** elements
-- Prefer **file-based routing** in `src/pages/`
 - **TDD Obligatorio**: No se inicia ninguna implementación sin su respectivo test unitario o de integración.
+- **Rutas Relativas**: Utilizar siempre `getRelativePath` de `src/utils/paths.ts` para todos los links internos y assets. Esto es vital para el despliegue en GitHub Pages.
+- Keep components **small and focused**.
+- Use **semantic HTML** elements.
 
 
 ### TypeScript

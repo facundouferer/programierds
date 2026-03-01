@@ -58,6 +58,10 @@ import '@fontsource/fira-code/500.css';
 							<Icon name="code" class="w-4 h-4" />
 							Java
 						</button>
+						<button data-lang="c" data-file="main.c" class="lang-option w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-300 hover:bg-primary/10 hover:text-primary transition-colors">
+							<Icon name="code" class="w-4 h-4" />
+							C
+						</button>
 					</div>
 				</div>
 				<div class="h-4 w-px bg-primary/10"></div>
@@ -139,6 +143,7 @@ import '@fontsource/fira-code/500.css';
 		import { EditorState, Compartment } from '@codemirror/state';
 		import { javascript } from '@codemirror/lang-javascript';
 		import { java } from '@codemirror/lang-java';
+		import { cpp } from '@codemirror/lang-cpp';
 		import { oneDark } from '@codemirror/theme-one-dark';
 		import { keymap } from '@codemirror/view';
 		import { indentWithTab } from '@codemirror/commands';
@@ -147,6 +152,7 @@ import '@fontsource/fira-code/500.css';
 		const LANG_IDS: Record<string, number> = {
 			javascript: 102,
 			java: 91,
+			c: 50,
 		};
 
 		const defaultCodes: Record<string, string> = {
@@ -177,6 +183,21 @@ public class Main {
         }
         System.out.println("Listo para romper cosas.");
     }
+}`,
+
+			c: `// Programierds Code Playground
+// Escribe tu código C aquí y dale a RUN
+
+#include <stdio.h>
+
+int main() {
+    char *msg = "C desde el barro";
+    printf("%s\\n", msg);
+    for (int i = 0; i < 5; i++) {
+        printf("Iteración número: %d\\n", i + 1);
+    }
+    printf("Listo para romper cosas.\\n");
+    return 0;
 }`
 		};
 
@@ -253,6 +274,9 @@ public class Main {
 			}
 			if (currentLang === 'javascript') {
 				return /readline|process\.stdin|prompt\(/.test(code);
+			}
+			if (currentLang === 'c') {
+				return /scanf|fgets|getchar|gets/.test(code);
 			}
 			return false;
 		}
@@ -345,9 +369,16 @@ public class Main {
 			showPrompt();
 		}
 
+		function getRunCommand(lang: string, className: string): string {
+			if (lang === 'java') return `javac ${className}.java && java ${className}`;
+			if (lang === 'c') return 'gcc main.c -o main && ./main';
+			return 'node main.js';
+		}
+
 		async function runWithJudge0(code: string, lang: string) {
 			const langId = LANG_IDS[lang];
 			const isJava = lang === 'java';
+			const isCompiled = lang === 'java' || lang === 'c';
 
 			let sourceCode = code;
 			let className = 'Main';
@@ -357,18 +388,19 @@ public class Main {
 				sourceCode = prepareJavaCode(code);
 			}
 
+			const runCmd = getRunCommand(lang, className);
 			setTerminalContent('');
-			showCommand(isJava ? `javac ${className}.java && java ${className}` : 'node main.js');
-			appendTerminalLine(isJava ? 'Compilando y ejecutando...' : 'Ejecutando...', 'text-yellow-400 animate-pulse');
+			showCommand(runCmd);
+			appendTerminalLine(isCompiled ? 'Compilando y ejecutando...' : 'Ejecutando...', 'text-yellow-400 animate-pulse');
 
 			try {
 				const stdinValue = stdinInput.value.trim();
 				const body: Record<string, unknown> = {
 					language_id: langId,
-					source_code: btoa(unescape(encodeURIComponent(sourceCode))),
+					source_code: btoa(Array.from(new TextEncoder().encode(sourceCode), b => String.fromCharCode(b)).join('')),
 				};
 				if (stdinValue) {
-					body.stdin = btoa(unescape(encodeURIComponent(stdinValue)));
+					body.stdin = btoa(Array.from(new TextEncoder().encode(stdinValue), b => String.fromCharCode(b)).join(''));
 				}
 
 				const submitRes = await fetch(`${JUDGE0_URL}/submissions?base64_encoded=true&wait=true`, {
@@ -389,14 +421,14 @@ public class Main {
 					data = await pollRes.json();
 				}
 
-				const decode = (b64: string | null) => {
-					if (!b64) return '';
-					try {
-						return decodeURIComponent(escape(atob(b64)));
-					} catch {
-						return atob(b64);
-					}
-				};
+					const decode = (b64: string | null) => {
+						if (!b64) return '';
+						try {
+							return new TextDecoder().decode(Uint8Array.from(atob(b64), c => c.charCodeAt(0)));
+						} catch {
+							return atob(b64);
+						}
+					};
 
 				const stdout = decode(data.stdout);
 				const stderr = decode(data.stderr);
@@ -404,7 +436,7 @@ public class Main {
 				const statusDesc = data.status?.description ?? '';
 
 				setTerminalContent('');
-				showCommand(isJava ? `javac ${className}.java && java ${className}` : 'node main.js');
+				showCommand(runCmd);
 
 				if (compileOutput && data.status?.id !== 3) {
 					appendTerminalLine('Error de compilación:', 'text-red-400 font-medium mt-1');
@@ -435,7 +467,7 @@ public class Main {
 
 			} catch (e) {
 				setTerminalContent('');
-				showCommand(isJava ? `javac ${className}.java && java ${className}` : 'node main.js');
+				showCommand(runCmd);
 				appendTerminalLine('Error de conexión con el servidor:', 'text-red-400 font-medium');
 				appendTerminalLine(e instanceof Error ? e.message : String(e), 'text-red-400');
 			}
@@ -470,7 +502,8 @@ public class Main {
 			option.addEventListener('click', () => {
 				const lang = option.getAttribute('data-lang') ?? 'javascript';
 				const file = option.getAttribute('data-file') ?? 'main.js';
-				const label = lang === 'javascript' ? 'JavaScript' : 'Java';
+				const labels: Record<string, string> = { javascript: 'JavaScript', java: 'Java', c: 'C' };
+			const label = labels[lang] ?? lang;
 
 				currentLang = lang;
 				langLabel.textContent = label;
@@ -479,7 +512,7 @@ public class Main {
 
 				// Cambiar lenguaje de CodeMirror
 				editorView.dispatch({
-					effects: langCompartment.reconfigure(lang === 'java' ? java() : javascript())
+					effects: langCompartment.reconfigure(lang === 'java' ? java() : lang === 'c' ? cpp() : javascript())
 				});
 				setCode(defaultCodes[lang]);
 				stdinInput.value = '';
