@@ -11,14 +11,10 @@
             "id": "67aad103ac9844f1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "src/content/courses/java/01-introduccion.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "01-introduccion"
+              "title": "New tab"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "src/content/courses/java/01-introduccion.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 01-introduccion"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "src/content/courses/java/01-introduccion.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 01-introduccion"
+              "title": "Outgoing links"
             }
           },
           {
@@ -185,6 +179,31 @@
   },
   "active": "934995c6a903be93",
   "lastOpenFiles": [
+    "src/content/courses/javascript/11-dom-y-eventos.md",
+    "src/content/courses/javascript/10-funciones-y-orden-superior.md",
+    "src/content/courses/javascript/09-clases-y-herencia.md",
+    "src/content/courses/javascript/08-objetos-y-this.md",
+    "src/content/courses/javascript/07-arrays-a-fondo.md",
+    "src/content/courses/javascript/06-bucles-e-iteradores.md",
+    "src/content/courses/javascript/05-estructuras-de-control.md",
+    "src/content/courses/javascript/04-operadores-y-conversion.md",
+    "src/content/courses/javascript/03-tipos-de-datos.md",
+    "src/content/courses/javascript/02-variables-y-comentarios.md",
+    "docs/js_content.txt",
+    "src/content/courses/java/12-archivos.md",
+    "src/content/courses/java/11-patrones-diseno.md",
+    "docs/JavaScript para Principiantes.pdf",
+    "src/content/courses/java/10-lambdas-interfaces.md",
+    "src/content/courses/java/09-excepciones-y-colecciones.md",
+    "src/content/courses/java/08-poo.md",
+    "src/content/courses/java/07-strings-y-funciones.md",
+    "src/content/courses/java/06-arrays.md",
+    "src/content/courses/java/05-control-de-flujo.md",
+    "src/content/courses/java/04-operadores.md",
+    "src/content/courses/java/03-variables-tipos-datos.md",
+    "src/content/courses/java/02-empezando-con-java.md",
+    "src/content/courses/java/01-conceptos-basicos.md",
+    "docs/Java para Principiantes.pdf",
     "src/utils/paths.ts",
     "src/utils",
     "GEMINI.md",
@@ -193,36 +212,11 @@
     "dist/playground",
     "dist/cursos/java/03-poo/index.html",
     "dist/cursos/java/01-introduccion/index.html",
-    "dist/cursos/java/02-sintaxis-basica/index.html",
-    "dist/cursos/javascript/03-dom/index.html",
-    "dist/cursos/javascript/01-introduccion/index.html",
-    "dist/cursos/javascript/02-sintaxis-basica/index.html",
     "dist/images/hero-workspace.jpg",
     "dist/favicon.svg",
     "node_modules/@codemirror/language/README.md",
     "node_modules/@codemirror/language/CHANGELOG.md",
     "node_modules/@codemirror/autocomplete/README.md",
-    "node_modules/@codemirror/autocomplete/CHANGELOG.md",
-    "node_modules/@codemirror/lang-java/README.md",
-    "node_modules/@codemirror/lang-java/CHANGELOG.md",
-    "node_modules/@codemirror/commands/README.md",
-    "node_modules/@lezer/lr/README.md",
-    "node_modules/@codemirror/commands/CHANGELOG.md",
-    "node_modules/@codemirror/lint/README.md",
-    "node_modules/@codemirror/lint/CHANGELOG.md",
-    "node_modules/@lezer/highlight/README.md",
-    "node_modules/@codemirror/search/README.md",
-    "node_modules/@codemirror/search/CHANGELOG.md",
-    "node_modules/@lezer/javascript/README.md",
-    "node_modules/@codemirror/view/README.md",
-    "node_modules/@lezer/javascript/CHANGELOG.md",
-    "node_modules/@codemirror/view/CHANGELOG.md",
-    "node_modules/@codemirror/state/README.md",
-    "node_modules/@codemirror/state/CHANGELOG.md",
-    "node_modules/@lezer/common/README.md",
-    "node_modules/@lezer/java/README.md",
-    "node_modules/@lezer/java/CHANGELOG.md",
-    "node_modules/@codemirror/lang-javascript/README.md",
     "src/content/courses/javascript/logo.svg",
     "src/content/courses/java/logo.svg",
     "courses/JavaScript/logo.svg",
