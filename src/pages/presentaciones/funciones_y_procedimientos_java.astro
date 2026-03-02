@@ -18,38 +18,38 @@ import { getRelativePath } from '../../utils/paths';
       <h2>1. Estructura básica</h2>
       <p class="anim-item" style="--delay:100ms;">Sintaxis general de un método (subprograma) en Java:</p>
       <div class="code-block">
-        <pre><code class="code-keyword">[modificador]</code> <span class="code-type">tipoDeRetorno</span> <span class="code-class">nombreMetodo</span>(<span class="code-type">Tipo</span> parametro1, <span class="code-type">Tipo</span> parametro2) {
+        <pre><code class="code-keyword">[modificador]</code> <span class="code-type">tipoDeRetorno</span> <span class="code-class">nombreMetodo</span>(<span class="code-type">Tipo</span> parametro1, <span class="code-type">Tipo</span> parametro2) &lbrace;
   // cuerpo del método
   <span class="code-keyword">return</span> valor; <span class="code-comment">// sólo si tipoDeRetorno no es void</span>
-}</code></pre>
+&rbrace;</code></pre>
       </div>
 
       <h2>2. Procedimiento (método void)</h2>
       <p class="anim-item" style="--delay:200ms;">Un procedimiento realiza acciones pero no devuelve un valor:</p>
       <div class="code-block">
-        <pre><code class="code-keyword">public static void</code> imprimirMensaje(<span class="code-type">String</span> msg) {
+        <pre><code class="code-keyword">public static void</code> imprimirMensaje(<span class="code-type">String</span> msg) &lbrace;
   System.out.println(msg);
-}
+&rbrace;
 
 // Uso
-public static void main(String[] args) {
+public static void main(String[] args) &lbrace;
   imprimirMensaje("Hola desde un procedimiento");
-}
+&rbrace;
 </code></pre>
       </div>
 
       <h2>3. Función (método con retorno)</h2>
       <p class="anim-item" style="--delay:300ms;">Una función realiza un cálculo y devuelve un resultado:</p>
       <div class="code-block">
-        <pre><code class="code-keyword">public static int</code> sumar(<span class="code-type">int</span> a, <span class="code-type">int</span> b) {
+        <pre><code class="code-keyword">public static int</code> sumar(<span class="code-type">int</span> a, <span class="code-type">int</span> b) &lbrace;
   <span class="code-keyword">return</span> a + b;
-}
+&rbrace;
 
 // Uso
-public static void main(String[] args) {
+public static void main(String[] args) &lbrace;
   int r = sumar(3, 5); // r = 8
   System.out.println("Suma: " + r);
-}
+&rbrace;
 </code></pre>
       </div>
 
@@ -57,13 +57,13 @@ public static void main(String[] args) {
       <p class="anim-item" style="--delay:400ms;">Java siempre usa "paso por valor". Para tipos primitivos se copia el valor; para objetos se copia la referencia (la referencia en sí se pasa por valor), por eso los métodos pueden modificar el estado interno de un objeto, pero no la referencia original del llamador.</p>
 
       <div class="code-block">
-        <pre><code class="code-keyword">public static void</code> incrementar(<span class="code-type">int</span> n) {
+        <pre><code class="code-keyword">public static void</code> incrementar(<span class="code-type">int</span> n) &lbrace;
   n = n + 1; // solo modifica la copia local
-}
+&rbrace;
 
-public static void incrementarLista(<span class="code-type">List&lt;Integer&gt;</span> lista) {
+public static void incrementarLista(<span class="code-type">List&lt;Integer&gt;</span> lista) &lbrace;
   lista.add(42); // modifica el objeto apuntado por la referencia
-}
+&rbrace;
 </code></pre>
       </div>
 
@@ -77,22 +77,22 @@ public static void incrementarLista(<span class="code-type">List&lt;Integer&gt;<
 
       <h2>6. Ejemplo completo</h2>
       <div class="code-block">
-        <pre><code class="code-keyword">public class</code> EjemploSubprogramas {
+        <pre><code class="code-keyword">public class</code> EjemploSubprogramas &lbrace;
 
-  <span class="code-keyword">public static void</span> imprimirBienvenida() {
+  <span class="code-keyword">public static void</span> imprimirBienvenida() &lbrace;
     System.out.println("Bienvenido a Programierds");
-  }
+  &rbrace;
 
-  <span class="code-keyword">public static int</span> multiplicar(int x, int y) {
+  <span class="code-keyword">public static int</span> multiplicar(int x, int y) &lbrace;
     <span class="code-keyword">return</span> x * y;
-  }
+  &rbrace;
 
-  <span class="code-keyword">public static void</span> main(String[] args) {
+  <span class="code-keyword">public static void</span> main(String[] args) &lbrace;
     imprimirBienvenida();
     int res = multiplicar(6, 7);
     System.out.println("6 * 7 = " + res);
-  }
-}
+  &rbrace;
+&rbrace;
 </code></pre>
       </div>
 
