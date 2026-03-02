@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "mcp__context7__resolve-library-id",
-      "mcp__context7__query-docs"
+      "mcp__context7__query-docs",
+      "mcp__plugin_engram_engram__mem_save",
+      "Bash(node:*)"
     ]
   }
 }

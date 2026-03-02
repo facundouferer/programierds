@@ -3,11 +3,14 @@ import { getRelativePath } from '../utils/paths';
 
 const base = import.meta.env.BASE_URL;
 const currentPath = Astro.url.pathname;
+// Path relativo al base (ej: '/programierds/presentaciones' → 'presentaciones')
+const relativePath = currentPath.replace(base, '').replace(/^\//, '') || '/';
 
 const navLinks = [
-	{ label: 'Inicio', href: getRelativePath('/') },
-	{ label: 'Cursos', href: getRelativePath('/cursos') },
-	{ label: 'Playground', href: getRelativePath('/playground') },
+	{ label: 'Inicio', href: '/' },
+	{ label: 'Cursos', href: '/cursos' },
+	{ label: 'Presentaciones', href: '/presentaciones' },
+	{ label: 'Playground', href: '/playground' },
 ];
 ---
 
@@ -19,13 +22,17 @@ const navLinks = [
 		</a>
 		<nav class="hidden md:flex items-center gap-8">
 			{navLinks.map(({ label, href }) => {
-				const isActive = href === base ? currentPath === base : currentPath.startsWith(href);
+				const isHome = href === '/';
+				// Inicio activo solo en path exacto '/', otras páginas si coinciden con el inicio del path
+				const isActive = isHome 
+					? relativePath === '/'
+					: relativePath.startsWith(href.replace(/^\//, ''));
 				return (
 					<a
 						class={isActive
 							? 'text-primary transition-colors text-sm font-bold border-b-2 border-primary'
 							: 'hover:text-primary transition-colors text-sm font-medium'}
-						href={href}
+						href={getRelativePath(href)}
 					>
 						{label}
 					</a>

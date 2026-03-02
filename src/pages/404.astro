@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getRelativePath } from '../utils/paths';
+---
+
+<Layout title="404 - Segmentation Fault | Programierds">
+	<style>
+		.glitch {
+			animation: glitch 2.5s infinite;
+		}
+		@keyframes glitch {
+			0%, 90%, 100% { transform: translate(0); opacity: 1; }
+			92% { transform: translate(-4px, 2px); opacity: 0.8; }
+			94% { transform: translate(4px, -2px); opacity: 0.6; }
+			96% { transform: translate(-2px, -4px); opacity: 0.9; }
+			98% { transform: translate(2px, 4px); opacity: 0.7; }
+		}
+		.terminal-cursor {
+			display: inline-block;
+			width: 10px;
+			height: 1.2em;
+			background-color: #0df259;
+			vertical-align: middle;
+			margin-left: 4px;
+			animation: blink 1s step-end infinite;
+		}
+		@keyframes blink {
+			50% { opacity: 0; }
+		}
+		.scanline {
+			background: repeating-linear-gradient(
+				0deg,
+				transparent,
+				transparent 2px,
+				rgba(13, 242, 89, 0.03) 2px,
+				rgba(13, 242, 89, 0.03) 4px
+			);
+		}
+	</style>
+
+	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+		<Header />
+
+		<main class="flex-1 flex items-center justify-center relative">
+			<div class="scanline absolute inset-0 pointer-events-none"></div>
+
+			<div class="text-center px-6 py-20 max-w-2xl mx-auto relative z-10">
+				<div class="glitch mb-8">
+					<p class="font-mono text-primary/40 text-sm mb-4 tracking-widest">FATAL ERROR</p>
+					<h1 class="text-[8rem] lg:text-[12rem] font-black font-mono text-primary leading-none drop-shadow-[0_0_30px_rgba(13,242,89,0.3)]">
+						404
+					</h1>
+				</div>
+
+				<div class="font-mono bg-black/40 border border-primary/20 rounded-lg p-6 mb-10 text-left backdrop-blur-sm">
+					<p class="text-primary/60 text-xs mb-2">root@programierds:~$</p>
+					<p class="text-slate-300 text-sm leading-relaxed">
+						<span class="text-red-400">Segmentation fault</span> (core dumped)<br/>
+						<span class="text-slate-500">Error: la ruta solicitada no existe en el sistema de archivos.</span><br/>
+						<span class="text-slate-500">Puede que hayas escrito mal la URL o que la página haya sido movida.</span>
+					</p>
+					<p class="text-primary/60 text-xs mt-4">
+						root@programierds:~$ <span class="text-slate-300">cd /home</span><span class="terminal-cursor"></span>
+					</p>
+				</div>
+
+				<a
+					href={getRelativePath('/')}
+					class="inline-flex items-center gap-3 px-8 py-3 bg-primary/10 border border-primary/40 text-primary font-mono text-sm hover:bg-primary/20 transition-all rounded-md group"
+				>
+					<span class="group-hover:-translate-x-1 transition-transform">&lt;-</span>
+					cd ~/home
+				</a>
+			</div>
+		</main>
+
+		<Footer />
+	</div>
+</Layout>

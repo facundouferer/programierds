@@ -11,10 +11,14 @@
             "id": "67aad103ac9844f1",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "src/content/courses/git/01-El prinicpio con git.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "01-El prinicpio con git"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "src/content/courses/git/01-El prinicpio con git.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for 01-El prinicpio con git"
             }
           },
           {
@@ -163,8 +168,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -177,50 +181,53 @@
       "bases:Create new base": false
     }
   },
-  "active": "934995c6a903be93",
+  "active": "67aad103ac9844f1",
   "lastOpenFiles": [
-    "node_modules/@lezer/cpp/dist/index.d.ts",
-    "node_modules/@lezer/cpp/README.md",
-    "node_modules/@lezer/cpp/CHANGELOG.md",
-    "node_modules/@lezer/cpp/package.json",
-    "node_modules/@lezer/cpp/rollup.config.js",
-    "node_modules/@lezer/cpp/test/types.txt",
-    "node_modules/@lezer/cpp/test/test-cpp.js",
-    "node_modules/@lezer/cpp/test/microsoft.txt",
-    "node_modules/@lezer/cpp/test/statements.txt",
-    "node_modules/@lezer/cpp/test/expressions.txt",
-    "node_modules/@lezer/cpp/test/definitions.txt",
-    "node_modules/@lezer/cpp/test/declarations.txt",
-    "node_modules/@lezer/cpp/test/cpp20.txt",
-    "node_modules/@codemirror/lang-cpp/README.md",
-    "node_modules/@codemirror/lang-cpp/CHANGELOG.md",
-    "node_modules/vscode-html-languageservice/SECURITY.md",
-    "node_modules/vscode-html-languageservice/README.md",
-    "node_modules/vscode-html-languageservice/LICENSE.md",
-    "node_modules/vscode-html-languageservice/CHANGELOG.md",
-    "node_modules/vscode-html-languageservice/docs/customData.md",
-    "node_modules/volar-service-css/README.md",
-    "node_modules/volar-service-prettier/README.md",
-    "node_modules/volar-service-typescript/README.md",
-    "node_modules/volar-service-yaml/README.md",
-    "node_modules/volar-service-emmet/README.md",
-    "node_modules/volar-service-typescript-twoslash-queries/README.md",
-    "node_modules/vscode-languageserver-protocol/README.md",
-    "node_modules/vscode-uri/README.md",
-    "node_modules/muggle-string/README.md",
-    "node_modules/vscode-uri/SECURITY.md",
-    "node_modules/vscode-uri/LICENSE.md",
-    "node_modules/request-light/README.md",
-    "node_modules/vscode-languageserver-textdocument/README.md",
-    "node_modules/request-light/SECURITY.md",
-    "node_modules/request-light/LICENSE.md",
-    "node_modules/request-light/CHANGELOG.md",
+    "src/pages/presentaciones/funciones_y_procedimientos_java.astro",
+    "src/content/courses/git/03-Conflictos.md",
+    "src/content/courses/git/02-Bajar y subir cambios.md",
+    "src/content/courses/git/01-El prinicpio con git.md",
+    "src/content/courses/java/index.md",
+    "dist/index.html",
+    "dist/presentaciones/variables_y_constantes/index.html",
+    "dist/presentaciones/tipos_de_datos_en_javascript/index.html",
+    "dist/presentaciones/paso_por_valor_y_referencia/index.html",
+    "dist/presentaciones/modularidad_en_c/index.html",
+    "dist/presentaciones/variables_y_constantes",
+    "dist/presentaciones/tipos_de_datos_en_javascript",
+    "dist/presentaciones/paso_por_valor_y_referencia",
+    "dist/presentaciones/modularidad_en_c",
+    "dist/presentaciones/index.html",
     "dist/images/hero-workspace.jpg",
     "dist/favicon.svg",
+    "src/content/courses/git/logo.svg",
+    "src/content/courses/git/index.md",
+    "docs/Issue Crear estructura base para cursos en carpeta.md",
+    "node_modules/playwright-core/README.md",
+    "node_modules/playwright/README.md",
+    "node_modules/playwright-core/lib/server/chromium/appIcon.png",
+    "node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
+    "node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
+    "node_modules/playwright/lib/agents/playwright-test-planner.agent.md",
+    "node_modules/playwright/lib/agents/playwright-test-plan.prompt.md",
+    "node_modules/playwright/lib/agents/playwright-test-healer.agent.md",
+    "node_modules/playwright/lib/agents/playwright-test-heal.prompt.md",
+    "node_modules/playwright/lib/agents/playwright-test-generator.agent.md",
+    "node_modules/playwright/lib/agents/playwright-test-generate.prompt.md",
+    "node_modules/playwright/lib/agents/playwright-test-coverage.prompt.md",
+    "src/content/courses/c/16-archivos.md",
+    "src/content/courses/c/15-arboles-binarios.md",
+    "src/content/courses/c/14-listas-pilas-y-colas.md",
+    "src/content/courses/c/13-modularizacion.md",
+    "src/content/courses/c/12-estructuras.md",
+    "src/content/courses/c/11-funciones-y-recursividad.md",
+    "src/content/courses/c/10-busqueda-y-ordenamiento.md",
+    "src/content/courses/c/09-cadenas-de-caracteres.md",
+    "src/content/courses/c/08-arreglos.md",
+    "src/content/courses/c/07-sentencias-de-iteracion.md",
+    "src/content/courses/c/logo.svg",
     "src/content/courses/javascript/logo.svg",
     "src/content/courses/java/logo.svg",
-    "courses/JavaScript/logo.svg",
-    "courses/React/logo.svg",
-    "courses/Java/logo.svg"
+    "courses/JavaScript/logo.svg"
   ]
 }
