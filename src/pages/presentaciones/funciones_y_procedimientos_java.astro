@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import { getRelativePath } from '../../utils/paths';
+---
+
+<Layout title="Subprogramas: Funciones y Procedimientos en Java - Programierds">
+
+  <section class="section">
+    <div class="section-inner">
+      <Header />
+
+      <h1 class="intro-title">Subprogramas</h1>
+      <p class="anim-item" style="--delay:0ms;">En Java, los subprogramas son bloques de código reutilizables que realizan una tarea concreta. Se clasifican principalmente en funciones (devuelven un valor) y procedimientos (no devuelven valor, suelen declararse con <code>void</code>).</p>
+
+      <hr class="section-divider" />
+
+      <h2>1. Estructura básica</h2>
+      <p class="anim-item" style="--delay:100ms;">Sintaxis general de un método (subprograma) en Java:</p>
+      <div class="code-block">
+        <pre><code class="code-keyword">[modificador]</code> <span class="code-type">tipoDeRetorno</span> <span class="code-class">nombreMetodo</span>(<span class="code-type">Tipo</span> parametro1, <span class="code-type">Tipo</span> parametro2) {
+  // cuerpo del método
+  <span class="code-keyword">return</span> valor; <span class="code-comment">// sólo si tipoDeRetorno no es void</span>
+}</code></pre>
+      </div>
+
+      <h2>2. Procedimiento (método void)</h2>
+      <p class="anim-item" style="--delay:200ms;">Un procedimiento realiza acciones pero no devuelve un valor:</p>
+      <div class="code-block">
+        <pre><code class="code-keyword">public static void</code> imprimirMensaje(<span class="code-type">String</span> msg) {
+  System.out.println(msg);
+}
+
+// Uso
+public static void main(String[] args) {
+  imprimirMensaje("Hola desde un procedimiento");
+}
+</code></pre>
+      </div>
+
+      <h2>3. Función (método con retorno)</h2>
+      <p class="anim-item" style="--delay:300ms;">Una función realiza un cálculo y devuelve un resultado:</p>
+      <div class="code-block">
+        <pre><code class="code-keyword">public static int</code> sumar(<span class="code-type">int</span> a, <span class="code-type">int</span> b) {
+  <span class="code-keyword">return</span> a + b;
+}
+
+// Uso
+public static void main(String[] args) {
+  int r = sumar(3, 5); // r = 8
+  System.out.println("Suma: " + r);
+}
+</code></pre>
+      </div>
+
+      <h2>4. Parámetros y paso por valor</h2>
+      <p class="anim-item" style="--delay:400ms;">Java siempre usa "paso por valor". Para tipos primitivos se copia el valor; para objetos se copia la referencia (la referencia en sí se pasa por valor), por eso los métodos pueden modificar el estado interno de un objeto, pero no la referencia original del llamador.</p>
+
+      <div class="code-block">
+        <pre><code class="code-keyword">public static void</code> incrementar(<span class="code-type">int</span> n) {
+  n = n + 1; // solo modifica la copia local
+}
+
+public static void incrementarLista(<span class="code-type">List&lt;Integer&gt;</span> lista) {
+  lista.add(42); // modifica el objeto apuntado por la referencia
+}
+</code></pre>
+      </div>
+
+      <h2>5. Buenas prácticas</h2>
+      <ul class="anim-item" style="--delay:500ms;">
+        <li>Nombrar métodos con verbos descriptivos: <code>calcularTotal</code>, <code>imprimirReporte</code>.</li>
+        <li>Preferir métodos pequeños y con una sola responsabilidad.</li>
+        <li>Documentar parámetros y valores de retorno con Javadoc cuando sea público.</li>
+        <li>Usar tipos inmutables cuando no se desea que el método altere el estado del objeto.</li>
+      </ul>
+
+      <h2>6. Ejemplo completo</h2>
+      <div class="code-block">
+        <pre><code class="code-keyword">public class</code> EjemploSubprogramas {
+
+  <span class="code-keyword">public static void</span> imprimirBienvenida() {
+    System.out.println("Bienvenido a Programierds");
+  }
+
+  <span class="code-keyword">public static int</span> multiplicar(int x, int y) {
+    <span class="code-keyword">return</span> x * y;
+  }
+
+  <span class="code-keyword">public static void</span> main(String[] args) {
+    imprimirBienvenida();
+    int res = multiplicar(6, 7);
+    System.out.println("6 * 7 = " + res);
+  }
+}
+</code></pre>
+      </div>
+
+      <hr class="section-divider" />
+      <p class="anim-item" style="--delay:600ms;">Más recursos: consulta la presentación "Paso por Valor y Referencia" para ejemplos de memoria y llamadas entre subprogramas.</p>
+
+    </div>
+  </section>
+
+</Layout>

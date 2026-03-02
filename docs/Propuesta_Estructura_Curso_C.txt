@@ -1,0 +1,198 @@
+# Propuesta de Estructura de Curso de Programación en C
+
+## Visión General del Curso
+
+Basado en el contenido del PDF "Apunte de C para principiantes", propongo una estructura de curso de 16 unidades que cubre desde conceptos básicos hasta temas avanzados de programación en C.
+
+## Estructura Propuesta
+
+### Unidad 1: Introducción al Lenguaje C
+**Objetivo**: Entender los fundamentos del lenguaje C y la estructura básica de un programa.
+- Razones para estudiar C
+- Estructura de un programa en C
+- Directivas de preprocesador
+- Declaración de funciones
+- Función principal (main)
+- Definición de variables
+- Lógica del programa
+- Funciones auxiliares
+
+### Unidad 2: Tipos de Datos y Variables
+**Objetivo**: Dominar los tipos de datos primitivos y su uso en C.
+- Tipos primitivos: int, float, double, char
+- Dominio y tamaño de cada tipo
+- Operaciones básicas matemáticas
+- Operaciones relacionales y lógicas
+- Precedencia entre operadores
+
+### Unidad 3: Entrada y Salida de Datos
+**Objetivo**: Aprender a interactuar con el usuario mediante entrada y salida.
+- Funciones printf() y sus especificadores de formato
+- Funciones scanf() y fgets()
+- Caracteres especiales en printf()
+- Formato de datos en entrada y salida
+
+### Unidad 4: Estructuras de Control - Decisión
+**Objetivo**: Controlar el flujo del programa mediante decisiones.
+- Sentencia if
+- Sentencia if-else
+- Sentencias if-else anidadas
+- Sentencia switch
+- Ejemplos prácticos de cada estructura
+
+### Unidad 5: Estructuras de Control - Iteración
+**Objetivo**: Repetir acciones mediante estructuras de bucle.
+- Sentencia while
+- Sentencia for
+- Sentencia do-while
+- Comparación entre while y do-while
+- Ejemplos de uso práctico
+
+### Unidad 6: Arreglos
+**Objetivo**: Almacenar y manipular colecciones de datos.
+- Concepto de arreglos unidimensionales
+- Arreglos bidimensionales (matrices)
+- Recorrido y búsqueda en arreglos
+- Operaciones básicas con arreglos
+
+### Unidad 7: Cadenas de Caracteres
+**Objetivo**: Trabajar con texto en C.
+- Cadenas como arreglos de caracteres
+- Funciones de la biblioteca string.h
+- Operaciones con cadenas (copiar, comparar, concatenar)
+- Búsqueda binaria y ordenamiento
+
+### Unidad 8: Funciones
+**Objetivo**: Crear código modular y reutilizable.
+- Concepto de función
+- Tipos de retorno
+- Pasaje de parámetros por valor y referencia
+- Procedimientos (void)
+- Ejemplos prácticos
+
+### Unidad 9: Estructuras (Structs)
+**Objetivo**: Crear tipos de datos compuestos.
+- Definición de estructuras
+- Declaración y uso de structs
+- Acceso a miembros de estructuras
+- Ejemplos prácticos
+
+### Unidad 10: Recursividad
+**Objetivo**: Resolver problemas mediante funciones que se llaman a sí mismas.
+- Concepto de recursividad
+- Caso base y caso recursivo
+- Ejemplos: factorial, Fibonacci
+- Ventajas y cuidados con la recursividad
+
+### Unidad 11: Modularización
+**Objetivo**: Organizar el código en módulos separados.
+- Archivos .h (headers)
+- Archivos .c (implementación)
+- Compilación y enlazado
+- Buenas prácticas de modularización
+
+### Unidad 12: Estructuras Dinámicas - Listas
+**Objetivo**: Manejar estructuras de datos dinámicas.
+- Concepto de listas enlazadas
+- Nodos y punteros
+- Operaciones básicas con listas
+- Ventajas sobre arreglos
+
+### Unidad 13: Punteros
+**Objetivo**: Dominar el concepto fundamental de punteros.
+- Declaración y uso de punteros
+- Operadores * y &
+- Punteros y arrays
+- Punteros a funciones
+
+### Unidad 14: Manejo de Memoria
+**Objetivo**: Gestionar la memoria dinámicamente.
+- Función malloc()
+- Función free()
+- Gestión de memoria dinámica
+- Evitar fugas de memoria
+
+### Unidad 15: Archivos
+**Objetivo**: Leer y escribir archivos.
+- Archivos de texto
+- Archivos binarios
+- Operaciones de entrada/salida de archivos
+- Ejemplos prácticos
+
+### Unidad 16: Proyecto Final
+**Objetivo**: Aplicar todos los conceptos aprendidos en un proyecto completo.
+- Desarrollo de un proyecto integrador
+- Aplicación de módulos y estructuras
+- Manejo de errores y validación
+- Documentación y presentación
+
+## Estructura de Lecciones
+
+Cada unidad se puede dividir en 2-3 lecciones cortas:
+
+### Ejemplo: Unidad 1 - Introducción al Lenguaje C
+
+**Lección 1.1: Razones para Estudiar C**
+- Importancia del lenguaje C
+- Donde se utiliza C
+- Beneficios de aprender C
+
+**Lección 1.2: Estructura Básica de un Programa**
+- Componentes de un programa C
+- Ejemplo completo con comentarios
+- Compilación y ejecución
+
+**Lección 1.3: Directivas y Librerías**
+- #include y sus usos
+- Librerías estándar (stdio.h, math.h)
+- Ejemplos prácticos
+
+## Ejercicios Prácticos Sugeridos
+
+### Nivel Inicial (Unidades 1-3)
+- Programa "Hola Mundo"
+- Calculadora básica
+- Conversor de unidades
+
+### Nivel Intermedio (Unidades 4-7)
+- Juego de adivinar número
+- Gestor de contactos con estructuras
+- Operaciones con matrices
+
+### Nivel Avanzado (Unidades 8-16)
+- Sistema de gestión de memoria
+- Editor de texto básico
+- Juego completo (ej: ahorcado)
+
+## Proyectos Finales Sugeridos
+
+### Proyecto 1: Aplicación de Escritorio
+- Gestor de tareas
+- Agenda personal
+- Calculadora científica
+
+### Proyecto 2: Sistema de Base de Datos
+- Gestor de contactos con archivos
+- Sistema de inventario
+- Base de datos de estudiantes
+
+### Proyecto 3: Juego Completo
+- Tres en raya
+- Buscaminas
+- Ahorcado
+
+## Duración Estimada
+
+- **Total del curso**: 16 semanas (1 unidad por semana)
+- **Carga semanal**: 3-4 horas de estudio
+- **Proyectos finales**: 2-3 semanas adicionales
+
+## Metodología de Enseñanza
+
+1. **Teoría breve**: Conceptos clave de cada unidad
+2. **Ejemplo práctico**: Código comentado
+3. **Ejercicio guiado**: Paso a paso con ayuda
+4. **Ejercicio independiente**: Aplicación de lo aprendido
+5. **Proyecto integrador**: Cada unidad con un mini-proyecto
+
+Esta estructura permite un aprendizaje progresivo y práctico, ideal para principiantes en programación en C.

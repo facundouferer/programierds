@@ -38,6 +38,13 @@ import '@fontsource/fira-code/500.css';
 			border-right: 1px solid rgba(13, 242, 89, 0.05);
 		}
 	</style>
+	<style is:global>
+		#code-editor-container .cm-line.cm-step-highlight {
+			background-color: rgba(13, 242, 89, 0.15) !important;
+			border-left: 3px solid #0df259;
+			transition: background-color 0.2s ease;
+		}
+	</style>
 
 	<div class="relative flex h-screen flex-col overflow-hidden">
 		<Header />
@@ -62,6 +69,10 @@ import '@fontsource/fira-code/500.css';
 							<Icon name="code" class="w-4 h-4" />
 							C
 						</button>
+						<button data-lang="python" data-file="main.py" class="lang-option w-full flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-slate-300 hover:bg-primary/10 hover:text-primary transition-colors">
+							<Icon name="code" class="w-4 h-4" />
+							Python
+						</button>
 					</div>
 				</div>
 				<div class="h-4 w-px bg-primary/10"></div>
@@ -84,6 +95,10 @@ import '@fontsource/fira-code/500.css';
 					<Icon name="play_arrow" class="w-5 h-5" />
 					RUN
 				</button>
+				<button id="debug-btn" class="flex items-center gap-2 px-6 py-2 rounded-lg bg-accent-blue text-white font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)]">
+					<Icon name="bug_report" class="w-5 h-5" />
+					DEBUG
+				</button>
 			</div>
 		</div>
 
@@ -92,6 +107,19 @@ import '@fontsource/fira-code/500.css';
 			</div>
 
 			<div class="w-1/3 min-w-[350px] flex flex-col bg-terminal-bg">
+				<div id="step-controls" class="hidden px-4 py-2 border-b border-primary/10 flex items-center justify-between bg-accent-blue/10">
+					<div class="flex items-center gap-3">
+						<button id="step-reset-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500/20 border border-red-500/40 text-red-400 text-xs font-bold hover:bg-red-500/30 transition-colors">
+							<Icon name="sync" class="w-4 h-4" />
+							Reset
+						</button>
+						<button id="step-next-btn" class="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-primary/20 border border-primary/40 text-primary text-xs font-bold hover:bg-primary/30 transition-colors">
+							<Icon name="arrow_forward" class="w-4 h-4" />
+							Siguiente
+						</button>
+					</div>
+					<span id="step-counter" class="text-xs font-mono text-slate-400">Paso 0 / 0</span>
+				</div>
 				<div id="stdin-panel" class="hidden border-b border-primary/10">
 					<div class="px-4 py-2 border-b border-primary/5 flex items-center gap-2">
 						<Icon name="terminal" class="w-3 h-3 text-yellow-400" />
@@ -127,7 +155,7 @@ import '@fontsource/fira-code/500.css';
 				</div>
 				<div class="flex items-center gap-1">
 					<Icon name="sync" class="w-3 h-3" />
-					<span>In sync</span>
+					<a href="https://www.facundouferer.ar/" target="_blank" rel="noopener noreferrer" class="hover:text-primary transition-colors">desarrollado por Facundo Uferer</a>
 				</div>
 			</div>
 			<div class="flex items-center gap-4">
@@ -140,19 +168,40 @@ import '@fontsource/fira-code/500.css';
 
 	<script>
 		import { EditorView, basicSetup } from 'codemirror';
-		import { EditorState, Compartment } from '@codemirror/state';
+		import { EditorState, Compartment, StateEffect, StateField } from '@codemirror/state';
 		import { javascript } from '@codemirror/lang-javascript';
 		import { java } from '@codemirror/lang-java';
 		import { cpp } from '@codemirror/lang-cpp';
+		import { python } from '@codemirror/lang-python';
 		import { oneDark } from '@codemirror/theme-one-dark';
-		import { keymap } from '@codemirror/view';
+		import { keymap, Decoration } from '@codemirror/view';
 		import { indentWithTab } from '@codemirror/commands';
+
+		// Step mode: line highlight
+		const setHighlightLine = StateEffect.define<number | null>();
+		const highlightLineField = StateField.define({
+			create() { return Decoration.none; },
+			update(decorations, tr) {
+				for (const effect of tr.effects) {
+					if (effect.is(setHighlightLine)) {
+						if (effect.value === null) return Decoration.none;
+						const line = tr.state.doc.line(effect.value);
+						const deco = Decoration.line({ attributes: { class: 'cm-step-highlight' } });
+						return Decoration.set([deco.range(line.from)]);
+					}
+				}
+				return decorations;
+			},
+			provide: f => EditorView.decorations.from(f),
+		});
+		const editableCompartment = new Compartment();
 
 		const JUDGE0_URL = 'https://ce.judge0.com';
 		const LANG_IDS: Record<string, number> = {
 			javascript: 102,
 			java: 91,
 			c: 50,
+			python: 71,
 		};
 
 		const defaultCodes: Record<string, string> = {
@@ -198,7 +247,20 @@ int main() {
     }
     printf("Listo para romper cosas.\\n");
     return 0;
-}`
+}`,
+
+			python: `# Programierds Code Playground
+# Escribe tu código Python aquí y dale a RUN
+
+def hello_world():
+    msg = "Python desde el barro"
+    print(msg)
+    for i in range(5):
+        print(f"Iteración número: {i + 1}")
+    return "Listo para romper cosas."
+
+resultado = hello_world()
+print(resultado)`
 		};
 
 		let currentLang = 'javascript';
@@ -215,6 +277,8 @@ int main() {
 					keymap.of([indentWithTab]),
 					oneDark,
 					langCompartment.of(javascript()),
+					highlightLineField,
+					editableCompartment.of(EditorView.editable.of(true)),
 					EditorView.updateListener.of((update) => {
 						if (update.docChanged) {
 							onCodeChange();
@@ -240,6 +304,11 @@ int main() {
 		const fileNameEl = document.getElementById('file-name')!;
 		const footerLang = document.getElementById('footer-lang')!;
 		const footerPos = document.getElementById('footer-position')!;
+		const debugBtn = document.getElementById('debug-btn')!;
+		const stepControls = document.getElementById('step-controls')!;
+		const stepNextBtn = document.getElementById('step-next-btn')!;
+		const stepResetBtn = document.getElementById('step-reset-btn')!;
+		const stepCounter = document.getElementById('step-counter')!;
 
 		function getCode(): string {
 			return editorView.state.doc.toString();
@@ -278,6 +347,9 @@ int main() {
 			if (currentLang === 'c') {
 				return /scanf|fgets|getchar|gets/.test(code);
 			}
+			if (currentLang === 'python') {
+				return /input\(/.test(code);
+			}
 			return false;
 		}
 
@@ -312,6 +384,24 @@ int main() {
 			terminal.appendChild(cmdDiv);
 		}
 
+		function highlightLine(lineNumber: number | null) {
+			if (lineNumber === null) {
+				editorView.dispatch({ effects: setHighlightLine.of(null) });
+				return;
+			}
+			const line = editorView.state.doc.line(lineNumber);
+			editorView.dispatch({
+				effects: [
+					setHighlightLine.of(lineNumber),
+					EditorView.scrollIntoView(line.from, { y: 'center' }),
+				]
+			});
+		}
+
+		function setEditorEditable(editable: boolean) {
+			editorView.dispatch({ effects: editableCompartment.reconfigure(EditorView.editable.of(editable)) });
+		}
+
 		function extractJavaClassName(code: string): string {
 			const match = code.match(/public\s+class\s+(\w+)/);
 			return match ? match[1] : 'Main';
@@ -324,7 +414,13 @@ int main() {
 			return prepared;
 		}
 
-		async function runJavaScript(code: string) {
+		interface JSCaptureResult {
+			outputs: string[];
+			error: string | null;
+			returnValue: unknown;
+		}
+
+		async function captureJavaScript(code: string): Promise<JSCaptureResult> {
 			const logs: string[] = [];
 			const originalLog = console.log;
 			const originalError = console.error;
@@ -347,10 +443,16 @@ int main() {
 				console.warn = originalWarn;
 			}
 
+			return { outputs: logs, error, returnValue: result };
+		}
+
+		async function runJavaScript(code: string) {
+			const { outputs, error, returnValue } = await captureJavaScript(code);
+
 			setTerminalContent('');
 			showCommand('node main.js');
 
-			for (const line of logs) {
+			for (const line of outputs) {
 				if (line.startsWith('[ERROR]')) {
 					appendTerminalLine(line, 'text-red-400');
 				} else if (line.startsWith('[WARN]')) {
@@ -362,8 +464,8 @@ int main() {
 
 			if (error) {
 				appendTerminalLine(error, 'text-red-400 font-medium');
-			} else if (result !== undefined) {
-				appendTerminalLine(JSON.stringify(result), 'text-accent-blue mt-1');
+			} else if (returnValue !== undefined) {
+				appendTerminalLine(JSON.stringify(returnValue), 'text-accent-blue mt-1');
 			}
 
 			showPrompt();
@@ -372,97 +474,114 @@ int main() {
 		function getRunCommand(lang: string, className: string): string {
 			if (lang === 'java') return `javac ${className}.java && java ${className}`;
 			if (lang === 'c') return 'gcc main.c -o main && ./main';
+			if (lang === 'python') return 'python3 main.py';
 			return 'node main.js';
 		}
 
-		async function runWithJudge0(code: string, lang: string) {
+		interface Judge0Result {
+			stdout: string;
+			stderr: string;
+			compileOutput: string;
+			statusId: number;
+			statusDesc: string;
+			time: string | null;
+		}
+
+		function prepareSourceCode(code: string, lang: string): string {
+			if (lang === 'java') return prepareJavaCode(code);
+			return code;
+		}
+
+		async function captureJudge0(code: string, lang: string): Promise<Judge0Result> {
 			const langId = LANG_IDS[lang];
-			const isJava = lang === 'java';
-			const isCompiled = lang === 'java' || lang === 'c';
+			const sourceCode = prepareSourceCode(code, lang);
 
-			let sourceCode = code;
-			let className = 'Main';
-
-			if (isJava) {
-				className = extractJavaClassName(code);
-				sourceCode = prepareJavaCode(code);
+			const stdinValue = stdinInput.value.trim();
+			const body: Record<string, unknown> = {
+				language_id: langId,
+				source_code: btoa(Array.from(new TextEncoder().encode(sourceCode), b => String.fromCharCode(b)).join('')),
+			};
+			if (stdinValue) {
+				body.stdin = btoa(Array.from(new TextEncoder().encode(stdinValue), b => String.fromCharCode(b)).join(''));
 			}
 
+			const submitRes = await fetch(`${JUDGE0_URL}/submissions?base64_encoded=true&wait=true`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body)
+			});
+
+			if (!submitRes.ok) {
+				throw new Error(`HTTP ${submitRes.status}: ${submitRes.statusText}`);
+			}
+
+			let data = await submitRes.json();
+
+			while (data.status && (data.status.id === 1 || data.status.id === 2)) {
+				await new Promise(r => setTimeout(r, 1000));
+				const pollRes = await fetch(`${JUDGE0_URL}/submissions/${data.token}?base64_encoded=true`);
+				data = await pollRes.json();
+			}
+
+			const decode = (b64: string | null) => {
+				if (!b64) return '';
+				try {
+					return new TextDecoder().decode(Uint8Array.from(atob(b64), c => c.charCodeAt(0)));
+				} catch {
+					return atob(b64);
+				}
+			};
+
+			return {
+				stdout: decode(data.stdout),
+				stderr: decode(data.stderr),
+				compileOutput: decode(data.compile_output),
+				statusId: data.status?.id ?? 0,
+				statusDesc: data.status?.description ?? '',
+				time: data.time ?? null,
+			};
+		}
+
+		async function runWithJudge0(code: string, lang: string) {
+			const isCompiled = lang === 'java' || lang === 'c';
+			const className = lang === 'java' ? extractJavaClassName(code) : 'Main';
 			const runCmd = getRunCommand(lang, className);
+
 			setTerminalContent('');
 			showCommand(runCmd);
 			appendTerminalLine(isCompiled ? 'Compilando y ejecutando...' : 'Ejecutando...', 'text-yellow-400 animate-pulse');
 
 			try {
-				const stdinValue = stdinInput.value.trim();
-				const body: Record<string, unknown> = {
-					language_id: langId,
-					source_code: btoa(Array.from(new TextEncoder().encode(sourceCode), b => String.fromCharCode(b)).join('')),
-				};
-				if (stdinValue) {
-					body.stdin = btoa(Array.from(new TextEncoder().encode(stdinValue), b => String.fromCharCode(b)).join(''));
-				}
-
-				const submitRes = await fetch(`${JUDGE0_URL}/submissions?base64_encoded=true&wait=true`, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body)
-				});
-
-				if (!submitRes.ok) {
-					throw new Error(`HTTP ${submitRes.status}: ${submitRes.statusText}`);
-				}
-
-				let data = await submitRes.json();
-
-				while (data.status && (data.status.id === 1 || data.status.id === 2)) {
-					await new Promise(r => setTimeout(r, 1000));
-					const pollRes = await fetch(`${JUDGE0_URL}/submissions/${data.token}?base64_encoded=true`);
-					data = await pollRes.json();
-				}
-
-					const decode = (b64: string | null) => {
-						if (!b64) return '';
-						try {
-							return new TextDecoder().decode(Uint8Array.from(atob(b64), c => c.charCodeAt(0)));
-						} catch {
-							return atob(b64);
-						}
-					};
-
-				const stdout = decode(data.stdout);
-				const stderr = decode(data.stderr);
-				const compileOutput = decode(data.compile_output);
-				const statusDesc = data.status?.description ?? '';
+				const result = await captureJudge0(code, lang);
 
 				setTerminalContent('');
 				showCommand(runCmd);
 
-				if (compileOutput && data.status?.id !== 3) {
+				if (result.compileOutput && result.statusId !== 3) {
 					appendTerminalLine('Error de compilación:', 'text-red-400 font-medium mt-1');
-					for (const line of compileOutput.split('\n')) {
+					for (const line of result.compileOutput.split('\n')) {
 						if (line.trim()) appendTerminalLine(line, 'text-red-400');
 					}
 				}
 
-				if (stdout) {
-					for (const line of stdout.split('\n')) {
+				if (result.stdout) {
+					for (const line of result.stdout.split('\n')) {
 						if (line !== '') appendTerminalLine(line, 'text-slate-300');
 					}
 				}
 
-				if (stderr) {
-					for (const line of stderr.split('\n')) {
+				if (result.stderr) {
+					for (const line of result.stderr.split('\n')) {
 						if (line.trim()) appendTerminalLine(line, 'text-red-400');
 					}
 				}
 
-				if (data.status?.id !== 3) {
-					appendTerminalLine(`[${statusDesc}]`, 'text-yellow-400 mt-1');
+				if (result.statusId !== 3) {
+					appendTerminalLine(`[${result.statusDesc}]`, 'text-yellow-400 mt-1');
 				}
 
-				if (data.time) {
-					appendTerminalLine(`Tiempo: ${data.time}s`, 'text-slate-600 mt-1');
+				if (result.time) {
+					appendTerminalLine(`Tiempo: ${result.time}s`, 'text-slate-600 mt-1');
 				}
 
 			} catch (e) {
@@ -475,9 +594,152 @@ int main() {
 			showPrompt();
 		}
 
+		// ── Step Mode Logic ──
+
+		interface StepInfo {
+			lineNumber: number;
+			outputLines: string[];
+		}
+
+		let stepMode = false;
+		let stepData: StepInfo[] = [];
+		let stepIndex = -1;
+
+		function getOutputPatterns(lang: string): string[] {
+			switch (lang) {
+				case 'javascript': return ['console.log', 'console.error', 'console.warn'];
+				case 'java': return ['System.out.println', 'System.out.print', 'System.err'];
+				case 'c': return ['printf', 'puts', 'fprintf'];
+				case 'python': return ['print('];
+				default: return [];
+			}
+		}
+
+		function isSkippableLine(trimmed: string, lang: string): boolean {
+			if (trimmed === '') return true;
+			if (trimmed.startsWith('//') || trimmed.startsWith('#') || trimmed.startsWith('/*') || trimmed.startsWith('*')) return true;
+			if (trimmed === '{' || trimmed === '}' || trimmed === '};') return true;
+			if (trimmed.startsWith('import ') || trimmed.startsWith('#include')) return true;
+			if (lang === 'java' && /^(public\s+class|package\s)/.test(trimmed)) return true;
+			if (lang === 'c' && trimmed === 'return 0;') return true;
+			return false;
+		}
+
+		function isLineInLoop(lineIdx: number, lines: string[], lang: string): boolean {
+			if (['javascript', 'java', 'c'].includes(lang)) {
+				let depth = 0;
+				for (let i = lineIdx - 1; i >= 0; i--) {
+					const trimmed = lines[i].trim();
+					const closeBraces = (trimmed.match(/\}/g) || []).length;
+					const openBraces = (trimmed.match(/\{/g) || []).length;
+					depth += closeBraces - openBraces;
+					if (depth < 0 && /^\s*(for|while|do)\b/.test(lines[i])) {
+						return true;
+					}
+				}
+			}
+			if (lang === 'python') {
+				const indent = lines[lineIdx].match(/^(\s*)/)?.[1].length ?? 0;
+				for (let i = lineIdx - 1; i >= 0; i--) {
+					const prevIndent = lines[i].match(/^(\s*)/)?.[1].length ?? 0;
+					if (prevIndent < indent && /^\s*(for|while)\b/.test(lines[i])) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		function buildStepMap(sourceCode: string, outputLines: string[], lang: string): StepInfo[] {
+			const lines = sourceCode.split('\n');
+			const steps: StepInfo[] = [];
+			const patterns = getOutputPatterns(lang);
+
+			// First pass: identify output-producing lines and loop status
+			interface SourceLine { lineNumber: number; isOutput: boolean; inLoop: boolean; }
+			const sourceLines: SourceLine[] = [];
+
+			for (let i = 0; i < lines.length; i++) {
+				const trimmed = lines[i].trim();
+				if (isSkippableLine(trimmed, lang)) continue;
+				const isOutput = patterns.some(p => trimmed.includes(p));
+				const inLoop = isOutput ? isLineInLoop(i, lines, lang) : false;
+				sourceLines.push({ lineNumber: i + 1, isOutput, inLoop });
+			}
+
+			// Calculate how many outputs each line gets
+			const outputProducing = sourceLines.filter(l => l.isOutput);
+			const nonLoopOutputLines = outputProducing.filter(l => !l.inLoop);
+			const loopOutputLines = outputProducing.filter(l => l.inLoop);
+			const loopOutputCount = Math.max(0, outputLines.length - nonLoopOutputLines.length);
+
+			// Map: lineNumber -> how many outputs it produces
+			const outputCounts = new Map<number, number>();
+			for (const line of nonLoopOutputLines) {
+				outputCounts.set(line.lineNumber, 1);
+			}
+			if (loopOutputLines.length > 0) {
+				const perLoopLine = Math.floor(loopOutputCount / loopOutputLines.length);
+				let remainder = loopOutputCount % loopOutputLines.length;
+				for (const line of loopOutputLines) {
+					const count = perLoopLine + (remainder > 0 ? 1 : 0);
+					if (remainder > 0) remainder--;
+					outputCounts.set(line.lineNumber, count);
+				}
+			}
+
+			// Build steps: non-output lines get 1 step, output lines get N steps (one per output)
+			let outIdx = 0;
+			for (const src of sourceLines) {
+				if (!src.isOutput) {
+					steps.push({ lineNumber: src.lineNumber, outputLines: [] });
+				} else {
+					const count = outputCounts.get(src.lineNumber) ?? 1;
+					for (let j = 0; j < count; j++) {
+						const output = outIdx < outputLines.length ? [outputLines[outIdx++]] : [];
+						steps.push({ lineNumber: src.lineNumber, outputLines: output });
+					}
+				}
+			}
+
+			return steps;
+		}
+
+		function disableButtons() {
+			runBtn.classList.add('opacity-50', 'pointer-events-none');
+			debugBtn.classList.add('opacity-50', 'pointer-events-none');
+		}
+
+		function enableButtons() {
+			runBtn.classList.remove('opacity-50', 'pointer-events-none');
+			debugBtn.classList.remove('opacity-50', 'pointer-events-none');
+		}
+
+		function showStepControls() {
+			stepControls.classList.remove('hidden');
+		}
+
+		function hideStepControls() {
+			stepControls.classList.add('hidden');
+		}
+
+		function exitStepMode() {
+			stepMode = false;
+			stepIndex = -1;
+			stepData = [];
+			highlightLine(null);
+			setEditorEditable(true);
+			hideStepControls();
+			enableButtons();
+			setTerminalContent('<div class="text-slate-500 italic text-xs">// Esperando ejecución...</div>');
+		}
+
+		// ── Event Handlers ──
+
 		// RUN button
 		runBtn.addEventListener('click', async () => {
-			runBtn.classList.add('opacity-50', 'pointer-events-none');
+			if (stepMode) return;
+			disableButtons();
 			runBtn.innerHTML = `<span class="inline-block w-4 h-4 border-2 border-background-dark border-t-transparent rounded-full animate-spin"></span> RUN`;
 
 			const code = getCode();
@@ -487,11 +749,119 @@ int main() {
 				await runWithJudge0(code, currentLang);
 			}
 
-			runBtn.classList.remove('opacity-50', 'pointer-events-none');
+			enableButtons();
 			runBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M8 5v14l11-7z"/></svg> RUN`;
 		});
 
+		// DEBUG button
+		debugBtn.addEventListener('click', async () => {
+			if (stepMode) return;
+			disableButtons();
+			debugBtn.innerHTML = `<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span> DEBUG`;
+
+			const code = getCode();
+			const className = currentLang === 'java' ? extractJavaClassName(code) : 'Main';
+			const runCmd = getRunCommand(currentLang, className);
+			let outputLines: string[] = [];
+			let hasError = false;
+
+			setTerminalContent('');
+			showCommand(runCmd);
+			appendTerminalLine('Ejecutando código...', 'text-yellow-400 animate-pulse');
+
+			try {
+				if (currentLang === 'javascript') {
+					const result = await captureJavaScript(code);
+					outputLines = result.outputs;
+					if (result.error) {
+						setTerminalContent('');
+						showCommand(runCmd);
+						appendTerminalLine(result.error, 'text-red-400 font-medium');
+						showPrompt();
+						hasError = true;
+					}
+				} else {
+					const result = await captureJudge0(code, currentLang);
+					if (result.statusId !== 3) {
+						setTerminalContent('');
+						showCommand(runCmd);
+						if (result.compileOutput) {
+							appendTerminalLine('Error de compilación:', 'text-red-400 font-medium mt-1');
+							for (const line of result.compileOutput.split('\n')) {
+								if (line.trim()) appendTerminalLine(line, 'text-red-400');
+							}
+						}
+						if (result.stderr) {
+							for (const line of result.stderr.split('\n')) {
+								if (line.trim()) appendTerminalLine(line, 'text-red-400');
+							}
+						}
+						appendTerminalLine(`[${result.statusDesc}]`, 'text-yellow-400 mt-1');
+						showPrompt();
+						hasError = true;
+					} else {
+						outputLines = result.stdout.split('\n').filter(l => l !== '');
+					}
+				}
+			} catch (e) {
+				setTerminalContent('');
+				showCommand(runCmd);
+				appendTerminalLine('Error de conexión con el servidor:', 'text-red-400 font-medium');
+				appendTerminalLine(e instanceof Error ? e.message : String(e), 'text-red-400');
+				showPrompt();
+				hasError = true;
+			}
+
+			debugBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M20 8h-2.81a5.985 5.985 0 0 0-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/></svg> DEBUG`;
+
+			if (hasError) {
+				enableButtons();
+				return;
+			}
+
+			// Enter step mode
+			stepData = buildStepMap(code, outputLines, currentLang);
+			stepMode = true;
+			stepIndex = -1;
+			setEditorEditable(false);
+			showStepControls();
+			stepCounter.textContent = `Paso 0 / ${stepData.length}`;
+
+			setTerminalContent('');
+			showCommand(runCmd);
+			appendTerminalLine('Modo paso a paso. Presioná "Siguiente" para avanzar.', 'text-accent-blue');
+		});
+
+		// Step Next
+		stepNextBtn.addEventListener('click', () => {
+			if (!stepMode) return;
+
+			if (stepIndex >= stepData.length - 1) {
+				appendTerminalLine('', 'text-slate-600');
+				appendTerminalLine('--- Ejecución completada ---', 'text-primary font-medium');
+				showPrompt();
+				highlightLine(null);
+				stepCounter.textContent = `Completado`;
+				return;
+			}
+
+			stepIndex++;
+			const step = stepData[stepIndex];
+			highlightLine(step.lineNumber);
+			stepCounter.textContent = `Paso ${stepIndex + 1} / ${stepData.length}`;
+
+			for (const outputLine of step.outputLines) {
+				appendTerminalLine(outputLine, 'text-slate-300');
+			}
+		});
+
+		// Step Reset
+		stepResetBtn.addEventListener('click', () => {
+			exitStepMode();
+		});
+
 		clearBtn.addEventListener('click', () => {
+			if (stepMode) return;
 			setTerminalContent('<div class="text-slate-500 italic text-xs">// Esperando ejecución...</div>');
 		});
 
@@ -500,10 +870,12 @@ int main() {
 
 		document.querySelectorAll('.lang-option').forEach((option) => {
 			option.addEventListener('click', () => {
+				if (stepMode) exitStepMode();
+
 				const lang = option.getAttribute('data-lang') ?? 'javascript';
 				const file = option.getAttribute('data-file') ?? 'main.js';
-				const labels: Record<string, string> = { javascript: 'JavaScript', java: 'Java', c: 'C' };
-			const label = labels[lang] ?? lang;
+				const labels: Record<string, string> = { javascript: 'JavaScript', java: 'Java', c: 'C', python: 'Python' };
+				const label = labels[lang] ?? lang;
 
 				currentLang = lang;
 				langLabel.textContent = label;
@@ -512,7 +884,9 @@ int main() {
 
 				// Cambiar lenguaje de CodeMirror
 				editorView.dispatch({
-					effects: langCompartment.reconfigure(lang === 'java' ? java() : lang === 'c' ? cpp() : javascript())
+					effects: langCompartment.reconfigure(
+						lang === 'java' ? java() : lang === 'c' ? cpp() : lang === 'python' ? python() : javascript()
+					)
 				});
 				setCode(defaultCodes[lang]);
 				stdinInput.value = '';

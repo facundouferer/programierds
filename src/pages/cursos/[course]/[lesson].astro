@@ -26,6 +26,7 @@ export async function getStaticPaths() {
 				props: {
 					course,
 					chapter,
+					chapters,
 					prev: chapters[i - 1] ?? null,
 					next: chapters[i + 1] ?? null,
 					currentIndex: i,
@@ -39,7 +40,7 @@ export async function getStaticPaths() {
 	return paths;
 }
 
-const { course, chapter, prev, next, currentIndex, totalChapters, courseSlug } = Astro.props;
+const { course, chapter, chapters, prev, next, currentIndex, totalChapters, courseSlug } = Astro.props;
 const { Content } = await render(chapter);
 
 const prevSlug = prev ? prev.id.replace(courseSlug + '/', '') : null;
@@ -50,49 +51,89 @@ const nextSlug = next ? next.id.replace(courseSlug + '/', '') : null;
 	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
 		<Header />
 
-		<main class="flex-1 px-4 lg:px-20 py-12">
-			<div class="mx-auto max-w-4xl">
-				<a href={getRelativePath(`/cursos/${courseSlug}`)} class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8">
-					<Icon name="arrow_back" class="w-4 h-4" />
-					<span class="text-sm font-medium">Volver a {course.data.technology}</span>
-				</a>
-
-				<div class="mb-8">
-					<span class="text-sm text-slate-500">Lección {currentIndex + 1} de {totalChapters}</span>
+		<main class="flex-1 flex">
+			<!-- Sidebar -->
+			<aside class="hidden lg:flex flex-col w-72 shrink-0 border-r border-primary/10 bg-background-dark/50">
+				<div class="sticky top-0 flex flex-col h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar">
+					<div class="p-4 border-b border-primary/10">
+						<a href={getRelativePath(`/cursos/${courseSlug}`)} class="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors">
+							<Icon name="arrow_back" class="w-4 h-4" />
+							<span class="text-xs font-bold uppercase tracking-widest">{course.data.technology}</span>
+						</a>
+					</div>
+					<nav class="flex flex-col py-2">
+						{chapters.map((ch, index) => {
+							const slug = ch.id.replace(courseSlug + '/', '');
+							const isActive = index === currentIndex;
+							return (
+								<a
+									href={getRelativePath(`/cursos/${courseSlug}/${slug}`)}
+									class:list={[
+										'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+										isActive
+											? 'bg-primary/10 text-primary font-bold border-r-2 border-primary'
+											: 'text-slate-400 hover:bg-primary/5 hover:text-slate-200',
+									]}
+								>
+									<span class:list={[
+										'flex size-6 shrink-0 items-center justify-center rounded text-xs font-bold',
+										isActive ? 'bg-primary/20 text-primary' : 'bg-white/5 text-slate-500',
+									]}>
+										{String(index + 1).padStart(2, '0')}
+									</span>
+									<span class="truncate">{ch.data.title}</span>
+								</a>
+							);
+						})}
+					</nav>
 				</div>
+			</aside>
 
-				<article class="lesson-content prose prose-invert prose-lg max-w-none">
-					<Content />
-				</article>
+			<!-- Content -->
+			<div class="flex-1 px-4 lg:px-16 py-12">
+				<div class="mx-auto max-w-4xl">
+					<a href={getRelativePath(`/cursos/${courseSlug}`)} class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8 lg:hidden">
+						<Icon name="arrow_back" class="w-4 h-4" />
+						<span class="text-sm font-medium">Volver a {course.data.technology}</span>
+					</a>
 
-				<nav class="flex items-center justify-between mt-16 pt-8 border-t border-primary/10">
-					{prev ? (
-						<a href={getRelativePath(`/cursos/${courseSlug}/${prevSlug}`)} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors">
-							<Icon name="arrow_back" class="w-5 h-5" />
-							<div class="text-left">
-								<span class="text-xs uppercase tracking-widest block">Anterior</span>
-								<span class="font-medium text-slate-900 dark:text-white">{prev.data.title}</span>
-							</div>
-						</a>
-					) : <div />}
-					{next ? (
-						<a href={getRelativePath(`/cursos/${courseSlug}/${nextSlug}`)} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors ml-auto">
-							<div class="text-right">
-								<span class="text-xs uppercase tracking-widest block">Siguiente</span>
-								<span class="font-medium text-slate-900 dark:text-white">{next.data.title}</span>
-							</div>
-							<Icon name="arrow_forward" class="w-5 h-5" />
-						</a>
-					) : (
-						<a href={getRelativePath(`/cursos/${courseSlug}`)} class="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors ml-auto">
-							<div class="text-right">
-								<span class="text-xs uppercase tracking-widest block">Fin del curso</span>
-								<span class="font-bold">Volver al índice</span>
-							</div>
-							<Icon name="arrow_forward" class="w-5 h-5" />
-						</a>
-					)}
-				</nav>
+					<div class="mb-8">
+						<span class="text-sm text-slate-500">Lección {currentIndex + 1} de {totalChapters}</span>
+					</div>
+
+					<article class="lesson-content prose prose-invert prose-lg max-w-none">
+						<Content />
+					</article>
+
+					<nav class="flex items-center justify-between mt-16 pt-8 border-t border-primary/10">
+						{prev ? (
+							<a href={getRelativePath(`/cursos/${courseSlug}/${prevSlug}`)} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors">
+								<Icon name="arrow_back" class="w-5 h-5" />
+								<div class="text-left">
+									<span class="text-xs uppercase tracking-widest block">Anterior</span>
+									<span class="font-medium text-slate-900 dark:text-white">{prev.data.title}</span>
+								</div>
+							</a>
+						) : <div />}
+						{next ? (
+							<a href={getRelativePath(`/cursos/${courseSlug}/${nextSlug}`)} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors ml-auto">
+								<div class="text-right">
+									<span class="text-xs uppercase tracking-widest block">Siguiente</span>
+									<span class="font-medium text-slate-900 dark:text-white">{next.data.title}</span>
+								</div>
+								<Icon name="arrow_forward" class="w-5 h-5" />
+							</a>
+						) : (
+							<a href={getRelativePath(`/cursos/${courseSlug}`)} class="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors ml-auto">
+								<div class="text-right">
+									<span class="text-xs uppercase tracking-widest block">Fin del curso</span>
+									<span class="font-bold">Volver al índice</span>
+								</div>
+								<Icon name="arrow_forward" class="w-5 h-5" />
+							</a>
+						)}
+					</nav>
+				</div>
 			</div>
 		</main>
 

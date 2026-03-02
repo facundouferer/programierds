@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lecciones - Programierds | Terminal Edition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df259",
+                        "background-dark": "#0a2e0a",
+                        "terminal-header": "#0d360d",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Space Mono", "monospace"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-display bg-[#0a2e0a] text-slate-100;
+                position: relative;
+            }
+        }body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: radial-gradient(rgba(18, 16, 16, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
+            z-index: 101;
+            pointer-events: none;
+        }
+        .terminal-shadow {
+            box-shadow: 0 0 15px rgba(13, 242, 89, 0.1);
+        }
+        .glow-card {
+            box-shadow: 0 0 20px rgba(13, 242, 89, 0.05), inset 0 0 10px rgba(13, 242, 89, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glow-card:hover {
+            box-shadow: 0 0 30px rgba(13, 242, 89, 0.25), inset 0 0 15px rgba(13, 242, 89, 0.1);
+            transform: translateY(-2px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a2e0a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #0df25933;
+            border-radius: 10px;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: #0df259;
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-[#0a2e0a]">
+<div class="relative flex min-h-screen flex-col bg-[#0a2e0a]/40">
+<header class="sticky top-0 z-50 w-full border-b border-primary/20 bg-[#0a2e0a]/90 backdrop-blur-md px-4 lg:px-20 py-4">
+<div class="mx-auto flex max-w-[1400px] items-center justify-between">
+<a class="flex items-center gap-2 group" href="/">
+<span class="text-3xl transition-transform group-hover:rotate-12">💩</span>
+<h2 class="text-white text-2xl font-bold tracking-tight font-mono">programierds<span class="text-primary">_</span></h2>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary transition-colors text-sm font-bold border-b-2 border-primary py-1" href="#">Lecciones</a>
+<a class="text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="#">Documentación</a>
+<a class="text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="#">Debug-Room</a>
+<a class="text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-mono text-primary uppercase tracking-widest leading-none">System Online</span>
+</div>
+<div class="size-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30 hover:bg-primary/30 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary">terminal</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col lg:flex-row max-w-[1400px] mx-auto w-full relative z-10">
+<aside class="w-full lg:w-72 border-r border-primary/10 p-8 custom-scrollbar overflow-y-auto bg-[#0a2e0a]/50">
+<div class="sticky top-24 space-y-12">
+<div>
+<h3 class="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-primary/60 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">folder_open</span>
+                        DIRECTORIOS
+                    </h3>
+<ul class="space-y-2 font-mono text-sm">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md bg-primary/10 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                ~/all_lessons
+                            </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:text-primary hover:bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                ~/basics
+                            </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:text-primary hover:bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                ~/advanced_shit
+                            </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:text-primary hover:bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                ~/bugs_and_cries
+                            </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-md text-slate-400 hover:text-primary hover:bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                ~/deployment_hell
+                            </a>
+</li>
+</ul>
+</div>
+<div class="pt-6 border-t border-primary/10">
+<div class="bg-black/30 p-5 rounded border border-primary/10 font-mono backdrop-blur-sm">
+<p class="text-[10px] text-primary/40 leading-tight mb-3"># STATUS_REPORT</p>
+<p class="text-xs text-slate-300 italic leading-relaxed">
+                            "Si el código funciona a la primera, sospecha de tu realidad."
+                        </p>
+<div class="mt-4 flex items-center gap-2">
+<div class="h-1 w-full bg-primary/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary/40 w-[65%] shadow-[0_0_5px_rgba(13,242,89,0.5)]"></div>
+</div>
+<span class="text-[9px] text-primary/40">65%</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<section class="flex-1 p-8 lg:p-12 bg-transparent">
+<header class="mb-12">
+<div class="flex items-center gap-3 text-primary font-mono text-sm mb-4">
+<span class="opacity-50">root@programierds:</span>
+<span class="bg-primary/20 px-2 py-0.5 rounded">./ls lessons --all</span>
+</div>
+<h1 class="text-4xl lg:text-5xl font-black text-white mb-4 drop-shadow-[0_0_10px_rgba(13,242,89,0.3)]">Módulos de Aprendizaje</h1>
+<p class="text-slate-300 text-lg max-w-2xl font-mono">Mostrando 24 lecciones disponibles en el repositorio local. <span class="terminal-cursor"></span></p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<div class="group flex flex-col bg-[#0d1c0d] border border-primary/30 rounded-lg overflow-hidden glow-card">
+<div class="bg-terminal-header px-4 py-2 flex items-center justify-between border-b border-primary/20">
+<div class="flex items-center gap-1.5">
+<div class="size-2.5 rounded-full bg-red-500/50 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-yellow-500/50 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-green-500/50 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+</div>
+<span class="font-mono text-[10px] text-primary/60 tracking-wider">lesson_01.sh</span>
+</div>
+<div class="p-6 flex flex-col h-full">
+<div class="mb-4">
+<span class="font-mono text-[10px] uppercase text-primary/80 bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Fundamentals</span>
+</div>
+<h3 class="font-mono text-lg font-bold text-white mb-4 group-hover:text-primary transition-colors">Variables y Tipos de Mierda</h3>
+<p class="text-sm text-slate-300 font-mono leading-relaxed flex-1">
+                            Aprende por qué String + Number te da un dolor de cabeza y cómo declarar constantes que no lo son tanto.
+                        </p>
+<div class="mt-6 flex items-center justify-between border-t border-primary/10 pt-4">
+<span class="font-mono text-[10px] text-slate-500 tracking-tighter">TIME: 12:45m</span>
+<a class="font-mono text-xs font-bold text-primary flex items-center gap-1 hover:translate-x-1 transition-transform" href="#">
+                                [ EXECUTE ]
+                            </a>
+</div>
+</div>
+</div>
+<div class="group flex flex-col bg-[#0d1c0d] border border-primary/30 rounded-lg overflow-hidden glow-card">
+<div class="bg-terminal-header px-4 py-2 flex items-center justify-between border-b border-primary/20">
+<div class="flex items-center gap-1.5">
+<div class="size-2.5 rounded-full bg-red-500/50 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-yellow-500/50 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-green-500/50 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+</div>
+<span class="font-mono text-[10px] text-primary/60 tracking-wider">git_chaos.log</span>
+</div>
+<div class="p-6 flex flex-col h-full">
+<div class="mb-4">
+<span class="font-mono text-[10px] uppercase text-accent-blue bg-accent-blue/10 px-2 py-0.5 rounded border border-accent-blue/20">Workflow</span>
+</div>
+<h3 class="font-mono text-lg font-bold text-white mb-4 group-hover:text-primary transition-colors">Git: Push and Pray</h3>
+<p class="text-sm text-slate-300 font-mono leading-relaxed flex-1">
+                            Cómo borrar el historial de commits antes de que tu jefe vea que estuviste despierto a las 4 AM haciendo guarradas.
+                        </p>
+<div class="mt-6 flex items-center justify-between border-t border-primary/10 pt-4">
+<span class="font-mono text-[10px] text-slate-500 tracking-tighter">TIME: 24:10m</span>
+<a class="font-mono text-xs font-bold text-primary flex items-center gap-1 hover:translate-x-1 transition-transform" href="#">
+                                [ EXECUTE ]
+                            </a>
+</div>
+</div>
+</div>
+<div class="group flex flex-col bg-[#0d1c0d] border border-primary/30 rounded-lg overflow-hidden glow-card">
+<div class="bg-terminal-header px-4 py-2 flex items-center justify-between border-b border-primary/20">
+<div class="flex items-center gap-1.5">
+<div class="size-2.5 rounded-full bg-red-500/50 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-yellow-500/50 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-green-500/50 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+</div>
+<span class="font-mono text-[10px] text-primary/60 tracking-wider">dom_manipulation.js</span>
+</div>
+<div class="p-6 flex flex-col h-full">
+<div class="mb-4">
+<span class="font-mono text-[10px] uppercase text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/20">Frontend</span>
+</div>
+<h3 class="font-mono text-lg font-bold text-white mb-4 group-hover:text-primary transition-colors">El DOM no es tu amigo</h3>
+<p class="text-sm text-slate-300 font-mono leading-relaxed flex-1">
+                            Seleccionar elementos sin volverse loco con querySelectorAll y por qué el z-index 99999999 es tu última esperanza.
+                        </p>
+<div class="mt-6 flex items-center justify-between border-t border-primary/10 pt-4">
+<span class="font-mono text-[10px] text-slate-500 tracking-tighter">TIME: 18:30m</span>
+<a class="font-mono text-xs font-bold text-primary flex items-center gap-1 hover:translate-x-1 transition-transform" href="#">
+                                [ EXECUTE ]
+                            </a>
+</div>
+</div>
+</div>
+<div class="group flex flex-col bg-[#0d1c0d] border border-primary/30 rounded-lg overflow-hidden glow-card">
+<div class="bg-terminal-header px-4 py-2 flex items-center justify-between border-b border-primary/20">
+<div class="flex items-center gap-1.5">
+<div class="size-2.5 rounded-full bg-red-500/50 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-yellow-500/50 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-green-500/50 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+</div>
+<span class="font-mono text-[10px] text-primary/60 tracking-wider">css_hell.cfg</span>
+</div>
+<div class="p-6 flex flex-col h-full">
+<div class="mb-4">
+<span class="font-mono text-[10px] uppercase text-purple-500 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">Styles</span>
+</div>
+<h3 class="font-mono text-lg font-bold text-white mb-4 group-hover:text-primary transition-colors">Flexbox for Dummies</h3>
+<p class="text-sm text-slate-300 font-mono leading-relaxed flex-1">
+                            Centrar un div no debería ser una tesis doctoral. Te enseñamos el camino ninja hacia el layout perfecto.
+                        </p>
+<div class="mt-6 flex items-center justify-between border-t border-primary/10 pt-4">
+<span class="font-mono text-[10px] text-slate-500 tracking-tighter">TIME: 15:00m</span>
+<a class="font-mono text-xs font-bold text-primary flex items-center gap-1 hover:translate-x-1 transition-transform" href="#">
+                                [ EXECUTE ]
+                            </a>
+</div>
+</div>
+</div>
+<div class="group flex flex-col bg-[#0d1c0d] border border-primary/30 rounded-lg overflow-hidden glow-card">
+<div class="bg-terminal-header px-4 py-2 flex items-center justify-between border-b border-primary/20">
+<div class="flex items-center gap-1.5">
+<div class="size-2.5 rounded-full bg-red-500/50 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-yellow-500/50 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
+<div class="size-2.5 rounded-full bg-green-500/50 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+</div>
+<span class="font-mono text-[10px] text-primary/60 tracking-wider">api_shakedown.py</span>
+</div>
+<div class="p-6 flex flex-col h-full">
+<div class="mb-4">
+<span class="font-mono text-[10px] uppercase text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">Backend</span>
+</div>
+<h3 class="font-mono text-lg font-bold text-white mb-4 group-hover:text-primary transition-colors">Consumiendo APIs Basura</h3>
+<p class="text-sm text-slate-300 font-mono leading-relaxed flex-1">
+                            Cómo lidiar con backends que devuelven 200 OK pero con un body que dice "Error 500". Resiliencia pura.
+                        </p>
+<div class="mt-6 flex items-center justify-between border-t border-primary/10 pt-4">
+<span class="font-mono text-[10px] text-slate-500 tracking-tighter">TIME: 32:00m</span>
+<a class="font-mono text-xs font-bold text-primary flex items-center gap-1 hover:translate-x-1 transition-transform" href="#">
+                                [ EXECUTE ]
+                            </a>
+</div>
+</div>
+</div>
+<div class="group flex flex-col bg-[#0a1a0a] border border-primary/10 rounded-lg overflow-hidden opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+<div class="bg-black/20 px-4 py-2 flex items-center justify-between border-b border-primary/5">
+<div class="flex items-center gap-1.5">
+<div class="size-2.5 rounded-full bg-slate-700"></div>
+<div class="size-2.5 rounded-full bg-slate-700"></div>
+<div class="size-2.5 rounded-full bg-slate-700"></div>
+</div>
+<span class="font-mono text-[10px] text-slate-500 tracking-wider">locked.enc</span>
+</div>
+<div class="p-6 flex flex-col h-full">
+<div class="mb-4">
+<span class="font-mono text-[10px] uppercase text-slate-500 bg-slate-500/10 px-2 py-0.5 rounded border border-slate-500/20">Locked</span>
+</div>
+<h3 class="font-mono text-lg font-bold text-slate-500 mb-4 italic">TypeScript: El Purgatorio</h3>
+<p class="text-sm text-slate-500 font-mono leading-relaxed flex-1">
+                            Acceso denegado. Sube de nivel para aprender a tipar hasta tu alma.
+                        </p>
+<div class="mt-6 flex items-center justify-between border-t border-slate-800 pt-4">
+<span class="font-mono text-[10px] text-slate-700 tracking-tighter">LEVEL REQUIRED: DEV++</span>
+<span class="font-mono text-xs font-bold text-slate-700">
+                                [ LOCKED ]
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-16 flex justify-center">
+<button class="px-8 py-3 bg-primary/5 border border-primary/40 text-primary font-mono text-sm hover:bg-primary/20 transition-all flex items-center gap-4 group">
+<span class="group-hover:translate-x-1 transition-transform">fetch_more_lessons.sh</span>
+<span class="material-symbols-outlined text-sm animate-bounce">downloading</span>
+</button>
+</div>
+</section>
+</main>
+<footer class="border-t border-primary/10 bg-black/40 px-4 py-8 lg:px-20 relative z-10 backdrop-blur-sm">
+<div class="mx-auto max-w-[1400px] flex flex-col md:flex-row justify-between items-center gap-6 font-mono text-xs">
+<div class="flex items-center gap-4 text-slate-400">
+<span>© 2024 programierds_os</span>
+<span class="text-primary/20">|</span>
+<a class="hover:text-primary transition-colors" href="#">Privacy.md</a>
+<a class="hover:text-primary transition-colors" href="#">Repo</a>
+</div>
+<div class="text-slate-400 italic">
+                System: <span class="text-primary drop-shadow-[0_0_5px_rgba(13,242,89,0.5)]">Healthy</span> | Memory: <span class="text-yellow-500">Overloaded by JS</span>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>
