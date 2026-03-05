@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import { getRelativePath } from '../../utils/paths';
+---
+
+<Layout title="Arreglos, Cadenas y Estructuras Dinámicas - Programierds Retro View">
+
+	<style is:global>
+		@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap');
+		:root { --primary: #0df259; }
+		html { scroll-behavior: smooth; }
+		.crt-wrapper { background: radial-gradient(circle, #0a1a0a 0%, #050a05 100%); }
+		.crt-main { font-family: 'Space Mono', monospace; color: var(--primary); }
+		.font-retro { font-family: 'VT323', monospace; }
+		.section { min-height: 90vh; display:flex; align-items:center; justify-content:center; padding:96px 24px 48px; }
+		.section-inner { width:100%; max-width:1100px; }
+		.card { border:1px solid rgba(13,242,89,.25); background: rgba(13,242,89,.04); border-radius:8px; padding:20px; }
+		.code { background: rgba(0,0,0,.45); border:1px solid rgba(13,242,89,.2); border-radius:8px; padding:16px; font-size:.82rem; line-height:1.7; overflow:auto; }
+		.divider { border: none; border-top: 1px solid rgba(13,242,89,.15); margin: 0 24px; }
+		.terminal-btn { border:1px solid var(--primary); padding:8px 22px; text-decoration:none; color:var(--primary); text-transform:uppercase; font-size:.85rem; }
+		.terminal-btn:hover { background:var(--primary); color:#031103; }
+	</style>
+
+	<div class="crt-wrapper min-h-screen flex flex-col">
+		<div class="relative z-[200]"><Header /></div>
+		<main class="flex-1 crt-main">
+			<section class="section">
+				<div class="section-inner text-center">
+					<p class="text-xs opacity-50 mb-2">PROGRAMIERDS // CONTENIDO CURRICULAR 2025</p>
+					<h1 class="font-retro text-5xl md:text-7xl uppercase">Arreglos, Cadenas y Estructuras Dinámicas</h1>
+					<p class="mt-4 opacity-70">Unidad 4 · vectores, matrices, strings y estructuras enlazadas</p>
+				</div>
+			</section>
+			<hr class="divider" />
+			<section class="section">
+				<div class="section-inner grid md:grid-cols-2 gap-6">
+					<div class="card">
+						<h2 class="font-retro text-3xl mb-4">Foco de la unidad</h2>
+						<ul class="space-y-2 text-sm opacity-90">
+						<li>Recorrido, búsqueda e inserción en arreglos</li>
+						<li>Cadenas de caracteres y funciones estándar</li>
+						<li>Introducción a structs, listas, pilas y colas</li>
+						<li>Ordenación, búsqueda binaria y manejo de archivos</li>
+						</ul>
+					</div>
+					<div class="card">
+						<h2 class="font-retro text-3xl mb-4">Ejemplo en C</h2>
+						<pre class="code"><code>{`>#include <stdio.h>
+
+int main(void) {
+    int notas[5] = {7, 9, 6, 10, 8};
+    int suma = 0;
+
+    for (int i = 0; i < 5; i++) suma += notas[i];
+
+    printf("Promedio: %.2f\n", suma / 5.0);
+    return 0;
+}`}</code></pre>
+					</div>
+				</div>
+			</section>
+			<hr class="divider" />
+			<section class="section">
+				<div class="section-inner">
+					<h2 class="font-retro text-4xl mb-6 text-center">Claves didácticas</h2>
+					<div class="grid md:grid-cols-3 gap-4">
+					<div class="card"><p class="text-sm">Arreglos: estructura base para pensar colecciones.</p></div>
+					<div class="card"><p class="text-sm">En dinámicas, la memoria se gestiona explícitamente.</p></div>
+					<div class="card"><p class="text-sm">Se prioriza práctica con problemas reales y dataset chico.</p></div>
+					</div>
+					<div class="mt-10 text-center">
+						<a href={getRelativePath('/presentaciones')} class="terminal-btn">← Volver a presentaciones</a>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>

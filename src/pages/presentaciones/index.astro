@@ -7,44 +7,57 @@ import { getRelativePath } from '../../utils/paths';
 
 const presentations = [
 	{
-		file: 'lesson_01.sh',
-		tag: 'Algoritmos',
-		tagClass: 'text-primary bg-primary/10 border-primary/20',
-		title: 'Variables y Constantes',
-		description: 'Constante: valor fijo. Variable: valor que cambia durante la ejecución.',
-		url: getRelativePath('/presentaciones/variables_y_constantes'),
-	},
-	{
-		file: 'paso_por_valor_y_referencia.java',
-		tag: 'JAVA',
-		tagClass: 'text-accent-blue bg-accent-blue/10 border-accent-blue/20',
-		title: 'Paso por valor y paso por referencia',
-		description: 'Descubre cómo Java maneja la memoria: primitivas copian su valor, objetros comparten su dirección.',
-		url: getRelativePath('/presentaciones/paso_por_valor_y_referencia'),
-	},
-	{
-		file: 'tipos_de_datos.js',
-		tag: 'Javascript',
-		tagClass: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
-		title: 'Tipos de Datos',
-		description: 'Descubre los tipos primitivos y objetos que conforman el lenguaje.',
-		url: getRelativePath('/presentaciones/tipos_de_datos_en_javascript'),
-	},
-	{
-		file: 'modularidad.c',
+		file: 'unidad_1_intro_algoritmia.c',
 		tag: 'C',
 		tagClass: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
-		title: 'Modularidad',
-		description: 'Subprogramas, Funciones y Procedimientos',
+		title: 'Introducción a la Algoritmia y C',
+		description: 'Proceso, algoritmo, paradigmas, buenas prácticas y estructura base de un programa en C.',
+		url: getRelativePath('/presentaciones/introduccion_algoritmia_c'),
+	},
+	{
+		file: 'unidad_2_estructura_datos.c',
+		tag: 'C',
+		tagClass: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+		title: 'Estructura de Datos en C',
+		description: 'Tipos primitivos, memoria, operadores y funciones básicas de entrada/salida.',
+		url: getRelativePath('/presentaciones/estructuras_datos_c'),
+	},
+	{
+		file: 'unidad_3_control_iteracion.c',
+		tag: 'C',
+		tagClass: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+		title: 'Sentencias de Control e Iteración',
+		description: 'if/else, switch, while, for y do-while aplicados a resolución de problemas.',
+		url: getRelativePath('/presentaciones/control_iteracion_c'),
+	},
+	{
+		file: 'unidad_4_arreglos_y_dinamicas.c',
+		tag: 'C',
+		tagClass: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+		title: 'Arreglos, Cadenas y Estructuras Dinámicas',
+		description: 'Vectores, matrices, strings, ordenación, búsqueda y base para listas/pilas/colas.',
+		url: getRelativePath('/presentaciones/arreglos_cadenas_estructuras_dinamicas_c'),
+	},
+	{
+		file: 'unidad_5_modularidad.c',
+		tag: 'C',
+		tagClass: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+		title: 'Modularidad en C',
+		description: 'Subprogramas, funciones, procedimientos, scope y pasaje por valor/referencia.',
 		url: getRelativePath('/presentaciones/modularidad_en_c'),
+	},
+	{
+		file: 'unidad_6_poo_desde_c.c',
+		tag: 'C',
+		tagClass: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+		title: 'POO para Programadores de C',
+		description: 'Puente conceptual entre programación estructurada y orientación a objetos.',
+		url: getRelativePath('/presentaciones/poo_para_programadores_c'),
 	},
 ];
 
 const categories = [
 	{ label: '~/todos', filter: 'all' },
-	{ label: '~/algoritmos', filter: 'Algoritmos' },
-	{ label: '~/java', filter: 'JAVA' },
-	{ label: '~/javascript', filter: 'Javascript' },
 	{ label: '~/c', filter: 'C' },
 ];
 ---
