@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import Icon from '../../../components/Icon.astro';
 import { getCollection, render } from 'astro:content';
@@ -49,7 +48,6 @@ const nextSlug = next ? next.id.replace(courseSlug + '/', '') : null;
 
 <Layout title={`${chapter.data.title} - ${course.data.technology} - Programierds`}>
 	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
-		<Header />
 
 		<main class="flex-1 flex">
 			<!-- Sidebar -->

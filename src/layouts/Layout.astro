@@ -5,6 +5,7 @@ import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/600.css';
 import '@fontsource/space-grotesk/700.css';
+import Header from '../components/Header.astro';
 import { getRelativePath } from '../utils/paths';
 
 interface Props {
@@ -25,6 +26,7 @@ const { title = 'Programierds - Aprende a programar sin que sea una m...' } = As
 		<title>{title}</title>
 	</head>
 	<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+		<Header />
 		<slot />
 	</body>
 </html>

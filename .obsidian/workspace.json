@@ -11,14 +11,12 @@
             "id": "67aad103ac9844f1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "src/content/courses/git/01-El prinicpio con git.md",
-                "mode": "source",
-                "source": false
+                "file": "docs/Apunte de C.pdf"
               },
-              "icon": "lucide-file",
-              "title": "01-El prinicpio con git"
+              "icon": "lucide-file-text",
+              "title": "Apunte de C"
             }
           }
         ]
@@ -94,7 +92,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "src/content/courses/git/01-El prinicpio con git.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +101,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 01-El prinicpio con git"
+              "title": "Backlinks"
             }
           },
           {
@@ -181,12 +178,18 @@
       "bases:Create new base": false
     }
   },
-  "active": "67aad103ac9844f1",
+  "active": "934995c6a903be93",
   "lastOpenFiles": [
+    "docs/Apunte de C.pdf",
+    "docs/programierds.md",
+    "docs/Contenido_Curso_C.md",
+    "docs/estructura-curso-c.md",
+    "docs/Java para Principiantes.pdf",
+    "docs/JavaScript para Principiantes.pdf",
+    "src/content/courses/git/01-El prinicpio con git.md",
     "src/pages/presentaciones/funciones_y_procedimientos_java.astro",
     "src/content/courses/git/03-Conflictos.md",
     "src/content/courses/git/02-Bajar y subir cambios.md",
-    "src/content/courses/git/01-El prinicpio con git.md",
     "src/content/courses/java/index.md",
     "dist/index.html",
     "dist/presentaciones/variables_y_constantes/index.html",
@@ -195,9 +198,6 @@
     "dist/presentaciones/modularidad_en_c/index.html",
     "dist/presentaciones/variables_y_constantes",
     "dist/presentaciones/tipos_de_datos_en_javascript",
-    "dist/presentaciones/paso_por_valor_y_referencia",
-    "dist/presentaciones/modularidad_en_c",
-    "dist/presentaciones/index.html",
     "dist/images/hero-workspace.jpg",
     "dist/favicon.svg",
     "src/content/courses/git/logo.svg",
@@ -222,9 +222,6 @@
     "src/content/courses/c/12-estructuras.md",
     "src/content/courses/c/11-funciones-y-recursividad.md",
     "src/content/courses/c/10-busqueda-y-ordenamiento.md",
-    "src/content/courses/c/09-cadenas-de-caracteres.md",
-    "src/content/courses/c/08-arreglos.md",
-    "src/content/courses/c/07-sentencias-de-iteracion.md",
     "src/content/courses/c/logo.svg",
     "src/content/courses/javascript/logo.svg",
     "src/content/courses/java/logo.svg",

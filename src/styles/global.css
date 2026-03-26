@@ -128,3 +128,52 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #0df25966;
 }
+
+.test-intro p,
+.test-intro li {
+  color: rgba(203, 213, 225, 0.92);
+  line-height: 1.85;
+}
+
+.test-intro strong {
+  color: white;
+}
+
+.test-intro code {
+  color: #0df259;
+  background: rgba(13, 242, 89, 0.1);
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.375rem;
+  font-family: 'Fira Code', monospace;
+}
+
+.test-intro pre {
+  overflow-x: auto;
+  border-radius: 1rem;
+  border: 1px solid rgba(13, 242, 89, 0.12);
+  background: #050a06;
+  padding: 1.25rem 1.5rem;
+}
+
+.test-timer {
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.test-timer-expired {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(127, 29, 29, 0.92);
+  box-shadow: 0 24px 80px -40px rgba(239, 68, 68, 0.9);
+}
+
+.test-timer-expired p {
+  color: rgba(254, 226, 226, 0.96) !important;
+}
+
+.test-runner-expired {
+  border-color: rgba(239, 68, 68, 0.28);
+  box-shadow: 0 30px 120px -80px rgba(239, 68, 68, 0.65);
+}
+
+.test-runner-expired .test-question {
+  border-color: rgba(239, 68, 68, 0.24);
+}
