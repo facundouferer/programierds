@@ -1,0 +1,370 @@
+---
+import {
+  formatCountdownTime,
+  formatDifficultyLabel,
+  type TestData,
+} from '../../utils/tests';
+
+interface Props {
+  test: TestData;
+}
+
+const { test } = Astro.props;
+const stateId = `test-runner-${test.slug}`;
+const questionsPayload = JSON.stringify(test.questions);
+const difficultyLabel = formatDifficultyLabel(test.difficulty);
+const initialDurationMs = (test.timeEstimate ?? 0) * 60 * 1000;
+const initialTimerLabel = formatCountdownTime(initialDurationMs);
+---
+
+<section class="rounded-[2rem] border border-primary/15 bg-background-light/80 p-6 shadow-[0_30px_120px_-80px_rgba(13,242,89,0.45)] dark:bg-background-dark/80 lg:p-10" data-test-runner data-duration-ms={initialDurationMs}>
+  {test.timeEstimate && (
+    <div class="pointer-events-none fixed right-4 top-24 z-40 flex justify-end lg:right-8">
+      <div
+        class="test-timer pointer-events-auto rounded-[1.35rem] border border-primary/20 bg-background-light/95 px-5 py-4 shadow-[0_20px_60px_-35px_rgba(13,242,89,0.55)] backdrop-blur dark:bg-background-dark/95"
+        data-timer-container
+        aria-live="polite"
+      >
+        <p class="text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Tiempo estimado</p>
+        <p class="mt-2 font-mono text-3xl font-black tracking-[0.2em] text-slate-900 dark:text-white" data-timer-clock>{initialTimerLabel}</p>
+      </div>
+    </div>
+  )}
+  <div class="flex flex-col gap-6 border-b border-primary/10 pb-8">
+    <div class="flex flex-wrap gap-3 text-xs font-bold uppercase tracking-[0.2em]">
+      <span class="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">{test.category}</span>
+      <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-500 dark:text-slate-300">{difficultyLabel}</span>
+      {test.timeEstimate && (
+        <span class="rounded-full border border-accent-blue/20 bg-accent-blue/10 px-4 py-2 text-accent-blue">
+          {test.timeEstimate} min
+        </span>
+      )}
+      <span class="rounded-full border border-accent-brown/20 bg-accent-brown/10 px-4 py-2 text-accent-brown">
+        {test.questions.length} preguntas
+      </span>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white lg:text-4xl">{test.title}</h2>
+      <p class="max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">{test.description}</p>
+    </div>
+
+    <div class="hidden rounded-2xl border border-primary/20 bg-primary/5 p-5" data-results-summary aria-live="polite"></div>
+  </div>
+
+  <form class="mt-8 space-y-6" data-test-form novalidate>
+    {test.questions.map((question, questionIndex) => (
+      <article
+        class="test-question rounded-[1.75rem] border border-primary/10 bg-white/70 p-5 transition-colors dark:bg-black/10 lg:p-7"
+        data-question-id={question.id}
+      >
+        <div class="mb-5 flex items-start justify-between gap-4">
+          <div class="space-y-3">
+            <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Pregunta {questionIndex + 1}</p>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">{question.prompt}</h3>
+          </div>
+          <span class="hidden rounded-full px-3 py-2 text-xs font-black uppercase tracking-[0.2em]" data-question-badge></span>
+        </div>
+
+        {question.code && (
+          <div class="mb-6 overflow-hidden rounded-2xl border border-primary/15 bg-terminal-bg">
+            <div class="flex items-center justify-between border-b border-primary/10 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              <span>Snippet</span>
+              <span>{question.language ?? 'texto'}</span>
+            </div>
+            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-200"><code class={`language-${question.language ?? 'text'}`}>{question.code}</code></pre>
+          </div>
+        )}
+
+        <fieldset class="space-y-3">
+          <legend class="sr-only">Opciones para {question.prompt}</legend>
+          {question.options.map((option, optionIndex) => {
+            const inputId = `${question.id}-${optionIndex}`;
+
+            return (
+              <label
+                class="test-option flex cursor-pointer items-start gap-4 rounded-2xl border border-primary/10 bg-background-light/60 px-4 py-4 text-left transition-all hover:border-primary/30 hover:bg-primary/5 dark:bg-background-dark/60"
+                for={inputId}
+                data-option
+                data-option-index={optionIndex}
+              >
+                <input
+                  class="mt-1 h-4 w-4 border-primary/30 bg-transparent text-primary focus:ring-primary"
+                  id={inputId}
+                  name={question.id}
+                  type="radio"
+                  value={optionIndex}
+                />
+                <span class="flex-1">
+                  <span class="mb-1 block text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+                    Opcion {String.fromCharCode(65 + optionIndex)}
+                  </span>
+                  <span class="text-base leading-relaxed text-slate-700 dark:text-slate-200">{option}</span>
+                </span>
+              </label>
+            );
+          })}
+        </fieldset>
+
+        <div class="mt-5 hidden rounded-2xl border border-white/10 bg-black/10 p-4 text-sm leading-7 text-slate-300" data-question-feedback></div>
+      </article>
+    ))}
+
+    <div class="sticky bottom-4 flex flex-col gap-4 rounded-[1.75rem] border border-primary/15 bg-background-light/90 p-4 shadow-lg backdrop-blur dark:bg-background-dark/90 lg:flex-row lg:items-center lg:justify-between lg:p-6">
+      <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400" data-progress-copy>
+        Elegi una opcion por pregunta y despues hace click en <strong class="text-slate-900 dark:text-white">Revisar resultados</strong>.
+      </p>
+      <button
+        class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-base font-black text-background-dark transition-transform hover:scale-[1.02]"
+        type="button"
+        data-review-button
+      >
+        Revisar resultados
+      </button>
+    </div>
+  </form>
+</section>
+
+<script is:inline type="application/json" id={stateId} set:html={questionsPayload}></script>
+
+<script is:inline define:vars={{ stateId, testTitle: test.title, initialDurationMs }}>
+  (() => {
+    const questionsNode = document.getElementById(stateId);
+    const runner = document.querySelector('[data-test-runner]');
+
+    if (!questionsNode || !runner) {
+      return;
+    }
+
+    const questions = JSON.parse(questionsNode.textContent || '[]');
+    const reviewButton = runner.querySelector('[data-review-button]');
+    const summaryNode = runner.querySelector('[data-results-summary]');
+    const progressCopy = runner.querySelector('[data-progress-copy]');
+    const form = runner.querySelector('[data-test-form]');
+    const timerContainer = runner.querySelector('[data-timer-container]');
+    const timerClock = runner.querySelector('[data-timer-clock]');
+    let reviewLocked = false;
+    let timerId = null;
+    let deadline = initialDurationMs > 0 ? Date.now() + initialDurationMs : null;
+
+    if (!reviewButton || !summaryNode || !progressCopy || !form) {
+      return;
+    }
+
+    const getAnswers = () => {
+      const answers = {};
+
+      questions.forEach((question) => {
+        const checked = form.querySelector(`input[name="${question.id}"]:checked`);
+        answers[question.id] = checked ? Number(checked.value) : null;
+      });
+
+      return answers;
+    };
+
+    const grade = (answers) => {
+      const questionResults = questions.map((question) => {
+        const selectedAnswer = answers[question.id];
+
+        if (selectedAnswer === null || Number.isNaN(selectedAnswer)) {
+          return { ...question, selectedAnswer: null, status: 'unanswered' };
+        }
+
+        return {
+          ...question,
+          selectedAnswer,
+          status: selectedAnswer === question.correctAnswer ? 'correct' : 'incorrect',
+        };
+      });
+
+      const correctCount = questionResults.filter((question) => question.status === 'correct').length;
+      const unansweredCount = questionResults.filter((question) => question.status === 'unanswered').length;
+      const incorrectCount = questionResults.length - correctCount - unansweredCount;
+      const percentage = questionResults.length === 0 ? 0 : Math.round((correctCount / questionResults.length) * 100);
+
+      return {
+        correctCount,
+        incorrectCount,
+        unansweredCount,
+        totalQuestions: questionResults.length,
+        percentage,
+        questionResults,
+      };
+    };
+
+    const formatTime = (milliseconds) => {
+      const safeMs = Math.max(0, milliseconds);
+      const minutes = Math.floor(safeMs / 60000);
+      const seconds = Math.floor((safeMs % 60000) / 1000);
+      const centiseconds = Math.floor((safeMs % 1000) / 10);
+
+      return [minutes, seconds, centiseconds]
+        .map((value) => String(value).padStart(2, '0'))
+        .join(':');
+    };
+
+    const renderSummary = (result) => {
+      summaryNode.classList.remove('hidden');
+      summaryNode.innerHTML = `
+        <div class="grid gap-4 lg:grid-cols-[1.25fr_repeat(3,minmax(0,1fr))] lg:items-center">
+          <div>
+            <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Resultados</p>
+            <h3 class="mt-2 text-2xl font-black text-slate-900 dark:text-white">${testTitle}</h3>
+            <p class="mt-2 text-slate-600 dark:text-slate-300">
+              Puntaje final: <strong class="text-slate-900 dark:text-white">${result.correctCount}/${result.totalQuestions}</strong> (${result.percentage}%)
+            </p>
+          </div>
+          <div class="rounded-2xl border border-primary/10 bg-white/70 p-4 dark:bg-black/10">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Correctas</p>
+            <p class="mt-2 text-3xl font-black text-primary">${result.correctCount}</p>
+          </div>
+          <div class="rounded-2xl border border-primary/10 bg-white/70 p-4 dark:bg-black/10">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Incorrectas</p>
+            <p class="mt-2 text-3xl font-black text-accent-brown">${result.incorrectCount}</p>
+          </div>
+          <div class="rounded-2xl border border-primary/10 bg-white/70 p-4 dark:bg-black/10">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Sin responder</p>
+            <p class="mt-2 text-3xl font-black text-accent-blue">${result.unansweredCount}</p>
+          </div>
+        </div>
+      `;
+    };
+
+    const applyQuestionFeedback = (result) => {
+      result.questionResults.forEach((questionResult) => {
+        const questionNode = form.querySelector(`[data-question-id="${questionResult.id}"]`);
+
+        if (!questionNode) {
+          return;
+        }
+
+        const badge = questionNode.querySelector('[data-question-badge]');
+        const feedback = questionNode.querySelector('[data-question-feedback]');
+        const options = questionNode.querySelectorAll('[data-option]');
+        const inputs = questionNode.querySelectorAll('input[type="radio"]');
+
+        badge.classList.remove('hidden');
+        feedback.classList.remove('hidden');
+
+        questionNode.classList.remove('border-primary/10', 'bg-white/70', 'dark:bg-black/10');
+
+        if (questionResult.status === 'correct') {
+          badge.textContent = 'Correcta';
+          badge.className = 'rounded-full bg-primary/15 px-3 py-2 text-xs font-black uppercase tracking-[0.2em] text-primary';
+          questionNode.classList.add('border-primary/30', 'bg-primary/5');
+        } else if (questionResult.status === 'incorrect') {
+          badge.textContent = 'Incorrecta';
+          badge.className = 'rounded-full bg-accent-brown/15 px-3 py-2 text-xs font-black uppercase tracking-[0.2em] text-accent-brown';
+          questionNode.classList.add('border-accent-brown/30', 'bg-accent-brown/5');
+        } else {
+          badge.textContent = 'Sin responder';
+          badge.className = 'rounded-full bg-accent-blue/15 px-3 py-2 text-xs font-black uppercase tracking-[0.2em] text-accent-blue';
+          questionNode.classList.add('border-accent-blue/30', 'bg-accent-blue/5');
+        }
+
+        options.forEach((optionNode) => {
+          const optionIndex = Number(optionNode.getAttribute('data-option-index'));
+
+          optionNode.classList.remove(
+            'border-primary/10',
+            'bg-background-light/60',
+            'dark:bg-background-dark/60',
+            'border-primary/40',
+            'bg-primary/10',
+            'border-accent-brown/40',
+            'bg-accent-brown/10',
+          );
+
+          optionNode.classList.add('opacity-80');
+
+          if (optionIndex === questionResult.correctAnswer) {
+            optionNode.classList.add('border-primary/40', 'bg-primary/10');
+            optionNode.classList.remove('opacity-80');
+          }
+
+          if (questionResult.selectedAnswer === optionIndex && questionResult.selectedAnswer !== questionResult.correctAnswer) {
+            optionNode.classList.add('border-accent-brown/40', 'bg-accent-brown/10');
+            optionNode.classList.remove('opacity-80');
+          }
+        });
+
+        inputs.forEach((input) => {
+          input.disabled = true;
+        });
+
+        const selectedLabel = questionResult.selectedAnswer === null
+          ? 'No respondiste esta pregunta.'
+          : `Tu respuesta fue la opcion ${String.fromCharCode(65 + questionResult.selectedAnswer)}.`;
+        const correctLabel = `La correcta era la opcion ${String.fromCharCode(65 + questionResult.correctAnswer)}.`;
+        const explanation = questionResult.explanation
+          ? `<p class="mt-2 text-slate-600 dark:text-slate-300">${questionResult.explanation}</p>`
+          : '';
+
+        feedback.innerHTML = `
+          <p class="font-semibold text-slate-900 dark:text-white">${selectedLabel}</p>
+          <p class="mt-1 text-slate-600 dark:text-slate-300">${correctLabel}</p>
+          ${explanation}
+        `;
+      });
+    };
+
+    const lockForm = () => {
+      form.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.disabled = true;
+      });
+      reviewButton.disabled = true;
+      reviewButton.classList.add('cursor-not-allowed', 'opacity-75');
+    };
+
+    const submitResults = (reason) => {
+      if (reviewLocked) {
+        return;
+      }
+
+      reviewLocked = true;
+      const result = grade(getAnswers());
+
+      renderSummary(result);
+      applyQuestionFeedback(result);
+      lockForm();
+
+      if (reason === 'expired') {
+        runner.classList.add('test-runner-expired');
+        progressCopy.innerHTML = 'Se terminó el tiempo. El test quedó cerrado y corregido automáticamente.';
+        reviewButton.textContent = 'Tiempo agotado';
+
+        if (timerContainer && timerClock) {
+          timerClock.textContent = '00:00:00';
+          timerContainer.classList.add('test-timer-expired');
+        }
+      } else {
+        progressCopy.innerHTML = 'Las respuestas quedaron congeladas para que puedas revisar en detalle cada explicacion.';
+        reviewButton.textContent = 'Resultados listos';
+      }
+    };
+
+    const tick = () => {
+      if (!deadline || !timerClock || !timerContainer) {
+        return;
+      }
+
+      const remaining = deadline - Date.now();
+      timerClock.textContent = formatTime(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(timerId);
+        timerId = null;
+        submitResults('expired');
+      }
+    };
+
+    reviewButton.addEventListener('click', () => {
+      submitResults('manual');
+    });
+
+    if (deadline && timerClock && timerContainer) {
+      tick();
+      timerId = window.setInterval(tick, 10);
+    }
+  })();
+</script>

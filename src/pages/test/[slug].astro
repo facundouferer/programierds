@@ -1,0 +1,80 @@
+---
+import { getCollection, render } from 'astro:content';
+
+import Footer from '../../components/Footer.astro';
+import TestRunner from '../../components/test/TestRunner.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getRelativePath } from '../../utils/paths';
+import { assertUniqueTestSlugs, formatDifficultyLabel } from '../../utils/tests';
+
+export async function getStaticPaths() {
+  const tests = await getCollection('tests');
+  assertUniqueTestSlugs(tests);
+
+  return tests.map((test) => ({
+    params: { slug: test.data.slug },
+    props: { testEntry: test },
+  }));
+}
+
+const { testEntry } = Astro.props;
+const { Content } = await render(testEntry);
+const difficultyLabel = formatDifficultyLabel(testEntry.data.difficulty);
+---
+
+<Layout title={`${testEntry.data.title} - Programierds Tests`}>
+  <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+
+    <main class="flex-1 px-4 py-12 lg:px-20 lg:py-16">
+      <div class="mx-auto flex max-w-6xl flex-col gap-8">
+        <a
+          class="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+          href={getRelativePath('/test')}
+        >
+          <span aria-hidden="true">←</span>
+          Volver al listado
+        </a>
+
+        <section class="overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary/10 via-transparent to-accent-blue/10 p-6 lg:p-10">
+          <div class="flex flex-wrap gap-3 text-xs font-black uppercase tracking-[0.22em]">
+            <span class="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">{testEntry.data.category}</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-500 dark:text-slate-300">{difficultyLabel}</span>
+            {testEntry.data.timeEstimate && (
+              <span class="rounded-full border border-accent-blue/20 bg-accent-blue/10 px-4 py-2 text-accent-blue">
+                {testEntry.data.timeEstimate} min
+              </span>
+            )}
+          </div>
+
+          <div class="mt-6 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+            <div>
+              <h1 class="text-4xl font-black tracking-tight text-slate-900 dark:text-white lg:text-6xl">{testEntry.data.title}</h1>
+              <p class="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">{testEntry.data.description}</p>
+            </div>
+
+            <div class="grid gap-3 rounded-[1.5rem] border border-primary/10 bg-background-light/80 p-5 dark:bg-background-dark/70">
+              <div>
+                <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Preguntas</p>
+                <p class="mt-2 text-3xl font-black text-slate-900 dark:text-white">{testEntry.data.questions.length}</p>
+              </div>
+              <div>
+                <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Formato</p>
+                <p class="mt-2 text-base font-semibold text-slate-700 dark:text-slate-200">Multiple choice con feedback final</p>
+              </div>
+            </div>
+          </div>
+
+          {testEntry.body && (
+            <div class="test-intro prose prose-slate mt-8 max-w-none rounded-[1.5rem] border border-primary/10 bg-background-light/60 p-6 dark:prose-invert dark:bg-background-dark/70">
+              <Content />
+            </div>
+          )}
+        </section>
+
+        <TestRunner test={testEntry.data} />
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
