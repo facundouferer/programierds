@@ -51,6 +51,24 @@ export interface TestGrade {
   questions: QuestionResult[];
 }
 
+export interface TestAnswerProgress {
+  answeredCount: number;
+  totalQuestions: number;
+  percentage: number;
+}
+
+export interface TestResultModalMessage {
+  title: 'Salio bien' | 'Salio mal';
+  emoji: '🙌' | '🫠';
+}
+
+export const TEST_RESULT_THRESHOLDS = {
+  passed: 60,
+  veryBad: 40,
+} as const;
+
+export type TestOutcome = 'good' | 'bad' | 'very-bad';
+
 export function assertUniqueTestSlugs(entries: TestCollectionEntryLike[]) {
   const seen = new Map<string, string>();
 
@@ -142,4 +160,46 @@ export function formatCountdownTime(milliseconds: number) {
 
 export function isTestExpired(milliseconds: number) {
   return milliseconds <= 0;
+}
+
+export function calculateAnswerProgress(
+  questions: TestQuestion[],
+  answers: Record<string, number | null | undefined>,
+): TestAnswerProgress {
+  const answeredCount = questions.reduce((count, question) => {
+    const selectedAnswer = answers[question.id];
+    return selectedAnswer === null || selectedAnswer === undefined ? count : count + 1;
+  }, 0);
+
+  return {
+    answeredCount,
+    totalQuestions: questions.length,
+    percentage: questions.length === 0 ? 0 : Math.round((answeredCount / questions.length) * 100),
+  };
+}
+
+export function getTestOutcome(scorePercentage: number): TestOutcome {
+  if (scorePercentage < TEST_RESULT_THRESHOLDS.veryBad) {
+    return 'very-bad';
+  }
+
+  if (scorePercentage < TEST_RESULT_THRESHOLDS.passed) {
+    return 'bad';
+  }
+
+  return 'good';
+}
+
+export function getResultModalMessage(scorePercentage: number): TestResultModalMessage {
+  if (scorePercentage >= TEST_RESULT_THRESHOLDS.passed) {
+    return {
+      title: 'Salio bien',
+      emoji: '🙌',
+    };
+  }
+
+  return {
+    title: 'Salio mal',
+    emoji: '🫠',
+  };
 }
