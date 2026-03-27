@@ -13,6 +13,11 @@ const navLinks = [
 	{ label: 'Presentaciones', href: '/presentaciones' },
 	{ label: 'Playground', href: '/playground' },
 ];
+
+const isLinkActive = (href: string) => {
+	const isHome = href === '/';
+	return isHome ? relativePath === '/' : relativePath.startsWith(href.replace(/^\//, ''));
+};
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 lg:px-20 py-4">
@@ -22,26 +27,131 @@ const navLinks = [
 			<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold tracking-tight">programierds</h2>
 		</a>
 		<nav class="hidden md:flex items-center gap-8">
-			{navLinks.map(({ label, href }) => {
-				const isHome = href === '/';
-				// Inicio activo solo en path exacto '/', otras páginas si coinciden con el inicio del path
-				const isActive = isHome 
-					? relativePath === '/'
-					: relativePath.startsWith(href.replace(/^\//, ''));
-				return (
-					<a
-						class={isActive
-							? 'text-primary transition-colors text-sm font-bold border-b-2 border-primary'
-							: 'hover:text-primary transition-colors text-sm font-medium'}
-						href={getRelativePath(href)}
-					>
-						{label}
-					</a>
-				);
-			})}
+			{navLinks.map(({ label, href }) => (
+				<a
+					class={isLinkActive(href)
+						? 'text-primary transition-colors text-sm font-bold border-b-2 border-primary'
+						: 'hover:text-primary transition-colors text-sm font-medium'}
+					href={getRelativePath(href)}
+				>
+					{label}
+				</a>
+			))}
 		</nav>
-		<a href={getRelativePath('/playground')} class="flex items-center justify-center rounded-xl bg-primary px-6 py-2 text-sm font-bold text-background-dark hover:brightness-110 transition-all">
+		<button
+			type="button"
+			class="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 text-primary transition-colors hover:bg-primary/10 md:hidden"
+			aria-label="Abrir menú principal"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+			data-mobile-menu-toggle
+		>
+			<span class="sr-only">Menú principal</span>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+			</svg>
+		</button>
+		<a href={getRelativePath('/playground')} class="hidden md:flex items-center justify-center rounded-xl bg-primary px-6 py-2 text-sm font-bold text-background-dark hover:brightness-110 transition-all">
 			Playground
 		</a>
 	</div>
+	<nav
+		id="mobile-menu"
+		class="mx-auto mt-4 hidden max-w-7xl border-t border-primary/10 pt-4 opacity-0 -translate-y-2 scale-[0.98] origin-top pointer-events-none transition-[opacity,transform] duration-200 ease-out md:hidden"
+		data-mobile-menu
+	>
+		<div class="flex flex-col gap-2">
+			{navLinks.map(({ label, href }) => (
+				<a
+					class={isLinkActive(href)
+						? 'rounded-lg bg-primary/10 px-3 py-2 text-sm font-bold text-primary'
+						: 'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/5 hover:text-primary'}
+					href={getRelativePath(href)}
+				>
+					{label}
+				</a>
+			))}
+		</div>
+	</nav>
 </header>
+
+<script>
+	const toggleButton = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
+	const mobileMenu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+	const transitionDurationMs = 200;
+
+	if (toggleButton && mobileMenu) {
+		let closeTimeoutId: number | undefined;
+
+		const clearCloseTimeout = () => {
+			if (typeof closeTimeoutId !== 'undefined') {
+				window.clearTimeout(closeTimeoutId);
+				closeTimeoutId = undefined;
+			}
+		};
+
+		const updateToggleA11y = (isExpanded: boolean) => {
+			toggleButton.setAttribute('aria-expanded', String(isExpanded));
+			toggleButton.setAttribute('aria-label', isExpanded ? 'Cerrar menú principal' : 'Abrir menú principal');
+		};
+
+		const closeMenu = (immediate = false) => {
+			clearCloseTimeout();
+			mobileMenu.classList.remove('is-open');
+			mobileMenu.classList.add('is-closing', 'pointer-events-none');
+			toggleButton.setAttribute('aria-expanded', 'false');
+			toggleButton.setAttribute('aria-label', 'Abrir menú principal');
+
+			if (immediate) {
+				mobileMenu.classList.add('hidden');
+				mobileMenu.classList.remove('is-closing');
+				return;
+			}
+
+			closeTimeoutId = window.setTimeout(() => {
+				mobileMenu.classList.add('hidden');
+				mobileMenu.classList.remove('is-closing');
+				closeTimeoutId = undefined;
+			}, transitionDurationMs);
+		};
+
+		const openMenu = () => {
+			clearCloseTimeout();
+			mobileMenu.classList.remove('hidden', 'is-closing');
+			window.requestAnimationFrame(() => {
+				mobileMenu.classList.add('is-open');
+				mobileMenu.classList.remove('pointer-events-none');
+			});
+			updateToggleA11y(true);
+		};
+
+		toggleButton.addEventListener('click', () => {
+			const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+			if (isExpanded) {
+				closeMenu();
+				return;
+			}
+
+			openMenu();
+		});
+
+		window.addEventListener('resize', () => {
+			if (window.innerWidth >= 768) {
+				closeMenu(true);
+			}
+		});
+	}
+</script>
+
+<style>
+	[data-mobile-menu].is-open {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-mobile-menu] {
+			transition-duration: 1ms;
+		}
+	}
+</style>

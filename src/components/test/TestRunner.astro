@@ -2,6 +2,7 @@
 import {
   formatCountdownTime,
   formatDifficultyLabel,
+  TEST_RESULT_THRESHOLDS,
   type TestData,
 } from '../../utils/tests';
 
@@ -15,6 +16,7 @@ const questionsPayload = JSON.stringify(test.questions);
 const difficultyLabel = formatDifficultyLabel(test.difficulty);
 const initialDurationMs = (test.timeEstimate ?? 0) * 60 * 1000;
 const initialTimerLabel = formatCountdownTime(initialDurationMs);
+const resultThresholds = TEST_RESULT_THRESHOLDS;
 ---
 
 <section class="rounded-[2rem] border border-primary/15 bg-background-light/80 p-6 shadow-[0_30px_120px_-80px_rgba(13,242,89,0.45)] dark:bg-background-dark/80 lg:p-10" data-test-runner data-duration-ms={initialDurationMs}>
@@ -27,6 +29,9 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
       >
         <p class="text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Tiempo estimado</p>
         <p class="mt-2 font-mono text-3xl font-black tracking-[0.2em] text-slate-900 dark:text-white" data-timer-clock>{initialTimerLabel}</p>
+        <p class="mt-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400" data-timer-progress>
+          Avance: 0%
+        </p>
       </div>
     </div>
   )}
@@ -125,9 +130,36 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
   </form>
 </section>
 
+<div class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-900/70 px-4 backdrop-blur-sm" data-result-modal role="dialog" aria-modal="true" aria-labelledby={`${stateId}-result-title`}>
+  <div class="w-full max-w-lg rounded-[1.75rem] border border-primary/20 bg-background-light p-6 shadow-[0_40px_120px_-60px_rgba(13,242,89,0.7)] dark:bg-background-dark lg:p-8" data-result-modal-card>
+    <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Resultado final</p>
+    <p class="mt-4 text-6xl" data-result-modal-emoji aria-hidden="true">🙌</p>
+    <h3 id={`${stateId}-result-title`} class="mt-3 text-4xl font-black tracking-tight text-slate-900 dark:text-white" data-result-modal-title>
+      Salio bien
+    </h3>
+    <div class="mt-6 grid grid-cols-2 gap-3">
+      <div class="rounded-2xl border border-primary/15 bg-primary/10 p-4">
+        <p class="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Aciertos</p>
+        <p class="mt-2 text-3xl font-black text-primary" data-result-modal-correct>0</p>
+      </div>
+      <div class="rounded-2xl border border-accent-brown/25 bg-accent-brown/10 p-4">
+        <p class="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Errores</p>
+        <p class="mt-2 text-3xl font-black text-accent-brown" data-result-modal-incorrect>0</p>
+      </div>
+    </div>
+    <button
+      class="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-primary px-6 py-3 text-base font-black text-background-dark transition-transform hover:scale-[1.02]"
+      type="button"
+      data-result-modal-close
+    >
+      Cerrar
+    </button>
+  </div>
+</div>
+
 <script is:inline type="application/json" id={stateId} set:html={questionsPayload}></script>
 
-<script is:inline define:vars={{ stateId, testTitle: test.title, initialDurationMs }}>
+<script is:inline define:vars={{ stateId, testTitle: test.title, initialDurationMs, passedThreshold: resultThresholds.passed }}>
   (() => {
     const questionsNode = document.getElementById(stateId);
     const runner = document.querySelector('[data-test-runner]');
@@ -143,6 +175,13 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
     const form = runner.querySelector('[data-test-form]');
     const timerContainer = runner.querySelector('[data-timer-container]');
     const timerClock = runner.querySelector('[data-timer-clock]');
+    const timerProgress = runner.querySelector('[data-timer-progress]');
+    const resultModal = document.querySelector('[data-result-modal]');
+    const resultModalTitle = document.querySelector('[data-result-modal-title]');
+    const resultModalEmoji = document.querySelector('[data-result-modal-emoji]');
+    const resultModalCorrect = document.querySelector('[data-result-modal-correct]');
+    const resultModalIncorrect = document.querySelector('[data-result-modal-incorrect]');
+    const resultModalClose = document.querySelector('[data-result-modal-close]');
     let reviewLocked = false;
     let timerId = null;
     let deadline = initialDurationMs > 0 ? Date.now() + initialDurationMs : null;
@@ -201,6 +240,58 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
       return [minutes, seconds, centiseconds]
         .map((value) => String(value).padStart(2, '0'))
         .join(':');
+    };
+
+    const getProgress = (answers) => {
+      const answeredCount = questions.reduce((count, question) => {
+        const selectedAnswer = answers[question.id];
+        return selectedAnswer === null || selectedAnswer === undefined ? count : count + 1;
+      }, 0);
+
+      return {
+        answeredCount,
+        totalQuestions: questions.length,
+        percentage: questions.length === 0 ? 0 : Math.round((answeredCount / questions.length) * 100),
+      };
+    };
+
+    const renderTimerProgress = (progress) => {
+      if (!timerProgress) {
+        return;
+      }
+
+      timerProgress.textContent = `Avance: ${progress.percentage}%`;
+    };
+
+    const showResultModal = (result) => {
+      if (
+        !resultModal ||
+        !resultModalTitle ||
+        !resultModalEmoji ||
+        !resultModalCorrect ||
+        !resultModalIncorrect
+      ) {
+        return;
+      }
+
+      const isPassed = result.percentage >= passedThreshold;
+
+      resultModalTitle.textContent = isPassed ? 'Salio bien' : 'Salio mal';
+      resultModalEmoji.textContent = isPassed ? '🙌' : '🫠';
+      resultModalCorrect.textContent = String(result.correctCount);
+      resultModalIncorrect.textContent = String(result.incorrectCount);
+      resultModal.classList.remove('hidden');
+      resultModal.classList.add('flex');
+      resultModalClose?.focus();
+    };
+
+    const closeResultModal = () => {
+      if (!resultModal) {
+        return;
+      }
+
+      resultModal.classList.remove('flex');
+      resultModal.classList.add('hidden');
     };
 
     const renderSummary = (result) => {
@@ -322,11 +413,16 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
       }
 
       reviewLocked = true;
-      const result = grade(getAnswers());
+      const answers = getAnswers();
+      const progress = getProgress(answers);
+      const result = grade(answers);
 
+      renderTimerProgress(progress);
       renderSummary(result);
       applyQuestionFeedback(result);
       lockForm();
+
+      showResultModal(result);
 
       if (reason === 'expired') {
         runner.classList.add('test-runner-expired');
@@ -340,6 +436,21 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
       } else {
         progressCopy.innerHTML = 'Las respuestas quedaron congeladas para que puedas revisar en detalle cada explicacion.';
         reviewButton.textContent = 'Resultados listos';
+      }
+    };
+
+    const syncProgress = () => {
+      if (reviewLocked) {
+        return;
+      }
+
+      const answers = getAnswers();
+      const progress = getProgress(answers);
+
+      renderTimerProgress(progress);
+
+      if (progress.answeredCount === progress.totalQuestions) {
+        submitResults('complete');
       }
     };
 
@@ -361,6 +472,25 @@ const initialTimerLabel = formatCountdownTime(initialDurationMs);
     reviewButton.addEventListener('click', () => {
       submitResults('manual');
     });
+
+    form.addEventListener('change', syncProgress);
+
+    resultModalClose?.addEventListener('click', closeResultModal);
+    resultModal?.addEventListener('click', (event) => {
+      if (event.target === resultModal) {
+        closeResultModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !resultModal || resultModal.classList.contains('hidden')) {
+        return;
+      }
+
+      closeResultModal();
+    });
+
+    syncProgress();
 
     if (deadline && timerClock && timerContainer) {
       tick();

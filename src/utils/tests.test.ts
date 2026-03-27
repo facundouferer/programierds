@@ -3,9 +3,13 @@ import { describe, expect, it } from 'vitest';
 import {
   assertUniqueTestSlugs,
   buildTestSummaries,
+  calculateAnswerProgress,
   formatCountdownTime,
+  getResultModalMessage,
+  getTestOutcome,
   gradeTest,
   isTestExpired,
+  TEST_RESULT_THRESHOLDS,
   type TestCollectionEntryLike,
   type TestQuestion,
 } from './tests';
@@ -141,5 +145,58 @@ describe('isTestExpired', () => {
     expect(isTestExpired(0)).toBe(true);
     expect(isTestExpired(-10)).toBe(true);
     expect(isTestExpired(1)).toBe(false);
+  });
+});
+
+describe('calculateAnswerProgress', () => {
+  it('calcula respondidas, total y porcentaje redondeado', () => {
+    const progress = calculateAnswerProgress(sampleQuestions, {
+      q1: 1,
+      q2: null,
+      q3: 2,
+    });
+
+    expect(progress.answeredCount).toBe(2);
+    expect(progress.totalQuestions).toBe(3);
+    expect(progress.percentage).toBe(67);
+  });
+
+  it('ignora respuestas para preguntas inexistentes y evita NaN con total cero', () => {
+    const withUnknownAnswer = calculateAnswerProgress(sampleQuestions, {
+      q1: null,
+      q2: 0,
+      q3: null,
+      q4: 1,
+    });
+    const empty = calculateAnswerProgress([], { q1: 1 });
+
+    expect(withUnknownAnswer.answeredCount).toBe(1);
+    expect(withUnknownAnswer.totalQuestions).toBe(3);
+    expect(withUnknownAnswer.percentage).toBe(33);
+    expect(empty).toEqual({ answeredCount: 0, totalQuestions: 0, percentage: 0 });
+  });
+});
+
+describe('getTestOutcome', () => {
+  it('clasifica segun umbrales de resultado del proyecto', () => {
+    expect(getTestOutcome(TEST_RESULT_THRESHOLDS.passed)).toBe('good');
+    expect(getTestOutcome(TEST_RESULT_THRESHOLDS.passed - 1)).toBe('bad');
+    expect(getTestOutcome(TEST_RESULT_THRESHOLDS.veryBad - 1)).toBe('very-bad');
+  });
+});
+
+describe('getResultModalMessage', () => {
+  it('muestra resultado positivo con emoji de exito cuando alcanza el minimo', () => {
+    expect(getResultModalMessage(TEST_RESULT_THRESHOLDS.passed)).toEqual({
+      title: 'Salio bien',
+      emoji: '🙌',
+    });
+  });
+
+  it('muestra resultado negativo con emoji de frustracion cuando no alcanza el minimo', () => {
+    expect(getResultModalMessage(TEST_RESULT_THRESHOLDS.passed - 1)).toEqual({
+      title: 'Salio mal',
+      emoji: '🫠',
+    });
   });
 });
