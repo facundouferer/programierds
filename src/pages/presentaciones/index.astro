@@ -37,6 +37,78 @@ const presentations = [
 		description: 'Subprogramas, Funciones y Procedimientos',
 		url: getRelativePath('/presentaciones/modularidad_en_c'),
 	},
+	{
+		file: 'while_loop.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'While paso a paso',
+		description: 'Simula iteracion por iteracion un while, destacando lineas y salida por consola.',
+		url: getRelativePath('/presentaciones/while-paso-a-paso'),
+	},
+	{
+		file: 'do_while_loop.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'Do-while paso a paso',
+		description: 'Visualiza la logica del do-while paso por paso con linea activa y consola simulada.',
+		url: getRelativePath('/presentaciones/do-while-paso-a-paso'),
+	},
+	{
+		file: 'for_loop.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'For paso a paso',
+		description: 'Recorre inicializacion, condicion, bloque e incremento de un ciclo for en cada paso.',
+		url: getRelativePath('/presentaciones/for-paso-a-paso'),
+	},
+	{
+		file: 'nested_for_table.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'For anidado y tabla de multiplicar',
+		description: 'Muestra como dos for anidados completan una tabla de multiplicar con avance controlado.',
+		url: getRelativePath('/presentaciones/for-anidado-tabla-multiplicar'),
+	},
+	{
+		file: 'if_condition.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'If paso a paso',
+		description: 'Explica el flujo de un if linea por linea, mostrando condicion y variables en vivo.',
+		url: getRelativePath('/presentaciones/if-paso-a-paso'),
+	},
+	{
+		file: 'if_else_condition.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'If-else paso a paso',
+		description: 'Muestra como el programa elige entre if y else segun el resultado de la condicion.',
+		url: getRelativePath('/presentaciones/if-else-paso-a-paso'),
+	},
+	{
+		file: 'switch_case.js',
+		tag: 'Algoritmos',
+		tagClass: 'text-primary bg-primary/10 border-primary/20',
+		title: 'Switch paso a paso',
+		description: 'Recorre comparacion de cases, match y break de un switch con consola simulada.',
+		url: getRelativePath('/presentaciones/switch-paso-a-paso'),
+	},
+	{
+		file: 'string_methods.js',
+		tag: 'Javascript',
+		tagClass: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
+		title: 'String paso a paso',
+		description: 'Visualiza como cambian las variables al usar length, toUpperCase y slice en strings.',
+		url: getRelativePath('/presentaciones/string-paso-a-paso'),
+	},
+	{
+		file: 'string_numbers.js',
+		tag: 'Javascript',
+		tagClass: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
+		title: 'String de numeros paso a paso',
+		description: 'Diferencia concat vs suma numerica real con Number() y parseInt() paso a paso.',
+		url: getRelativePath('/presentaciones/string-numeros-paso-a-paso'),
+	},
 ];
 
 const categories = [
@@ -129,7 +201,11 @@ const categories = [
 
 				<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="cards-grid">
 					{presentations.map((pres) => (
-						<div class="group flex flex-col bg-background-dark border border-primary/30 rounded-lg overflow-hidden glow-card" data-tag={pres.tag}>
+						<a
+							class="group flex flex-col bg-background-dark border border-primary/30 rounded-lg overflow-hidden glow-card focus:outline-none focus:ring-2 focus:ring-primary/60"
+							href={pres.url || '#'}
+							data-tag={pres.tag}
+						>
 							<div class="bg-background-dark/80 px-4 py-2 flex items-center justify-between border-b border-primary/20">
 								<div class="flex items-center gap-1.5">
 									<div class="size-2.5 rounded-full bg-red-500/50 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
@@ -145,12 +221,12 @@ const categories = [
 								<h3 class="font-mono text-lg font-bold text-white mb-4 group-hover:text-primary transition-colors">{pres.title}</h3>
 								<p class="text-sm text-slate-300 font-mono leading-relaxed flex-1">{pres.description}</p>
 								<div class="mt-6 flex items-center justify-end border-t border-primary/10 pt-4">
-									<a class="font-mono text-xs font-bold text-primary flex items-center gap-1 hover:translate-x-1 transition-transform" href={pres.url || '#'}>
+									<span class="font-mono text-xs font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
 										[ EXECUTE ]
-									</a>
+									</span>
 								</div>
 							</div>
-						</div>
+						</a>
 					))}
 				</div>
 
