@@ -256,12 +256,12 @@ import { getRelativePath } from '../../utils/paths';
 						<span class="badge" id="line-badge">Línea activa: 1</span>
 					</div>
 					<div class="code-panel">
-						<div class="code-row" data-line="1"><span class="line-number">1</span><span>let i = 1;</span></div>
+						<div class="code-row" data-line="1"><span class="line-number">1</span><span>int i = 1;</span></div>
 						<div class="code-row" data-line="2"><span class="line-number">2</span><span>while (i &lt;= 4) &#123;</span></div>
-						<div class="code-row" data-line="3"><span class="line-number">3</span><span>&nbsp;&nbsp;console.log(`Iteracion ${'{'}i{'}'}`);</span></div>
+						<div class="code-row" data-line="3"><span class="line-number">3</span><span>&nbsp;&nbsp;printf("Iteracion %d\n", i);</span></div>
 						<div class="code-row" data-line="4"><span class="line-number">4</span><span>&nbsp;&nbsp;i = i + 1;</span></div>
 						<div class="code-row" data-line="5"><span class="line-number">5</span><span>&#125;</span></div>
-						<div class="code-row" data-line="6"><span class="line-number">6</span><span>console.log('Fin del ciclo');</span></div>
+						<div class="code-row" data-line="6"><span class="line-number">6</span><span>printf("Fin del ciclo\n");</span></div>
 					</div>
 
 					<div class="step-copy" id="step-copy">
@@ -303,7 +303,7 @@ import { getRelativePath } from '../../utils/paths';
 					</div>
 					<div class="console-window">
 						<div class="console-head">
-							<span>node while-demo.js</span>
+							<span>./while-demo</span>
 							<span>stdout</span>
 						</div>
 						<div class="console-body" id="console-body"></div>
@@ -330,7 +330,7 @@ import { getRelativePath } from '../../utils/paths';
 		const steps: Step[] = [
 			{ line: 1, message: 'Paso 1: Arranca el programa y crea la variable i con valor 1.', iValue: 1, iterations: 0, condition: '-', consoleLines: [] },
 			{ line: 2, message: 'Paso 2: Evalua while (i <= 4). Como i vale 1, la condicion da true y entra al bloque.', iValue: 1, iterations: 0, condition: 'true', consoleLines: [] },
-			{ line: 3, message: 'Paso 3: Ejecuta console.log de la iteracion actual.', iValue: 1, iterations: 1, condition: 'true', consoleLines: ['Iteracion 1'] },
+			{ line: 3, message: 'Paso 3: Ejecuta printf para mostrar la iteracion actual.', iValue: 1, iterations: 1, condition: 'true', consoleLines: ['Iteracion 1'] },
 			{ line: 4, message: 'Paso 4: Incrementa i en 1. Ahora i vale 2.', iValue: 2, iterations: 1, condition: 'true', consoleLines: ['Iteracion 1'] },
 			{ line: 2, message: 'Paso 5: Vuelve al while. 2 <= 4, asi que true y repite.', iValue: 2, iterations: 1, condition: 'true', consoleLines: ['Iteracion 1'] },
 			{ line: 3, message: 'Paso 6: Segunda vuelta: imprime en consola la iteracion 2.', iValue: 2, iterations: 2, condition: 'true', consoleLines: ['Iteracion 1', 'Iteracion 2'] },

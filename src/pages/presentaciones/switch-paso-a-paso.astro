@@ -57,18 +57,18 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="sw-card sw-code">
 					<div class="sw-head"><strong>1) Codigo</strong><span class="sw-badge" id="sw-line">Linea activa: 1</span></div>
 					<div class="sw-panel">
-						<div class="sw-row" data-line="1"><span class="sw-ln">1</span><span>const dia = 'martes';</span></div>
+						<div class="sw-row" data-line="1"><span class="sw-ln">1</span><span>char dia[] = "martes";</span></div>
 						<div class="sw-row" data-line="2"><span class="sw-ln">2</span><span>switch (dia) &#123;</span></div>
 						<div class="sw-row" data-line="3"><span class="sw-ln">3</span><span>&nbsp;&nbsp;case 'lunes':</span></div>
-						<div class="sw-row" data-line="4"><span class="sw-ln">4</span><span>&nbsp;&nbsp;&nbsp;&nbsp;console.log('Comienza la semana');</span></div>
+						<div class="sw-row" data-line="4"><span class="sw-ln">4</span><span>&nbsp;&nbsp;&nbsp;&nbsp;printf("Comienza la semana\n");</span></div>
 						<div class="sw-row" data-line="5"><span class="sw-ln">5</span><span>&nbsp;&nbsp;&nbsp;&nbsp;break;</span></div>
 						<div class="sw-row" data-line="6"><span class="sw-ln">6</span><span>&nbsp;&nbsp;case 'martes':</span></div>
-						<div class="sw-row" data-line="7"><span class="sw-ln">7</span><span>&nbsp;&nbsp;&nbsp;&nbsp;console.log('Seguimos con energia');</span></div>
+						<div class="sw-row" data-line="7"><span class="sw-ln">7</span><span>&nbsp;&nbsp;&nbsp;&nbsp;printf("Seguimos con energia\n");</span></div>
 						<div class="sw-row" data-line="8"><span class="sw-ln">8</span><span>&nbsp;&nbsp;&nbsp;&nbsp;break;</span></div>
 						<div class="sw-row" data-line="9"><span class="sw-ln">9</span><span>&nbsp;&nbsp;default:</span></div>
-						<div class="sw-row" data-line="10"><span class="sw-ln">10</span><span>&nbsp;&nbsp;&nbsp;&nbsp;console.log('Dia no contemplado');</span></div>
+						<div class="sw-row" data-line="10"><span class="sw-ln">10</span><span>&nbsp;&nbsp;&nbsp;&nbsp;printf("Dia no contemplado\n");</span></div>
 						<div class="sw-row" data-line="11"><span class="sw-ln">11</span><span>&#125;</span></div>
-						<div class="sw-row" data-line="12"><span class="sw-ln">12</span><span>console.log('Fin del switch');</span></div>
+						<div class="sw-row" data-line="12"><span class="sw-ln">12</span><span>printf("Fin del switch\n");</span></div>
 					</div>
 					<div class="sw-copy" id="sw-copy"><strong>Paso 1:</strong> Se define <code>dia</code> como 'martes'.</div>
 					<div class="sw-track"><div class="sw-fill" id="sw-fill"></div></div>
@@ -91,7 +91,7 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="sw-card sw-console">
 					<div class="sw-head"><strong>3) Consola simulada</strong></div>
 					<div class="sw-console-win">
-						<div class="sw-console-head"><span>node switch-demo.js</span><span>stdout</span></div>
+						<div class="sw-console-head"><span>./switch-demo</span><span>stdout</span></div>
 						<div class="sw-console-body" id="sw-console"></div>
 					</div>
 				</article>

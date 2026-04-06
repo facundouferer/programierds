@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getRelativePath } from '../../utils/paths';
 ---
 
-<Layout title="Tipos de Datos en JavaScript - Programierds Retro View">
+<Layout title="Tipos de Datos en C - Programierds Retro View">
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap');
 
@@ -644,7 +644,7 @@ import { getRelativePath } from '../../utils/paths';
 							&gt; Tipos de Datos
 						</h1>
 						<h1 class="intro-title uppercase tracking-tight mb-8" style="color: rgba(13,242,89,0.6)">
-							en JavaScript
+							en C
 						</h1>
 					</div>
 
@@ -676,19 +676,19 @@ import { getRelativePath } from '../../utils/paths';
 						<!-- Primitivos -->
 						<div class="split-col flex-1 anim-item" style="--delay: 150ms">
 							<h3 class="font-retro text-3xl mb-2 text-center">Primitivos</h3>
-							<p class="text-xs text-center opacity-50 mb-6">Valores simples, inmutables, copiados por valor</p>
+							<p class="text-xs text-center opacity-50 mb-6">Valores simples, copiados por valor</p>
 							<div class="flex flex-wrap justify-center gap-1 mb-6">
-								<span class="prim-badge anim-item" style="--delay: 250ms">string</span>
-								<span class="prim-badge anim-item" style="--delay: 320ms">number</span>
+								<span class="prim-badge anim-item" style="--delay: 250ms">char</span>
+								<span class="prim-badge anim-item" style="--delay: 320ms">int</span>
 								<span class="prim-badge anim-item" style="--delay: 390ms">boolean</span>
-								<span class="prim-badge anim-item" style="--delay: 460ms">undefined</span>
-								<span class="prim-badge anim-item" style="--delay: 530ms">null</span>
-								<span class="prim-badge anim-item" style="--delay: 600ms">symbol</span>
-								<span class="prim-badge anim-item" style="--delay: 670ms">bigint</span>
+								<span class="prim-badge anim-item" style="--delay: 460ms">float</span>
+								<span class="prim-badge anim-item" style="--delay: 530ms">double</span>
+								<span class="prim-badge anim-item" style="--delay: 600ms">char *</span>
+								<span class="prim-badge anim-item" style="--delay: 670ms">size_t</span>
 							</div>
 							<div class="code-block text-xs">
-								<span class="code-keyword">let</span> x = <span class="code-number">42</span>;<br>
-								<span class="code-keyword">let</span> y = x; <span class="code-comment">// copia del valor</span><br>
+								<span class="code-type">int</span> x = <span class="code-number">42</span>;<br>
+								<span class="code-type">int</span> y = x; <span class="code-comment">// copia del valor</span><br>
 								y = <span class="code-number">99</span>;<br>
 								<span class="code-comment">// x sigue siendo 42</span>
 							</div>
@@ -697,20 +697,20 @@ import { getRelativePath } from '../../utils/paths';
 						<!-- Objetos -->
 						<div class="split-col flex-1 anim-item" style="--delay: 300ms">
 							<h3 class="font-retro text-3xl mb-2 text-center" style="color: #93c5fd">Objetos</h3>
-							<p class="text-xs text-center opacity-50 mb-6">Estructuras complejas, copiados por referencia</p>
+							<p class="text-xs text-center opacity-50 mb-6">Estructuras complejas, manipuladas mediante direcciones</p>
 							<div class="flex flex-wrap justify-center gap-1 mb-6">
-								<span class="obj-badge anim-item" style="--delay: 400ms">Object</span>
-								<span class="obj-badge anim-item" style="--delay: 470ms">Array</span>
-								<span class="obj-badge anim-item" style="--delay: 540ms">Function</span>
-								<span class="obj-badge anim-item" style="--delay: 610ms">Date</span>
-								<span class="obj-badge anim-item" style="--delay: 680ms">RegExp</span>
-								<span class="obj-badge anim-item" style="--delay: 750ms">Map / Set</span>
+								<span class="obj-badge anim-item" style="--delay: 400ms">struct</span>
+								<span class="obj-badge anim-item" style="--delay: 470ms">array</span>
+								<span class="obj-badge anim-item" style="--delay: 540ms">funcion</span>
+								<span class="obj-badge anim-item" style="--delay: 610ms">union</span>
+								<span class="obj-badge anim-item" style="--delay: 680ms">enum</span>
+								<span class="obj-badge anim-item" style="--delay: 750ms">pointer</span>
 							</div>
 							<div class="code-block text-xs">
-								<span class="code-keyword">let</span> a = &lbrace; score: <span class="code-number">42</span> &rbrace;;<br>
-								<span class="code-keyword">let</span> b = a; <span class="code-comment">// referencia!</span><br>
-								b.score = <span class="code-number">99</span>;<br>
-								<span class="code-comment">// a.score también es 99</span>
+								<span class="code-keyword">struct</span> Punto a = &lbrace; <span class="code-number">42</span> &rbrace;;<br>
+								<span class="code-keyword">struct</span> Punto *b = &amp;a; <span class="code-comment">// direccion de memoria</span><br>
+								b-&gt;score = <span class="code-number">99</span>;<br>
+								<span class="code-comment">// a.score tambi&eacute;n es 99</span>
 							</div>
 						</div>
 					</div>
@@ -726,24 +726,24 @@ import { getRelativePath } from '../../utils/paths';
 						<div>
 							<div class="anim-item mb-4" style="--delay: 0ms">
 								<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPO_01</span>
-								<h2 class="font-retro text-5xl uppercase tracking-tight">String</h2>
-								<p class="text-sm opacity-60 mt-1">Cadenas de texto — secuencia de caracteres Unicode</p>
+								<h2 class="font-retro text-5xl uppercase tracking-tight">char[]</h2>
+								<p class="text-sm opacity-60 mt-1">Cadenas de texto — arreglos de caracteres terminados en null</p>
 							</div>
 
 							<div class="anim-item mb-6" style="--delay: 150ms">
 								<ul class="space-y-3 text-sm opacity-80">
-									<li class="flex items-start gap-2"><span class="text-primary">›</span> Delimitado por <code class="code-block px-2 py-0.5 text-xs">" "</code>, <code class="code-block px-2 py-0.5 text-xs">' '</code> o <code class="code-block px-2 py-0.5 text-xs">` `</code></li>
-									<li class="flex items-start gap-2"><span class="text-primary">›</span> Los backticks permiten <strong>template literals</strong></li>
-									<li class="flex items-start gap-2"><span class="text-primary">›</span> Inmutable: no podés cambiar un char individualmente</li>
+									<li class="flex items-start gap-2"><span class="text-primary">›</span> Se declaran con comillas dobles y se guardan como <code class="code-block px-2 py-0.5 text-xs">char[]</code> o <code class="code-block px-2 py-0.5 text-xs">char *</code></li>
+									<li class="flex items-start gap-2"><span class="text-primary">›</span> El final del string se marca con <strong>\0</strong></li>
+									<li class="flex items-start gap-2"><span class="text-primary">›</span> Mutable si trabaj&aacute;s con un arreglo propio de chars</li>
 								</ul>
 							</div>
 
 							<div class="anim-item code-block text-xs" style="--delay: 300ms">
-								<span class="code-keyword">const</span> nombre = <span class="code-string">"Ana"</span>;<br>
-								<span class="code-keyword">const</span> saludo = <span class="code-string">`Hola, $&#x7B;nombre&#x7D;!`</span>;<br>
-								<span class="code-keyword">typeof</span> nombre; <span class="code-comment">// "string"</span><br>
-								nombre.length; <span class="code-comment">// 3</span><br>
-								nombre[<span class="code-number">0</span>]; <span class="code-comment">// "A"</span>
+								<span class="code-type">char</span> nombre[] = <span class="code-string">"Ana"</span>;<br>
+								<span class="code-type">char</span> saludo[] = <span class="code-string">"Hola, Ana!"</span>;<br>
+								<span class="code-type">size_t</span> largo = strlen(nombre); <span class="code-comment">// 3</span><br>
+								nombre[<span class="code-number">0</span>]; <span class="code-comment">// 'A'</span><br>
+								nombre[<span class="code-number">1</span>] = <span class="code-string">'n'</span>;
 							</div>
 						</div>
 
@@ -754,7 +754,7 @@ import { getRelativePath } from '../../utils/paths';
 								<div id="typed-hello" class="font-retro text-5xl text-center" style="min-width: 200px; min-height: 60px;"></div>
 								<span class="quote-anim quote-right font-retro text-8xl text-primary">&rdquo;</span>
 							</div>
-							<p class="text-xs opacity-40 mt-4">cada letra es un character en memoria</p>
+							<p class="text-xs opacity-40 mt-4">cada letra ocupa una celda consecutiva en memoria</p>
 							<div class="flex gap-1 mt-4" id="char-boxes"></div>
 						</div>
 					</div>
@@ -774,7 +774,7 @@ import { getRelativePath } from '../../utils/paths';
 								<div class="orbit-ring" style="width:70%;height:70%;top:15%;left:15%;"></div>
 
 								<div class="orbit-center">
-									<div>Number</div>
+									<div>int / float</div>
 									<div style="font-size:0.7rem; opacity:0.5">IEEE 754</div>
 								</div>
 
@@ -798,27 +798,27 @@ import { getRelativePath } from '../../utils/paths';
 							<div class="anim-item mb-4" style="--delay: 0ms">
 								<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPO_02</span>
 								<h2 class="font-retro text-5xl uppercase tracking-tight">Number</h2>
-								<p class="text-sm opacity-60 mt-1">Un solo tipo para todos los números</p>
+								<p class="text-sm opacity-60 mt-1">C distingue enteros y flotantes</p>
 							</div>
 
 							<div class="anim-item mb-6" style="--delay: 150ms">
 								<div class="type-card mb-3">
 									<p class="text-xs opacity-50 mb-1">CLAVE</p>
-									<p class="text-sm">JS NO tiene <code class="text-yellow-400">int</code> ni <code class="text-yellow-400">float</code>. Solo <strong>number</strong> (IEEE 754 de 64 bits).</p>
+									<p class="text-sm">C S&Iacute; tiene <code class="text-yellow-400">int</code>, <code class="text-yellow-400">float</code>, <code class="text-yellow-400">double</code> y m&aacute;s.</p>
 								</div>
 								<div class="type-card mb-3">
 									<p class="text-xs opacity-50 mb-1">CASOS ESPECIALES</p>
-									<p class="text-sm"><code class="text-red-400">NaN</code> — "Not a Number" (resultado de operación inválida)</p>
-									<p class="text-sm"><code class="text-blue-400">Infinity</code> — división por cero</p>
+									<p class="text-sm"><code class="text-red-400">overflow</code> — resultado fuera del rango esperado</p>
+									<p class="text-sm"><code class="text-blue-400">precision</code> — cuidado con floats y doubles</p>
 								</div>
 							</div>
 
 							<div class="anim-item code-block text-xs" style="--delay: 300ms">
-								<span class="code-keyword">typeof</span> <span class="code-number">42</span>; <span class="code-comment">// "number"</span><br>
-								<span class="code-keyword">typeof</span> <span class="code-number">3.14</span>; <span class="code-comment">// "number"</span><br>
-								<span class="code-keyword">typeof</span> <span class="code-string">NaN</span>; <span class="code-comment">// "number" (!)</span><br>
-								<span class="code-number">1</span> / <span class="code-number">0</span>; <span class="code-comment">// Infinity</span><br>
-								<span class="code-string">Number</span>(<span class="code-string">"abc"</span>); <span class="code-comment">// NaN</span>
+								<span class="code-type">int</span> entero = <span class="code-number">42</span>;<br>
+								<span class="code-type">float</span> decimal = <span class="code-number">3.14f</span>;<br>
+								<span class="code-type">double</span> grande = <span class="code-number">3.1415926535</span>;<br>
+								<span class="code-type">int</span> division = <span class="code-number">7</span> / <span class="code-number">2</span>; <span class="code-comment">// 3</span><br>
+								<span class="code-type">double</span> precisa = <span class="code-number">7.0</span> / <span class="code-number">2.0</span>; <span class="code-comment">// 3.5</span>
 							</div>
 						</div>
 					</div>
@@ -1082,7 +1082,7 @@ import { getRelativePath } from '../../utils/paths';
 								</div>
 								<div class="coercion-row coercion-bad-row">
 									<span>[] + {}</span><span class="opacity-40">=</span>
-									<span style="color:#ef4444; font-size:1.1rem">"[object Object]"</span>
+									<span style="color:#ef4444; font-size:1.1rem">"[object struct]"</span>
 								</div>
 								<div class="coercion-row coercion-bad-row">
 									<span>{} + []</span><span class="opacity-40">=</span>

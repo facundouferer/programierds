@@ -59,13 +59,13 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="ife-card ife-code">
 					<div class="ife-head"><strong>1) Codigo</strong><span class="ife-badge" id="ife-line">Linea activa: 1</span></div>
 					<div class="ife-panel">
-						<div class="ife-row" data-line="1"><span class="ife-ln">1</span><span>const edad = 16;</span></div>
+						<div class="ife-row" data-line="1"><span class="ife-ln">1</span><span>int edad = 16;</span></div>
 						<div class="ife-row" data-line="2"><span class="ife-ln">2</span><span>if (edad &gt;= 18) &#123;</span></div>
-						<div class="ife-row" data-line="3"><span class="ife-ln">3</span><span>&nbsp;&nbsp;console.log('Mayor de edad');</span></div>
+						<div class="ife-row" data-line="3"><span class="ife-ln">3</span><span>&nbsp;&nbsp;printf("Mayor de edad\n");</span></div>
 						<div class="ife-row" data-line="4"><span class="ife-ln">4</span><span>&#125; else &#123;</span></div>
-						<div class="ife-row" data-line="5"><span class="ife-ln">5</span><span>&nbsp;&nbsp;console.log('Menor de edad');</span></div>
+						<div class="ife-row" data-line="5"><span class="ife-ln">5</span><span>&nbsp;&nbsp;printf("Menor de edad\n");</span></div>
 						<div class="ife-row" data-line="6"><span class="ife-ln">6</span><span>&#125;</span></div>
-						<div class="ife-row" data-line="7"><span class="ife-ln">7</span><span>console.log('Fin del ejemplo');</span></div>
+						<div class="ife-row" data-line="7"><span class="ife-ln">7</span><span>printf("Fin del ejemplo\n");</span></div>
 					</div>
 					<div class="ife-copy" id="ife-copy"><strong>Paso 1:</strong> Se crea la variable <code>edad</code> en 16.</div>
 					<div class="ife-track"><div class="ife-fill" id="ife-fill"></div></div>
@@ -88,7 +88,7 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="ife-card ife-console">
 					<div class="ife-head"><strong>3) Consola simulada</strong></div>
 					<div class="ife-console-win">
-						<div class="ife-console-head"><span>node if-else-demo.js</span><span>stdout</span></div>
+						<div class="ife-console-head"><span>./if-else-demo</span><span>stdout</span></div>
 						<div class="ife-console-body" id="ife-console"></div>
 					</div>
 				</article>
@@ -103,7 +103,7 @@ import { getRelativePath } from '../../utils/paths';
 			{ line: 1, message: 'Se declara edad con valor 16.', edad: 16, cond: '-', logs: [] },
 			{ line: 2, message: 'Evalua condicion: 16 >= 18 da false.', edad: 16, cond: 'false', logs: [] },
 			{ line: 4, message: 'Como dio false, salta al bloque else.', edad: 16, cond: 'false', logs: [] },
-			{ line: 5, message: 'Ejecuta el console.log del else.', edad: 16, cond: 'false', logs: ['Menor de edad'] },
+			{ line: 5, message: 'Ejecuta el printf del else.', edad: 16, cond: 'false', logs: ['Menor de edad'] },
 			{ line: 6, message: 'Cierra el bloque else.', edad: 16, cond: 'false', logs: ['Menor de edad'] },
 			{ line: 7, message: 'Sigue el flujo normal del programa.', edad: 16, cond: 'false', logs: ['Menor de edad', 'Fin del ejemplo'] },
 			{ line: 7, message: 'Resumen: el if no corrio porque la condicion era falsa.', edad: 16, cond: 'false', logs: ['Menor de edad', 'Fin del ejemplo'] },

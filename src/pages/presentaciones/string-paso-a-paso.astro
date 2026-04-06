@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getRelativePath } from '../../utils/paths';
 ---
 
-<Layout title="String paso a paso - Programierds">
+<Layout title="Strings en C paso a paso - Programierds">
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 		.st-screen {
@@ -50,20 +50,20 @@ import { getRelativePath } from '../../utils/paths';
 		<main class="st-shell">
 			<header class="mb-6">
 				<p class="st-badge">string / paso a paso</p>
-				<h1 class="st-title mt-3">String en JavaScript, linea por linea</h1>
-				<p class="st-sub mt-3">En este ejemplo ves <code>length</code>, <code>toUpperCase()</code> y <code>slice()</code> con el valor de cada variable en cada linea.</p>
+				<h1 class="st-title mt-3">Strings en C, linea por linea</h1>
+				<p class="st-sub mt-3">En este ejemplo ves <code>strlen()</code>, una copia en mayusculas y un recorte manual del string con el valor de cada variable en cada linea.</p>
 			</header>
 			<section class="st-grid" aria-live="polite">
 				<article class="st-card st-code">
 					<div class="st-head"><strong>1) Codigo</strong><span class="st-badge" id="st-line">Linea activa: 1</span></div>
 					<div class="st-panel">
-						<div class="st-row" data-line="1"><span class="st-ln">1</span><span>const texto = 'Programierds';</span></div>
-						<div class="st-row" data-line="2"><span class="st-ln">2</span><span>const largo = texto.length;</span></div>
-						<div class="st-row" data-line="3"><span class="st-ln">3</span><span>const mayus = texto.toUpperCase();</span></div>
-						<div class="st-row" data-line="4"><span class="st-ln">4</span><span>const parte = texto.slice(0, 4);</span></div>
-						<div class="st-row" data-line="5"><span class="st-ln">5</span><span>console.log(largo);</span></div>
-						<div class="st-row" data-line="6"><span class="st-ln">6</span><span>console.log(mayus);</span></div>
-						<div class="st-row" data-line="7"><span class="st-ln">7</span><span>console.log(parte);</span></div>
+						<div class="st-row" data-line="1"><span class="st-ln">1</span><span>char texto[] = "Programierds";</span></div>
+						<div class="st-row" data-line="2"><span class="st-ln">2</span><span>int largo = strlen(texto);</span></div>
+						<div class="st-row" data-line="3"><span class="st-ln">3</span><span>char mayus[] = "PROGRAMIERDS";</span></div>
+						<div class="st-row" data-line="4"><span class="st-ln">4</span><span>char parte[5] = "Prog";</span></div>
+						<div class="st-row" data-line="5"><span class="st-ln">5</span><span>printf("%d\n", largo);</span></div>
+						<div class="st-row" data-line="6"><span class="st-ln">6</span><span>printf("%s\n", mayus);</span></div>
+						<div class="st-row" data-line="7"><span class="st-ln">7</span><span>printf("%s\n", parte);</span></div>
 					</div>
 					<div class="st-copy" id="st-copy"><strong>Paso 1:</strong> Se crea <code>texto</code> con 'Programierds'.</div>
 					<div class="st-track"><div class="st-fill" id="st-fill"></div></div>
@@ -88,7 +88,7 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="st-card st-console">
 					<div class="st-head"><strong>3) Consola simulada</strong></div>
 					<div class="st-console-win">
-						<div class="st-console-head"><span>node string-demo.js</span><span>stdout</span></div>
+						<div class="st-console-head"><span>./string-demo</span><span>stdout</span></div>
 						<div class="st-console-body" id="st-console"></div>
 					</div>
 				</article>
@@ -101,9 +101,9 @@ import { getRelativePath } from '../../utils/paths';
 		type Step = { line: number; message: string; texto: string; largo: string; mayus: string; parte: string; logs: string[] };
 		const baseSteps: Step[] = [
 			{ line: 1, message: 'Se define texto.', texto: 'Programierds', largo: '-', mayus: '-', parte: '-', logs: [] },
-			{ line: 2, message: 'Calcula length: Programierds tiene 11 caracteres.', texto: 'Programierds', largo: '11', mayus: '-', parte: '-', logs: [] },
-			{ line: 3, message: 'toUpperCase crea una nueva cadena en mayusculas.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: '-', logs: [] },
-			{ line: 4, message: 'slice(0,4) toma desde indice 0 hasta antes del 4.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: [] },
+			{ line: 2, message: 'Calcula strlen: Programierds tiene 11 caracteres.', texto: 'Programierds', largo: '11', mayus: '-', parte: '-', logs: [] },
+			{ line: 3, message: 'Se prepara una copia en mayusculas del string original.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: '-', logs: [] },
+			{ line: 4, message: 'Se arma un recorte manual con los primeros 4 caracteres.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: [] },
 			{ line: 5, message: 'Imprime largo.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11'] },
 			{ line: 6, message: 'Imprime mayus.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11', 'PROGRAMIERDS'] },
 			{ line: 7, message: 'Imprime parte.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11', 'PROGRAMIERDS', 'Prog'] },
