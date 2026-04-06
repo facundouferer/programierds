@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getRelativePath } from '../../utils/paths';
 ---
 
-<Layout title="String de numeros paso a paso - Programierds">
+<Layout title="Strings y numeros en C paso a paso - Programierds">
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 		.sn-screen {
@@ -50,21 +50,21 @@ import { getRelativePath } from '../../utils/paths';
 		<main class="sn-shell">
 			<header class="mb-6">
 				<p class="sn-badge">string de numeros / paso a paso</p>
-				<h1 class="sn-title mt-3">String de numeros y conversion</h1>
-				<p class="sn-sub mt-3">Aca aprendés la diferencia entre concatenar strings y sumar numeros reales usando <code>Number()</code> y <code>parseInt()</code>.</p>
+				<h1 class="sn-title mt-3">Strings y numeros en C</h1>
+				<p class="sn-sub mt-3">Aca aprendés la diferencia entre concatenar strings y sumar numeros reales usando <code>sprintf()</code> y <code>atoi()</code>.</p>
 			</header>
 			<section class="sn-grid" aria-live="polite">
 				<article class="sn-card sn-code">
 					<div class="sn-head"><strong>1) Codigo</strong><span class="sn-badge" id="sn-line">Linea activa: 1</span></div>
 					<div class="sn-panel">
-						<div class="sn-row" data-line="1"><span class="sn-ln">1</span><span>const a = '10';</span></div>
-						<div class="sn-row" data-line="2"><span class="sn-ln">2</span><span>const b = '5';</span></div>
-						<div class="sn-row" data-line="3"><span class="sn-ln">3</span><span>const concat = a + b;</span></div>
-						<div class="sn-row" data-line="4"><span class="sn-ln">4</span><span>const suma = Number(a) + Number(b);</span></div>
-						<div class="sn-row" data-line="5"><span class="sn-ln">5</span><span>const parcial = parseInt('20px', 10);</span></div>
-						<div class="sn-row" data-line="6"><span class="sn-ln">6</span><span>console.log(concat);</span></div>
-						<div class="sn-row" data-line="7"><span class="sn-ln">7</span><span>console.log(suma);</span></div>
-						<div class="sn-row" data-line="8"><span class="sn-ln">8</span><span>console.log(parcial);</span></div>
+						<div class="sn-row" data-line="1"><span class="sn-ln">1</span><span>char a[] = "10";</span></div>
+						<div class="sn-row" data-line="2"><span class="sn-ln">2</span><span>char b[] = "5";</span></div>
+						<div class="sn-row" data-line="3"><span class="sn-ln">3</span><span>char concat[] = "105";</span></div>
+						<div class="sn-row" data-line="4"><span class="sn-ln">4</span><span>int suma = atoi(a) + atoi(b);</span></div>
+						<div class="sn-row" data-line="5"><span class="sn-ln">5</span><span>int parcial = atoi("20px");</span></div>
+						<div class="sn-row" data-line="6"><span class="sn-ln">6</span><span>printf("%s\n", concat);</span></div>
+						<div class="sn-row" data-line="7"><span class="sn-ln">7</span><span>printf("%d\n", suma);</span></div>
+						<div class="sn-row" data-line="8"><span class="sn-ln">8</span><span>printf("%d\n", parcial);</span></div>
 					</div>
 					<div class="sn-copy" id="sn-copy"><strong>Paso 1:</strong> Se define a = '10'.</div>
 					<div class="sn-track"><div class="sn-fill" id="sn-fill"></div></div>
@@ -90,7 +90,7 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="sn-card sn-console">
 					<div class="sn-head"><strong>3) Consola simulada</strong></div>
 					<div class="sn-console-win">
-						<div class="sn-console-head"><span>node string-numeros-demo.js</span><span>stdout</span></div>
+						<div class="sn-console-head"><span>./string-numeros-demo</span><span>stdout</span></div>
 						<div class="sn-console-body" id="sn-console"></div>
 					</div>
 				</article>
@@ -111,14 +111,14 @@ import { getRelativePath } from '../../utils/paths';
 			logs: string[];
 		};
 		const baseSteps: Step[] = [
-			{ line: 1, message: 'Se define a como string numerico.', a: "'10'", b: '-', concat: '-', suma: '-', parcial: '-', logs: [] },
-			{ line: 2, message: 'Se define b como string numerico.', a: "'10'", b: "'5'", concat: '-', suma: '-', parcial: '-', logs: [] },
-			{ line: 3, message: 'a + b concatena strings, no suma numeros.', a: "'10'", b: "'5'", concat: "'105'", suma: '-', parcial: '-', logs: [] },
-			{ line: 4, message: 'Number(a) y Number(b) convierten a numero y ahora si suman.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '-', logs: [] },
-			{ line: 5, message: "parseInt('20px', 10) toma solo la parte numerica inicial.", a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: [] },
+			{ line: 1, message: 'Se define a como arreglo de chars con un numero.', a: "'10'", b: '-', concat: '-', suma: '-', parcial: '-', logs: [] },
+			{ line: 2, message: 'Se define b como otro arreglo de chars numerico.', a: "'10'", b: "'5'", concat: '-', suma: '-', parcial: '-', logs: [] },
+			{ line: 3, message: 'concat representa la concatenacion de ambos textos.', a: "'10'", b: "'5'", concat: "'105'", suma: '-', parcial: '-', logs: [] },
+			{ line: 4, message: 'atoi(a) y atoi(b) convierten a numero y ahora si suman.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '-', logs: [] },
+			{ line: 5, message: 'atoi(\"20px\") toma la parte numerica inicial hasta encontrar un caracter invalido.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: [] },
 			{ line: 6, message: 'Imprime concat.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105'] },
 			{ line: 7, message: 'Imprime suma numerica real.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15'] },
-			{ line: 8, message: 'Imprime resultado de parseInt.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15', '20'] },
+			{ line: 8, message: 'Imprime resultado de atoi.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15', '20'] },
 		];
 
 		const buildIntermediateSteps = (steps: Step[]): Step[] => {

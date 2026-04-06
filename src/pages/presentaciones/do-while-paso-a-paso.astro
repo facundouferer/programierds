@@ -83,12 +83,12 @@ import { getRelativePath } from '../../utils/paths';
 						<span class="dw-badge" id="dw-line">Linea activa: 1</span>
 					</div>
 					<div class="dw-code-panel">
-						<div class="dw-row" data-line="1"><span class="dw-ln">1</span><span>let i = 1;</span></div>
+						<div class="dw-row" data-line="1"><span class="dw-ln">1</span><span>int i = 1;</span></div>
 						<div class="dw-row" data-line="2"><span class="dw-ln">2</span><span>do &#123;</span></div>
-						<div class="dw-row" data-line="3"><span class="dw-ln">3</span><span>&nbsp;&nbsp;console.log(`Vuelta ${'{'}i{'}'}`);</span></div>
+						<div class="dw-row" data-line="3"><span class="dw-ln">3</span><span>&nbsp;&nbsp;printf("Vuelta %d\n", i);</span></div>
 						<div class="dw-row" data-line="4"><span class="dw-ln">4</span><span>&nbsp;&nbsp;i = i + 1;</span></div>
 						<div class="dw-row" data-line="5"><span class="dw-ln">5</span><span>&#125; while (i &lt;= 4);</span></div>
-						<div class="dw-row" data-line="6"><span class="dw-ln">6</span><span>console.log('Fin do-while');</span></div>
+						<div class="dw-row" data-line="6"><span class="dw-ln">6</span><span>printf("Fin do-while\n");</span></div>
 					</div>
 
 					<div class="dw-copy" id="dw-copy"><strong>Paso 1:</strong> Se declara <code>i</code> con valor 1.</div>
@@ -111,7 +111,7 @@ import { getRelativePath } from '../../utils/paths';
 				<article class="dw-card dw-console">
 					<div class="dw-head"><strong>3) Consola simulada</strong></div>
 					<div class="dw-console-win">
-						<div class="dw-console-head"><span>node do-while-demo.js</span><span>stdout</span></div>
+						<div class="dw-console-head"><span>./do-while-demo</span><span>stdout</span></div>
 						<div class="dw-console-body" id="dw-console"></div>
 					</div>
 				</article>

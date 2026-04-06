@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getRelativePath } from '../../utils/paths';
 ---
 
-<Layout title="Paso por Valor y Referencia en Java - Programierds">
+<Layout title="Paso por Valor y Punteros en C - Programierds">
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap');
 
@@ -184,7 +184,7 @@ import { getRelativePath } from '../../utils/paths';
 			width: 0;
 		}
 
-		.java-logo {
+		.c-logo {
 			font-family: 'VT323', monospace;
 			font-size: 7rem;
 			color: #f59e0b;
@@ -451,7 +451,7 @@ import { getRelativePath } from '../../utils/paths';
 		/* Responsive */
 		@media (max-width: 768px) {
 			.split-grid { flex-direction: column; }
-			.java-logo { font-size: 5rem; }
+			.c-logo { font-size: 5rem; }
 			.step-visual { flex-direction: column; align-items: center; }
 		}
 	</style>
@@ -469,11 +469,11 @@ import { getRelativePath } from '../../utils/paths';
 			<section class="section section-hidden" id="sec-intro">
 				<div class="section-inner text-center">
 					<div class="anim-item" style="--delay: 0ms">
-						<div class="text-xs tracking-widest opacity-40 mb-6 font-retro text-lg">PROGRAMIERDS_OS v1.0.4 // TOPIC: JAVA_MEMORY</div>
+						<div class="text-xs tracking-widest opacity-40 mb-6 font-retro text-lg">PROGRAMIERDS_OS v1.0.4 // TOPIC: C_MEMORY</div>
 					</div>
 
 					<div class="anim-item mb-4" style="--delay: 100ms">
-						<div class="java-logo">JAVA</div>
+						<div class="c-logo">C</div>
 					</div>
 
 					<div class="anim-item" style="--delay: 200ms">
@@ -487,7 +487,7 @@ import { getRelativePath } from '../../utils/paths';
 
 					<div class="anim-item flex justify-center mb-8" style="--delay: 400ms">
 						<p class="intro-subtitle" id="intro-subtitle">
-							En Java, todo se pasa por valor. Pero no es tan simple como suena.
+							En C, todo se pasa por valor. Los punteros hacen que parezca magia, pero siguen siendo copias de direcciones.
 						</p>
 					</div>
 
@@ -520,7 +520,7 @@ import { getRelativePath } from '../../utils/paths';
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">FUNDAMENTO</span>
 						<h2 class="font-retro text-5xl uppercase tracking-tight">Stack vs Heap</h2>
-						<p class="text-sm opacity-50 mt-2">Primero entend&eacute; c&oacute;mo Java organiza la memoria. Sin esto, nada de lo que viene tiene sentido.</p>
+						<p class="text-sm opacity-50 mt-2">Primero entend&eacute; c&oacute;mo C organiza la memoria. Sin esto, nada de lo que viene tiene sentido.</p>
 					</div>
 
 					<div class="flex gap-6 split-grid">
@@ -570,7 +570,7 @@ import { getRelativePath } from '../../utils/paths';
 								</div>
 								<div class="heap-object anim-item" style="--delay: 800ms">
 									<div class="heap-addr">0x3F0B</div>
-									<div class="font-retro text-xl" style="color: #f59e0b">String</div>
+									<div class="font-retro text-xl" style="color: #f59e0b">char *</div>
 									<div class="text-xs mt-1 opacity-70">"Hola"</div>
 								</div>
 							</div>
@@ -585,7 +585,7 @@ import { getRelativePath } from '../../utils/paths';
 					<div class="anim-item mt-6 type-card" style="--delay: 700ms">
 						<p class="text-xs opacity-50 mb-2">LA REGLA FUNDAMENTAL</p>
 						<p class="text-sm">
-							Cuando Java "pasa" algo a un m&eacute;todo, lo que viaja es el contenido de la casilla del Stack.
+							Cuando C pasa algo a una funci&oacute;n, lo que viaja es el contenido de la variable en el Stack.
 							Para primitivos eso es el <strong style="color: #f59e0b">valor directo</strong>.
 							Para objetos eso es la <strong style="color: #22d3ee">direcci&oacute;n de memoria</strong> (la referencia).
 							En AMBOS casos: se copia.
@@ -616,13 +616,13 @@ import { getRelativePath } from '../../utils/paths';
 								<br>
 								<span class="code-type">int</span> a = <span class="code-number">5</span>;<br>
 								<span class="code-result">cambiar</span>(a);<br>
-								System.out.println(a); <span class="code-comment">// 5 &larr; no cambi&oacute;</span>
+								printf("%d\n", a); <span class="code-comment">// 5 &larr; no cambi&oacute;</span>
 							</div>
 
 							<div class="anim-item type-card" style="--delay: 300ms">
 								<p class="text-xs opacity-50 mb-1">POR QU&Eacute;</p>
 								<p class="text-sm opacity-80">
-									Java copia el valor <span style="color: #f59e0b">5</span> en una nueva variable <span style="color: #f59e0b">x</span>.
+									C copia el valor <span style="color: #f59e0b">5</span> en una nueva variable <span style="color: #f59e0b">x</span>.
 									Cualquier cambio a <code style="color: #f59e0b">x</code> es local al m&eacute;todo.
 									<code style="color: var(--primary)">a</code> nunca se toca.
 								</p>
@@ -683,7 +683,7 @@ import { getRelativePath } from '../../utils/paths';
 								<br>
 								<span class="code-type">int</span>[] nums = &lbrace;<span class="code-number">1</span>,<span class="code-number">2</span>,<span class="code-number">3</span>&rbrace;;<br>
 								<span class="code-result">modificar</span>(nums);<br>
-								System.out.println(nums[<span class="code-number">0</span>]); <span class="code-comment">// 99!</span>
+								printf("%d\n", nums[<span class="code-number">0</span>]); <span class="code-comment">// 99!</span>
 							</div>
 
 							<div class="anim-item type-card" style="--delay: 300ms">
@@ -743,7 +743,7 @@ import { getRelativePath } from '../../utils/paths';
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<span class="text-xs tracking-widest font-retro text-lg" style="color: #ef4444">CASO 03 &mdash; LA PRUEBA</span>
 						<h2 class="font-retro text-5xl uppercase tracking-tight" style="color: #ef4444">Reasignar la Referencia</h2>
-						<p class="text-sm opacity-50 mt-2">Esto prueba QUE Java pasa referencias por valor</p>
+						<p class="text-sm opacity-50 mt-2">Esto prueba QUE C copia los punteros por valor</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
@@ -757,7 +757,7 @@ import { getRelativePath } from '../../utils/paths';
 								<br>
 								<span class="code-type">int</span>[] nums = &lbrace;<span class="code-number">1</span>,<span class="code-number">2</span>,<span class="code-number">3</span>&rbrace;;<br>
 								<span class="code-result">reasignar</span>(nums);<br>
-								System.out.println(nums[<span class="code-number">0</span>]); <span class="code-comment">// 1 &larr; no cambi&oacute;</span>
+								printf("%d\n", nums[<span class="code-number">0</span>]); <span class="code-comment">// 1 &larr; no cambi&oacute;</span>
 							</div>
 
 							<div class="anim-item type-card" style="--delay: 300ms">
@@ -766,7 +766,7 @@ import { getRelativePath } from '../../utils/paths';
 									<code style="color: #ef4444">arr = new int[]...</code> solo cambia a d&oacute;nde apunta la COPIA local.
 									La referencia original <code style="color: var(--primary)">nums</code> en el Stack del llamador
 									no se modifica. Sigue apuntando al objeto original.
-									<strong>Esta es la prueba de que Java pasa referencias POR VALOR.</strong>
+									<strong>Esta es la prueba de que en C los punteros tambi&eacute;n se pasan POR VALOR.</strong>
 								</p>
 							</div>
 						</div>
@@ -832,7 +832,7 @@ import { getRelativePath } from '../../utils/paths';
 							<h3 class="font-retro text-2xl mb-3" style="color: var(--primary)">&#10003; Modifica el campo</h3>
 							<div class="code-block text-xs mb-3">
 								<span class="code-keyword">class</span> <span class="code-class">Persona</span> &lbrace;<br>
-								&nbsp;&nbsp;<span class="code-type">String</span> nombre;<br>
+								&nbsp;&nbsp;<span class="code-type">char</span> nombre[<span class="code-number">20</span>];<br>
 								&rbrace;<br>
 								<br>
 								<span class="code-keyword">void</span> <span class="code-result">cambiarNombre</span>(<span class="code-class">Persona</span> p) &lbrace;<br>
@@ -881,38 +881,37 @@ import { getRelativePath } from '../../utils/paths';
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<span class="text-xs tracking-widest font-retro text-lg" style="color: #f59e0b">CASO ESPECIAL</span>
-						<h2 class="font-retro text-5xl uppercase tracking-tight">Strings son Inmutables</h2>
-						<p class="text-sm opacity-50 mt-2">En Java, String es un objeto especial. Jam&aacute;s cambia. Siempre crea uno nuevo.</p>
+						<h2 class="font-retro text-5xl uppercase tracking-tight">Strings en C: arreglos mutables</h2>
+						<p class="text-sm opacity-50 mt-2">En C, un arreglo de <code>char</code> se puede modificar car&aacute;cter por car&aacute;cter si ten&eacute;s memoria escribible.</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 						<div>
 							<div class="anim-item code-block text-xs mb-4" style="--delay: 150ms">
-								<span class="code-keyword">void</span> <span class="code-result">cambiar</span>(<span class="code-type">String</span> s) &lbrace;<br>
-								&nbsp;&nbsp;s = <span class="code-string">"Nuevo"</span>;<br>
-								&nbsp;&nbsp;<span class="code-comment">// Esto crea un NUEVO String</span><br>
-								&nbsp;&nbsp;<span class="code-comment">// s ahora apunta al nuevo objeto</span><br>
+								<span class="code-keyword">void</span> <span class="code-result">cambiar</span>(<span class="code-type">char</span> s[]) &lbrace;<br>
+								&nbsp;&nbsp;s[<span class="code-number">0</span>] = <span class="code-string">'Z'</span>;<br>
+								&nbsp;&nbsp;<span class="code-comment">// modifica el arreglo original</span><br>
 								&rbrace;<br>
 								<br>
-								<span class="code-type">String</span> nombre = <span class="code-string">"Ana"</span>;<br>
+								<span class="code-type">char</span> nombre[] = <span class="code-string">"Ana"</span>;<br>
 								<span class="code-result">cambiar</span>(nombre);<br>
-								System.out.println(nombre); <span class="code-comment">// "Ana"</span>
+								printf("%s\n", nombre); <span class="code-comment">// "Zna"</span>
 							</div>
 
 							<div class="anim-item mb-4" style="--delay: 300ms">
 								<div class="type-card mb-3">
 									<p class="text-xs opacity-50 mb-1">INMUTABILIDAD</p>
 									<p class="text-sm opacity-80">
-										<code style="color: #f59e0b">String</code> en Java es inmutable por dise&ntilde;o.
-										<code>s = "Nuevo"</code> NO modifica el String existente.
-										Crea un objeto nuevo en el heap y apunta la variable local a &eacute;l.
+										<code style="color: #f59e0b">char[]</code> en C es mutable si la memoria es escribible.
+										<code>s[0] = 'Z'</code> modifica el mismo arreglo recibido.
+										La funci&oacute;n escribe directamente sobre la misma memoria compartida.
 									</p>
 								</div>
 								<div class="type-card">
-									<p class="text-xs opacity-50 mb-1">STRING POOL</p>
+									<p class="text-xs opacity-50 mb-1">ARREGLO DE CHARS</p>
 									<p class="text-sm opacity-80">
-										Los strings literales van al String Pool (&aacute;rea especial del heap).
-										Us&aacute; <code>.equals()</code> para comparar contenido, nunca <code>==</code>.
+										Los literales suelen ser de solo lectura; si quer&eacute;s mutarlos, us&aacute; un arreglo de chars propio.
+										Us&aacute; <code>strcmp()</code> para comparar contenido, no compares direcciones si quer&eacute;s saber si dicen lo mismo.
 									</p>
 								</div>
 							</div>
@@ -941,7 +940,7 @@ import { getRelativePath } from '../../utils/paths';
 									<div class="memory-label" style="font-size: 1rem; margin-bottom: 8px">HEAP</div>
 									<div class="flex gap-4 flex-wrap">
 										<div class="heap-object">
-											<div class="heap-addr">0xA1B2 (String Pool)</div>
+											<div class="heap-addr">0xA1B2 (buffer char[])</div>
 											<div class="font-retro text-xl" style="color: var(--primary)">"Ana"</div>
 											<div class="text-xs opacity-50">original, inmutable</div>
 										</div>
@@ -991,7 +990,7 @@ import { getRelativePath } from '../../utils/paths';
 								<span style="color: #f59e0b">true</span>
 							</div>
 							<div class="stack-frame ref-frame anim-item" style="--delay: 550ms">
-								<span style="color: #22d3ee">String nombre</span>
+								<span style="color: #22d3ee">char nombre[]</span>
 								<span style="color: #22d3ee; font-size: 0.75rem">&#x2192; 0xA1B2</span>
 							</div>
 							<div class="stack-frame ref-frame anim-item" style="--delay: 650ms">
@@ -1016,7 +1015,7 @@ import { getRelativePath } from '../../utils/paths';
 							<div class="flex flex-wrap gap-2">
 								<div class="heap-object anim-item" style="--delay: 500ms">
 									<div class="heap-addr">0xA1B2</div>
-									<div class="font-retro text-lg" style="color: #f59e0b">String</div>
+									<div class="font-retro text-lg" style="color: #f59e0b">char[]</div>
 									<div class="text-xs opacity-70">"Ana"</div>
 								</div>
 								<div class="heap-object anim-item" style="--delay: 650ms">
@@ -1043,7 +1042,7 @@ import { getRelativePath } from '../../utils/paths';
 						<p class="text-xs opacity-50 mb-2">NOTA SOBRE PRIMITIVOS</p>
 						<p class="text-sm opacity-80">
 							Los primitivos (<code style="color: #f59e0b">int</code>, <code style="color: #f59e0b">double</code>, <code style="color: #f59e0b">boolean</code>, <code style="color: #f59e0b">char</code>, <code style="color: #f59e0b">long</code>, <code style="color: #f59e0b">float</code>, <code style="color: #f59e0b">short</code>, <code style="color: #f59e0b">byte</code>)
-							son los &Uacute;NICOS que viven directamente en el Stack. Todo lo dem&aacute;s &mdash; incluyendo <code style="color: #f59e0b">String</code>, arrays y cualquier clase custom &mdash; vive en el Heap.
+							son los &Uacute;NICOS que viven directamente en el Stack. Todo lo dem&aacute;s &mdash; incluyendo buffers din&aacute;micos, arrays reservados en heap y structs gestionados con punteros &mdash; vive en el Heap.
 						</p>
 					</div>
 				</div>
@@ -1066,8 +1065,8 @@ import { getRelativePath } from '../../utils/paths';
 							<div class="flex items-center gap-4">
 								<div class="rule-num" style="color: #f59e0b">01</div>
 								<div>
-									<p class="font-bold text-lg" style="color: #f59e0b">Java SIEMPRE pasa por valor</p>
-									<p class="text-sm opacity-70 mt-1">Sin excepciones. No existe "paso por referencia" en Java.</p>
+									<p class="font-bold text-lg" style="color: #f59e0b">C SIEMPRE pasa por valor</p>
+									<p class="text-sm opacity-70 mt-1">Sin excepciones. Los punteros no cambian esta regla: solo copian direcciones.</p>
 								</div>
 							</div>
 						</div>
@@ -1136,7 +1135,7 @@ import { getRelativePath } from '../../utils/paths';
 
 					<div class="anim-item mb-10" style="--delay: 300ms">
 						<p class="text-sm opacity-50">
-							Ahora sab&eacute;s la diferencia entre paso por valor y referencia en Java.<br>
+							Ahora sab&eacute;s la diferencia entre paso por valor y uso de punteros en C.<br>
 							No la vayas a confundir con "paso por referencia" de otros lenguajes.
 						</p>
 					</div>
@@ -1149,7 +1148,7 @@ import { getRelativePath } from '../../utils/paths';
 						</div>
 						<div class="type-card text-left" style="min-width: 200px; border-color: rgba(34,211,238,0.3); background: rgba(34,211,238,0.04)">
 							<p class="text-xs opacity-50 mb-1" style="color: #22d3ee">OBJETOS</p>
-							<p class="text-sm opacity-80">String, arrays, cualquier clase</p>
+							<p class="text-sm opacity-80">punteros, arrays, structs</p>
 							<p class="text-xs opacity-50 mt-1">&#x2192; copia de la referencia</p>
 						</div>
 					</div>

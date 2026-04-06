@@ -14,19 +14,19 @@ const presentations = [
 		url: getRelativePath('/presentaciones/variables_y_constantes'),
 	},
 	{
-		file: 'paso_por_valor_y_referencia.java',
-		tag: 'JAVA',
+		file: 'paso_por_valor_y_referencia.c',
+		tag: 'C',
 		tagClass: 'text-accent-blue bg-accent-blue/10 border-accent-blue/20',
 		title: 'Paso por valor y paso por referencia',
-		description: 'Descubre cómo Java maneja la memoria: primitivas copian su valor, objetros comparten su dirección.',
+		description: 'Descubre cómo C maneja memoria y punteros: los valores se copian y las direcciones también.',
 		url: getRelativePath('/presentaciones/paso_por_valor_y_referencia'),
 	},
 	{
-		file: 'tipos_de_datos.js',
-		tag: 'Javascript',
+		file: 'tipos_de_datos.c',
+		tag: 'C',
 		tagClass: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
 		title: 'Tipos de Datos',
-		description: 'Descubre los tipos primitivos y objetos que conforman el lenguaje.',
+		description: 'Descubre los tipos fundamentales de C: enteros, flotantes, chars, punteros y structs.',
 		url: getRelativePath('/presentaciones/tipos_de_datos_en_javascript'),
 	},
 	{
@@ -38,7 +38,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/modularidad_en_c'),
 	},
 	{
-		file: 'while_loop.js',
+		file: 'while_loop.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'While paso a paso',
@@ -46,7 +46,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/while-paso-a-paso'),
 	},
 	{
-		file: 'do_while_loop.js',
+		file: 'do_while_loop.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'Do-while paso a paso',
@@ -54,7 +54,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/do-while-paso-a-paso'),
 	},
 	{
-		file: 'for_loop.js',
+		file: 'for_loop.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'For paso a paso',
@@ -62,7 +62,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/for-paso-a-paso'),
 	},
 	{
-		file: 'nested_for_table.js',
+		file: 'nested_for_table.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'For anidado y tabla de multiplicar',
@@ -70,7 +70,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/for-anidado-tabla-multiplicar'),
 	},
 	{
-		file: 'if_condition.js',
+		file: 'if_condition.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'If paso a paso',
@@ -78,7 +78,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/if-paso-a-paso'),
 	},
 	{
-		file: 'if_else_condition.js',
+		file: 'if_else_condition.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'If-else paso a paso',
@@ -86,7 +86,7 @@ const presentations = [
 		url: getRelativePath('/presentaciones/if-else-paso-a-paso'),
 	},
 	{
-		file: 'switch_case.js',
+		file: 'switch_case.c',
 		tag: 'Algoritmos',
 		tagClass: 'text-primary bg-primary/10 border-primary/20',
 		title: 'Switch paso a paso',
@@ -94,19 +94,19 @@ const presentations = [
 		url: getRelativePath('/presentaciones/switch-paso-a-paso'),
 	},
 	{
-		file: 'string_methods.js',
-		tag: 'Javascript',
+		file: 'string_methods.c',
+		tag: 'C',
 		tagClass: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
 		title: 'String paso a paso',
-		description: 'Visualiza como cambian las variables al usar length, toUpperCase y slice en strings.',
+		description: 'Visualiza como cambian las variables al usar strlen, buffers y recortes manuales en C.',
 		url: getRelativePath('/presentaciones/string-paso-a-paso'),
 	},
 	{
-		file: 'string_numbers.js',
-		tag: 'Javascript',
+		file: 'string_numbers.c',
+		tag: 'C',
 		tagClass: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20',
 		title: 'String de numeros paso a paso',
-		description: 'Diferencia concat vs suma numerica real con Number() y parseInt() paso a paso.',
+		description: 'Diferencia concatenaci&oacute;n textual vs suma real con sprintf y atoi paso a paso.',
 		url: getRelativePath('/presentaciones/string-numeros-paso-a-paso'),
 	},
 ];
@@ -114,8 +114,8 @@ const presentations = [
 const categories = [
 	{ label: '~/todos', filter: 'all' },
 	{ label: '~/algoritmos', filter: 'Algoritmos' },
-	{ label: '~/java', filter: 'JAVA' },
-	{ label: '~/javascript', filter: 'Javascript' },
+	
+	
 	{ label: '~/c', filter: 'C' },
 ];
 ---
