@@ -49,17 +49,18 @@ const nextSlug = next ? next.id.replace(courseSlug + '/', '') : null;
 <Layout title={`${chapter.data.title} - ${course.data.technology} - Programierds`}>
 	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
-		<main class="flex-1 flex">
+		<main class="flex flex-1 items-start">
 			<!-- Sidebar -->
-			<aside class="hidden lg:flex flex-col w-72 shrink-0 border-r border-primary/10 bg-background-dark/50">
-				<div class="sticky top-0 flex flex-col h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar">
-					<div class="p-4 border-b border-primary/10">
+			<div class="hidden lg:block lg:w-72 lg:shrink-0" aria-hidden="true"></div>
+			<aside class="hidden lg:fixed lg:left-0 lg:top-16 lg:z-40 lg:flex lg:h-[calc(100vh-4rem)] lg:w-72 lg:flex-col lg:border-r lg:border-primary/10 lg:bg-background-dark/95 lg:backdrop-blur-sm">
+				<div class="flex h-full flex-col overflow-hidden">
+					<div class="border-b border-primary/10 p-4">
 						<a href={getRelativePath(`/cursos/${courseSlug}`)} class="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors">
 							<Icon name="arrow_back" class="w-4 h-4" />
 							<span class="text-xs font-bold uppercase tracking-widest">{course.data.technology}</span>
 						</a>
 					</div>
-					<nav class="flex flex-col py-2">
+					<nav class="custom-scrollbar flex flex-1 flex-col overflow-y-auto py-2">
 						{chapters.map((ch, index) => {
 							const slug = ch.id.replace(courseSlug + '/', '');
 							const isActive = index === currentIndex;
@@ -97,6 +98,9 @@ const nextSlug = next ? next.id.replace(courseSlug + '/', '') : null;
 
 					<div class="mb-8">
 						<span class="text-sm text-slate-500">Lección {currentIndex + 1} de {totalChapters}</span>
+						<h1 class="mt-3 text-4xl font-black tracking-tight text-slate-900 dark:text-white lg:text-5xl">
+							{chapter.data.title}
+						</h1>
 					</div>
 
 					<article class="lesson-content prose prose-invert prose-lg max-w-none">

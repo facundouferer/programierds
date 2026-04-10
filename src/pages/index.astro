@@ -3,6 +3,37 @@ import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import { getRelativePath } from '../utils/paths';
+
+const quickLinks = [
+	{
+		title: 'Cursos',
+		description: 'Recorré todos los cursos y metete de lleno en la tecnología que quieras aprender.',
+		href: '/cursos',
+		icon: 'menu_book',
+		iconClasses: 'bg-primary/10 text-primary',
+	},
+	{
+		title: 'Test',
+		description: 'Poné a prueba lo que sabés con quizzes pensados para practicar y detectar huecos.',
+		href: '/test',
+		icon: 'description',
+		iconClasses: 'bg-accent-blue/10 text-accent-blue',
+	},
+	{
+		title: 'Presentaciones',
+		description: 'Accedé a las presentaciones de clase para repasar conceptos y seguir el ritmo.',
+		href: '/presentaciones',
+		icon: 'play_arrow',
+		iconClasses: 'bg-accent-brown/10 text-accent-brown',
+	},
+	{
+		title: 'Playground',
+		description: 'Experimentá código al toque en el editor y probá ideas sin vueltas.',
+		href: '/playground',
+		icon: 'terminal',
+		iconClasses: 'bg-primary/10 text-primary',
+	},
+];
 ---
 
 <Layout>
@@ -52,40 +83,23 @@ import { getRelativePath } from '../utils/paths';
 						</p>
 					</div>
 					</div>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-						<div class="group relative flex flex-col gap-6 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark p-8 hover:border-primary/50 transition-all">
-							<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-								<Icon name="code" class="w-6 h-6" />
-							</div>
-							<div>
-								<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Proyectos Reales</h3>
-								<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-									Nada de "Hola Mundo". Construye apps que la gente realmente usa y que harán brillar tu portafolio.
-								</p>
-							</div>
-						</div>
-						<div class="group relative flex flex-col gap-6 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark p-8 hover:border-primary/50 transition-all">
-							<div class="flex size-12 items-center justify-center rounded-lg bg-accent-blue/10 text-accent-blue">
-								<Icon name="groups" class="w-6 h-6" />
-							</div>
-							<div>
-								<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Comunidad</h3>
-								<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-									No estás solo en esto. Únete a miles de devs que comparten tus dudas y tus memes favoritos.
-								</p>
-							</div>
-						</div>
-						<div class="group relative flex flex-col gap-6 rounded-2xl border border-primary/10 bg-background-light dark:bg-background-dark p-8 hover:border-primary/50 transition-all">
-							<div class="flex size-12 items-center justify-center rounded-lg bg-accent-brown/10 text-accent-brown">
-								<Icon name="psychology" class="w-6 h-6" />
-							</div>
-							<div>
-								<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Mentores</h3>
-								<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-									Expertos que ya pasaron por el barro. Te darán feedback honesto y directo para que mejores rápido.
-								</p>
-							</div>
-						</div>
+					<div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+						{quickLinks.map((link) => (
+							<a
+								href={getRelativePath(link.href)}
+								class="group relative flex h-full flex-col gap-6 rounded-2xl border border-primary/10 bg-background-light p-8 transition-all hover:border-primary/50 hover:-translate-y-1 dark:bg-background-dark"
+							>
+								<div class={`flex size-12 items-center justify-center rounded-lg ${link.iconClasses}`}>
+									<Icon name={link.icon} class="h-6 w-6" />
+								</div>
+								<div>
+									<h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">{link.title}</h3>
+									<p class="leading-relaxed text-slate-600 dark:text-slate-400">
+										{link.description}
+									</p>
+								</div>
+							</a>
+						))}
 					</div>
 				</div>
 			</section>
