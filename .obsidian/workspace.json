@@ -4,19 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "2c824a2c5960be9d",
+        "id": "803870fcebfb7df0",
         "type": "tabs",
         "children": [
           {
-            "id": "67aad103ac9844f1",
+            "id": "a5bb888143e1a478",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "markdown",
               "state": {
-                "file": "docs/Apunte de C.pdf"
+                "file": "src/content/courses/c/02-procesos-y-estados.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-file-text",
-              "title": "Apunte de C"
+              "icon": "lucide-file",
+              "title": "02-procesos-y-estados"
             }
           }
         ]
@@ -76,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 317.5
   },
   "right": {
     "id": "fee19f9a51e0b344",
@@ -92,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "src/content/courses/c/02-procesos-y-estados.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -101,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for 02-procesos-y-estados"
             }
           },
           {
@@ -178,50 +181,50 @@
       "bases:Create new base": false
     }
   },
-  "active": "934995c6a903be93",
+  "active": "a5bb888143e1a478",
   "lastOpenFiles": [
-    "docs/Apunte de C.pdf",
-    "docs/programierds.md",
-    "docs/Contenido_Curso_C.md",
-    "docs/estructura-curso-c.md",
+    "src/content/courses/c/30-polimorfismo-y-herencia-simulados-en-c.md",
+    "src/content/courses/c/29-objetos-metodos-y-diseno-basado-en-struct.md",
+    "src/content/courses/c/28-encapsulacion-y-abstraccion-en-c.md",
+    "src/content/courses/c/27-introduccion-a-poo-en-c.md",
+    "src/content/courses/c/26-archivos.md",
+    "src/content/courses/c/25-recursividad.md",
+    "src/content/courses/c/24-variables-parametros-y-pasaje.md",
+    "src/content/courses/c/23-modularizacion-subprogramas-y-funciones.md",
+    "src/content/courses/c/31-polimorfismo-y-herencia-simulados-en-c.md",
+    "src/content/courses/c/30-objetos-metodos-y-diseno-basado-en-struct.md",
+    "src/content/courses/c/29-encapsulacion-y-abstraccion-en-c.md",
+    "src/content/courses/c/28-introduccion-a-poo-en-c.md",
+    "src/content/courses/c/27-archivos.md",
+    "src/content/courses/c/26-recursividad.md",
+    "src/content/courses/c/25-variables-parametros-y-pasaje.md",
+    "src/content/courses/c/24-modularizacion-subprogramas-y-funciones.md",
+    "src/content/courses/c/23-archivos.md",
+    "src/content/courses/c/22-arboles-binarios.md",
+    "src/content/courses/c/21-estructuras-dinamicas-colas.md",
+    "src/content/courses/c/20-estructuras-dinamicas-pilas.md",
+    "src/content/courses/c/19-estructuras-dinamicas-listas.md",
+    "src/content/courses/c/18-procedimientos-de-ordenacion-y-busqueda-binaria.md",
+    "src/content/courses/c/17-concepto-de-estructuras.md",
+    "src/content/courses/c/16-cadenas-de-caracteres-y-operaciones.md",
+    "src/content/courses/c/15-operaciones-con-arreglos.md",
+    "src/content/courses/c/14-arreglos-unidimensionales-y-multidimensionales.md",
     "docs/Java para Principiantes.pdf",
     "docs/JavaScript para Principiantes.pdf",
-    "src/content/courses/git/01-El prinicpio con git.md",
+    "docs/Apunte de C.pdf",
     "src/pages/presentaciones/funciones_y_procedimientos_java.astro",
-    "src/content/courses/git/03-Conflictos.md",
-    "src/content/courses/git/02-Bajar y subir cambios.md",
-    "src/content/courses/java/index.md",
     "dist/index.html",
     "dist/presentaciones/variables_y_constantes/index.html",
     "dist/presentaciones/tipos_de_datos_en_javascript/index.html",
     "dist/presentaciones/paso_por_valor_y_referencia/index.html",
     "dist/presentaciones/modularidad_en_c/index.html",
     "dist/presentaciones/variables_y_constantes",
-    "dist/presentaciones/tipos_de_datos_en_javascript",
     "dist/images/hero-workspace.jpg",
     "dist/favicon.svg",
     "src/content/courses/git/logo.svg",
-    "src/content/courses/git/index.md",
-    "docs/Issue Crear estructura base para cursos en carpeta.md",
-    "node_modules/playwright-core/README.md",
-    "node_modules/playwright/README.md",
     "node_modules/playwright-core/lib/server/chromium/appIcon.png",
     "node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
     "node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
-    "node_modules/playwright/lib/agents/playwright-test-planner.agent.md",
-    "node_modules/playwright/lib/agents/playwright-test-plan.prompt.md",
-    "node_modules/playwright/lib/agents/playwright-test-healer.agent.md",
-    "node_modules/playwright/lib/agents/playwright-test-heal.prompt.md",
-    "node_modules/playwright/lib/agents/playwright-test-generator.agent.md",
-    "node_modules/playwright/lib/agents/playwright-test-generate.prompt.md",
-    "node_modules/playwright/lib/agents/playwright-test-coverage.prompt.md",
-    "src/content/courses/c/16-archivos.md",
-    "src/content/courses/c/15-arboles-binarios.md",
-    "src/content/courses/c/14-listas-pilas-y-colas.md",
-    "src/content/courses/c/13-modularizacion.md",
-    "src/content/courses/c/12-estructuras.md",
-    "src/content/courses/c/11-funciones-y-recursividad.md",
-    "src/content/courses/c/10-busqueda-y-ordenamiento.md",
     "src/content/courses/c/logo.svg",
     "src/content/courses/javascript/logo.svg",
     "src/content/courses/java/logo.svg",
