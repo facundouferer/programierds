@@ -1,0 +1,534 @@
+---
+import {
+  formatCountdownTime,
+  formatDifficultyLabel,
+  TEST_RESULT_THRESHOLDS,
+  type CodeOrderingAlgorithm,
+  type TestData,
+} from '../../utils/tests';
+
+interface Props {
+  test: TestData;
+}
+
+const { test } = Astro.props;
+
+if (!test.algorithm) {
+  throw new Error(`El test "${test.slug}" es code-ordering pero no define algorithm.`);
+}
+
+const algorithm: CodeOrderingAlgorithm = test.algorithm;
+const stateId = `code-ordering-runner-${test.slug}`;
+const correctLinesPayload = JSON.stringify(algorithm.lines);
+const difficultyLabel = formatDifficultyLabel(test.difficulty);
+const initialDurationMs = (test.timeEstimate ?? 0) * 60 * 1000;
+const initialTimerLabel = formatCountdownTime(initialDurationMs);
+const resultThresholds = TEST_RESULT_THRESHOLDS;
+---
+
+<section
+  class="rounded-[2rem] border border-primary/15 bg-background-light/80 p-6 shadow-[0_30px_120px_-80px_rgba(13,242,89,0.45)] dark:bg-background-dark/80 lg:p-10"
+  data-code-ordering-runner
+  data-duration-ms={initialDurationMs}
+>
+  {test.timeEstimate && (
+    <div class="pointer-events-none fixed right-4 top-24 z-40 flex justify-end lg:right-8">
+      <div
+        class="test-timer pointer-events-auto rounded-[1.35rem] border border-primary/20 bg-background-light/95 px-5 py-4 shadow-[0_20px_60px_-35px_rgba(13,242,89,0.55)] backdrop-blur dark:bg-background-dark/95"
+        data-timer-container
+        aria-live="polite"
+      >
+        <p class="text-[11px] font-black uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Tiempo estimado</p>
+        <p class="mt-2 font-mono text-3xl font-black tracking-[0.2em] text-slate-900 dark:text-white" data-timer-clock>{initialTimerLabel}</p>
+        <p class="mt-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400" data-timer-progress>
+          Lineas: {algorithm.lines.length}
+        </p>
+      </div>
+    </div>
+  )}
+
+  <div class="flex flex-col gap-6 border-b border-primary/10 pb-8">
+    <div class="flex flex-wrap gap-3 text-xs font-bold uppercase tracking-[0.2em]">
+      <span class="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">{test.category}</span>
+      <span class="rounded-full border border-accent-blue/20 bg-accent-blue/10 px-4 py-2 text-accent-blue">Ordenar codigo</span>
+      <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-500 dark:text-slate-300">{difficultyLabel}</span>
+      {test.timeEstimate && (
+        <span class="rounded-full border border-accent-blue/20 bg-accent-blue/10 px-4 py-2 text-accent-blue">
+          {test.timeEstimate} min
+        </span>
+      )}
+      <span class="rounded-full border border-accent-brown/20 bg-accent-brown/10 px-4 py-2 text-accent-brown">
+        {algorithm.lines.length} lineas
+      </span>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white lg:text-4xl">{test.title}</h2>
+      <p class="max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">{test.description}</p>
+    </div>
+
+    <div class="hidden rounded-2xl border border-primary/20 bg-primary/5 p-5" data-results-summary aria-live="polite"></div>
+  </div>
+
+  <article class="mt-8 space-y-6">
+    <header class="space-y-3 rounded-[1.75rem] border border-primary/10 bg-white/70 p-5 dark:bg-black/10 lg:p-7">
+      <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Algoritmo a ordenar</p>
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white">{algorithm.prompt}</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-400">
+        Arrastra las lineas o usa los botones de flecha para reordenarlas. Cuando creas que estan en el orden correcto, tocas <strong class="text-slate-900 dark:text-white">Verificar ordenamiento</strong>.
+      </p>
+    </header>
+
+    <div class="overflow-hidden rounded-2xl border border-primary/15 bg-terminal-bg">
+      <div class="flex items-center justify-between border-b border-primary/10 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+        <span>Lineas mezcladas</span>
+        <span>{algorithm.language}</span>
+      </div>
+      <ol class="m-0 flex flex-col gap-2 p-4" data-code-list aria-label="Lineas del algoritmo para ordenar">
+        {algorithm.lines.map((line, index) => (
+          <li
+            class="code-ordering-line group flex items-center gap-3 rounded-xl border border-primary/15 bg-editor-bg px-3 py-3 text-sm leading-6 text-slate-100 transition-colors"
+            data-code-line
+            data-correct-index={index}
+            draggable="true"
+          >
+            <span class="flex items-center gap-1">
+              <button
+                type="button"
+                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-black/20 text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-40"
+                data-move-up
+                aria-label="Mover linea hacia arriba"
+              >
+                <span aria-hidden="true">↑</span>
+              </button>
+              <button
+                type="button"
+                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-black/20 text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-40"
+                data-move-down
+                aria-label="Mover linea hacia abajo"
+              >
+                <span aria-hidden="true">↓</span>
+              </button>
+            </span>
+            <span class="hidden select-none text-slate-500 sm:inline" aria-hidden="true">⋮⋮</span>
+            <span class="w-6 shrink-0 text-right font-mono text-xs font-black text-primary/60" data-position-index>{index + 1}</span>
+            <pre class="m-0 flex-1 overflow-x-auto bg-transparent p-0 font-mono text-sm leading-6 text-slate-100"><code class={`language-${algorithm.language}`}>{line}</code></pre>
+            <span class="hidden rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em]" data-line-badge></span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="sticky bottom-4 flex flex-col gap-4 rounded-[1.75rem] border border-primary/15 bg-background-light/90 p-4 shadow-lg backdrop-blur dark:bg-background-dark/90 lg:flex-row lg:items-center lg:justify-between lg:p-6">
+      <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400" data-progress-copy>
+        Ordena todas las lineas y despues toca <strong class="text-slate-900 dark:text-white">Verificar ordenamiento</strong>.
+      </p>
+      <button
+        class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-base font-black text-background-dark transition-transform hover:scale-[1.02]"
+        type="button"
+        data-verify-button
+      >
+        Verificar ordenamiento
+      </button>
+    </div>
+  </article>
+</section>
+
+<div class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-900/70 px-4 backdrop-blur-sm" data-result-modal role="dialog" aria-modal="true" aria-labelledby={`${stateId}-result-title`}>
+  <div class="w-full max-w-lg rounded-[1.75rem] border border-primary/20 bg-background-light p-6 shadow-[0_40px_120px_-60px_rgba(13,242,89,0.7)] dark:bg-background-dark lg:p-8" data-result-modal-card>
+    <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Resultado final</p>
+    <p class="mt-4 text-6xl" data-result-modal-emoji aria-hidden="true">🙌</p>
+    <h3 id={`${stateId}-result-title`} class="mt-3 text-4xl font-black tracking-tight text-slate-900 dark:text-white" data-result-modal-title>
+      Salio bien
+    </h3>
+    <div class="mt-6 grid grid-cols-2 gap-3">
+      <div class="rounded-2xl border border-primary/15 bg-primary/10 p-4">
+        <p class="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Posiciones correctas</p>
+        <p class="mt-2 text-3xl font-black text-primary" data-result-modal-correct>0</p>
+      </div>
+      <div class="rounded-2xl border border-accent-brown/25 bg-accent-brown/10 p-4">
+        <p class="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Fuera de lugar</p>
+        <p class="mt-2 text-3xl font-black text-accent-brown" data-result-modal-incorrect>0</p>
+      </div>
+    </div>
+    <button
+      class="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-primary px-6 py-3 text-base font-black text-background-dark transition-transform hover:scale-[1.02]"
+      type="button"
+      data-result-modal-close
+    >
+      Cerrar
+    </button>
+  </div>
+</div>
+
+<script is:inline type="application/json" id={stateId} set:html={correctLinesPayload}></script>
+
+<script is:inline define:vars={{ stateId, testTitle: test.title, initialDurationMs, passedThreshold: resultThresholds.passed, explanation: algorithm.explanation ?? '' }}>
+  (() => {
+    const payloadNode = document.getElementById(stateId);
+    const runner = document.querySelector('[data-code-ordering-runner]');
+
+    if (!payloadNode || !runner) {
+      return;
+    }
+
+    const correctLines = JSON.parse(payloadNode.textContent || '[]');
+    const list = runner.querySelector('[data-code-list]');
+    const verifyButton = runner.querySelector('[data-verify-button]');
+    const progressCopy = runner.querySelector('[data-progress-copy]');
+    const summaryNode = runner.querySelector('[data-results-summary]');
+    const timerContainer = runner.querySelector('[data-timer-container]');
+    const timerClock = runner.querySelector('[data-timer-clock]');
+    const resultModal = document.querySelector('[data-result-modal]');
+    const resultModalTitle = document.querySelector('[data-result-modal-title]');
+    const resultModalEmoji = document.querySelector('[data-result-modal-emoji]');
+    const resultModalCorrect = document.querySelector('[data-result-modal-correct]');
+    const resultModalIncorrect = document.querySelector('[data-result-modal-incorrect]');
+    const resultModalClose = document.querySelector('[data-result-modal-close]');
+
+    if (!list || !verifyButton || !progressCopy || !summaryNode) {
+      return;
+    }
+
+    let reviewLocked = false;
+    let timerId = null;
+    let deadline = initialDurationMs > 0 ? Date.now() + initialDurationMs : null;
+    let draggingItem = null;
+
+    const shuffleInPlace = () => {
+      const items = Array.from(list.children);
+
+      if (items.length <= 1) {
+        return;
+      }
+
+      const shuffled = [...items];
+
+      for (let i = shuffled.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      const matchesOriginal = shuffled.every((item, index) => item === items[index]);
+
+      if (matchesOriginal) {
+        [shuffled[0], shuffled[shuffled.length - 1]] = [shuffled[shuffled.length - 1], shuffled[0]];
+      }
+
+      shuffled.forEach((item) => list.appendChild(item));
+    };
+
+    const refreshPositionIndicators = () => {
+      Array.from(list.children).forEach((item, index) => {
+        const indicator = item.querySelector('[data-position-index]');
+
+        if (indicator) {
+          indicator.textContent = String(index + 1);
+        }
+
+        const upButton = item.querySelector('[data-move-up]');
+        const downButton = item.querySelector('[data-move-down]');
+
+        if (upButton) {
+          upButton.disabled = reviewLocked || index === 0;
+        }
+
+        if (downButton) {
+          downButton.disabled = reviewLocked || index === list.children.length - 1;
+        }
+      });
+    };
+
+    const readUserLines = () => {
+      return Array.from(list.children).map((item) => {
+        const code = item.querySelector('code');
+        return code ? code.textContent ?? '' : '';
+      });
+    };
+
+    const gradeCurrent = () => {
+      const userLines = readUserLines();
+      const totalLines = correctLines.length;
+      const positions = correctLines.map((expected, index) => {
+        const line = userLines[index] ?? '';
+        return { index, line, expected, isCorrect: line === expected };
+      });
+      const correctCount = positions.filter((position) => position.isCorrect).length;
+      const incorrectCount = totalLines - correctCount;
+      const percentage = totalLines === 0 ? 0 : Math.round((correctCount / totalLines) * 100);
+
+      return { totalLines, correctCount, incorrectCount, percentage, positions };
+    };
+
+    const formatTime = (milliseconds) => {
+      const safeMs = Math.max(0, milliseconds);
+      const minutes = Math.floor(safeMs / 60000);
+      const seconds = Math.floor((safeMs % 60000) / 1000);
+      const centiseconds = Math.floor((safeMs % 1000) / 10);
+
+      return [minutes, seconds, centiseconds]
+        .map((value) => String(value).padStart(2, '0'))
+        .join(':');
+    };
+
+    const applyLineFeedback = (result) => {
+      Array.from(list.children).forEach((item, index) => {
+        const badge = item.querySelector('[data-line-badge]');
+        const position = result.positions[index];
+
+        if (!badge || !position) {
+          return;
+        }
+
+        badge.classList.remove('hidden');
+
+        item.classList.remove('border-primary/15');
+
+        if (position.isCorrect) {
+          item.classList.add('border-primary/50', 'bg-primary/5');
+          badge.textContent = 'Correcta';
+          badge.className = 'rounded-full bg-primary/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-primary';
+        } else {
+          item.classList.add('border-accent-brown/50', 'bg-accent-brown/10');
+          badge.textContent = 'Fuera de lugar';
+          badge.className = 'rounded-full bg-accent-brown/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-accent-brown';
+        }
+      });
+    };
+
+    const renderSummary = (result) => {
+      summaryNode.classList.remove('hidden');
+      const correctOrderHtml = correctLines
+        .map((line, index) => `<li class="font-mono text-sm leading-6"><span class="mr-3 text-primary/60">${String(index + 1).padStart(2, '0')}</span>${line.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`)
+        .join('');
+
+      const explanationHtml = explanation
+        ? `<div class="mt-4 rounded-2xl border border-primary/10 bg-primary/5 p-4 text-slate-700 dark:text-slate-200"><p class="text-xs font-black uppercase tracking-[0.2em] text-primary">Por que</p><p class="mt-2 text-sm leading-relaxed">${explanation}</p></div>`
+        : '';
+
+      summaryNode.innerHTML = `
+        <div class="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <p class="text-xs font-black uppercase tracking-[0.24em] text-primary">Resultados</p>
+            <h3 class="mt-2 text-2xl font-black text-slate-900 dark:text-white">${testTitle}</h3>
+            <p class="mt-2 text-slate-600 dark:text-slate-300">
+              Posiciones correctas: <strong class="text-slate-900 dark:text-white">${result.correctCount}/${result.totalLines}</strong> (${result.percentage}%)
+            </p>
+            ${explanationHtml}
+          </div>
+          <div class="rounded-2xl border border-primary/15 bg-terminal-bg p-4 text-slate-100">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-primary/60">Orden correcto</p>
+            <ol class="mt-3 space-y-1">
+              ${correctOrderHtml}
+            </ol>
+          </div>
+        </div>
+      `;
+    };
+
+    const showResultModal = (result) => {
+      if (!resultModal || !resultModalTitle || !resultModalEmoji || !resultModalCorrect || !resultModalIncorrect) {
+        return;
+      }
+
+      const isPassed = result.percentage >= passedThreshold;
+
+      resultModalTitle.textContent = isPassed ? 'Salio bien' : 'Salio mal';
+      resultModalEmoji.textContent = isPassed ? '🙌' : '🫠';
+      resultModalCorrect.textContent = String(result.correctCount);
+      resultModalIncorrect.textContent = String(result.incorrectCount);
+      resultModal.classList.remove('hidden');
+      resultModal.classList.add('flex');
+      resultModalClose?.focus();
+    };
+
+    const closeResultModal = () => {
+      if (!resultModal) {
+        return;
+      }
+
+      resultModal.classList.remove('flex');
+      resultModal.classList.add('hidden');
+    };
+
+    const lockInteractions = () => {
+      Array.from(list.children).forEach((item) => {
+        item.setAttribute('draggable', 'false');
+      });
+      refreshPositionIndicators();
+      verifyButton.disabled = true;
+      verifyButton.classList.add('cursor-not-allowed', 'opacity-75');
+    };
+
+    const submitResults = (reason) => {
+      if (reviewLocked) {
+        return;
+      }
+
+      reviewLocked = true;
+      const result = gradeCurrent();
+
+      renderSummary(result);
+      applyLineFeedback(result);
+      lockInteractions();
+      showResultModal(result);
+
+      if (reason === 'expired') {
+        runner.classList.add('test-runner-expired');
+        progressCopy.innerHTML = 'Se termino el tiempo. El algoritmo quedo corregido automaticamente.';
+        verifyButton.textContent = 'Tiempo agotado';
+
+        if (timerContainer && timerClock) {
+          timerClock.textContent = '00:00:00';
+          timerContainer.classList.add('test-timer-expired');
+        }
+      } else {
+        progressCopy.innerHTML = 'Tu ordenamiento quedo congelado. Revisa abajo el orden correcto y la explicacion.';
+        verifyButton.textContent = 'Resultados listos';
+      }
+    };
+
+    const tick = () => {
+      if (!deadline || !timerClock || !timerContainer) {
+        return;
+      }
+
+      const remaining = deadline - Date.now();
+      timerClock.textContent = formatTime(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(timerId);
+        timerId = null;
+        submitResults('expired');
+      }
+    };
+
+    const moveItem = (item, direction) => {
+      if (reviewLocked) {
+        return;
+      }
+
+      if (direction === 'up' && item.previousElementSibling) {
+        list.insertBefore(item, item.previousElementSibling);
+      } else if (direction === 'down' && item.nextElementSibling) {
+        list.insertBefore(item.nextElementSibling, item);
+      }
+
+      refreshPositionIndicators();
+    };
+
+    list.addEventListener('click', (event) => {
+      if (reviewLocked) {
+        return;
+      }
+
+      const target = event.target instanceof Element ? event.target : null;
+
+      if (!target) {
+        return;
+      }
+
+      const upButton = target.closest('[data-move-up]');
+      const downButton = target.closest('[data-move-down]');
+
+      if (upButton) {
+        const item = upButton.closest('[data-code-line]');
+        if (item) moveItem(item, 'up');
+        return;
+      }
+
+      if (downButton) {
+        const item = downButton.closest('[data-code-line]');
+        if (item) moveItem(item, 'down');
+      }
+    });
+
+    list.addEventListener('dragstart', (event) => {
+      if (reviewLocked) {
+        event.preventDefault();
+        return;
+      }
+
+      const item = event.target instanceof Element ? event.target.closest('[data-code-line]') : null;
+
+      if (!item) {
+        return;
+      }
+
+      draggingItem = item;
+      item.classList.add('opacity-50');
+
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', 'line');
+      }
+    });
+
+    list.addEventListener('dragover', (event) => {
+      if (reviewLocked || !draggingItem) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'move';
+      }
+
+      const target = event.target instanceof Element ? event.target.closest('[data-code-line]') : null;
+
+      if (!target || target === draggingItem) {
+        return;
+      }
+
+      const rect = target.getBoundingClientRect();
+      const halfway = rect.top + rect.height / 2;
+
+      if (event.clientY < halfway) {
+        list.insertBefore(draggingItem, target);
+      } else {
+        list.insertBefore(draggingItem, target.nextElementSibling);
+      }
+    });
+
+    list.addEventListener('dragend', () => {
+      if (draggingItem) {
+        draggingItem.classList.remove('opacity-50');
+      }
+
+      draggingItem = null;
+      refreshPositionIndicators();
+    });
+
+    list.addEventListener('drop', (event) => {
+      event.preventDefault();
+    });
+
+    verifyButton.addEventListener('click', () => {
+      submitResults('manual');
+    });
+
+    resultModalClose?.addEventListener('click', closeResultModal);
+    resultModal?.addEventListener('click', (event) => {
+      if (event.target === resultModal) {
+        closeResultModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !resultModal || resultModal.classList.contains('hidden')) {
+        return;
+      }
+
+      closeResultModal();
+    });
+
+    shuffleInPlace();
+    refreshPositionIndicators();
+
+    if (deadline && timerClock && timerContainer) {
+      tick();
+      timerId = window.setInterval(tick, 10);
+    }
+  })();
+</script>

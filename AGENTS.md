@@ -150,23 +150,78 @@ Definidas y validadas con Zod en `src/content.config.ts`:
 |---|---|---|
 | `courses` | `courses/**/index.md` | `description` (max 120), `technology`, `difficulty` |
 | `chapters` | `courses/**/*.md` (sin index) | `title` |
-| `tests` | `tests/**/*.md` | `title`, `description` (max 180), `slug`, `category`, `questions[]` |
+| `tests` | `tests/**/*.md` | `title`, `description` (max 180), `slug`, `category`, `kind`, y segun `kind`: `questions[]` o `algorithm` |
 
-### Schema de questions (dentro de `tests`)
+### Tipos de test (campo `kind`)
+
+El campo `kind` en el frontmatter define el tipo de test. Si se omite, se usa `multiple-choice` por compatibilidad.
+
+| `kind` | Requiere | Componente | Descripcion |
+|---|---|---|---|
+| `multiple-choice` (default) | `questions[]` | `TestRunner.astro` | Varias preguntas con 2+ opciones cada una |
+| `code-ordering` | `algorithm` | `CodeOrderingRunner.astro` | Un unico algoritmo con lineas mezcladas que hay que reordenar |
+
+### Schema para `kind: multiple-choice`
 
 ```yaml
+---
+title: "Variables en C"
+description: "Test para aprender como declarar y usar variables en C."
+slug: "variables-c-01"
+category: "C"
+difficulty: "beginner"      # beginner | intermediate | advanced (opcional)
+timeEstimate: 15            # minutos (opcional, activa el timer)
+kind: "multiple-choice"     # (opcional, este es el default)
 questions:
-  - id: "q1"               # string unico dentro del test
-    prompt: "¿Pregunta?"   # enunciado
-    code: |                # snippet (opcional)
+  - id: "q1"                # string unico dentro del test
+    prompt: "¿Pregunta?"    # enunciado
+    code: |                 # snippet (opcional)
       const x = 1;
-    language: "js"         # lenguaje del snippet (opcional)
-    options:               # minimo 2 opciones
+    language: "js"          # lenguaje del snippet (opcional)
+    options:                # minimo 2 opciones
       - "Opcion A"
       - "Opcion B"
-    correctAnswer: 0       # indice 0-based de la respuesta correcta
-    explanation: "..."     # explicacion (opcional)
+    correctAnswer: 0        # indice 0-based de la respuesta correcta
+    explanation: "..."      # explicacion (opcional)
+---
 ```
+
+### Schema para `kind: code-ordering`
+
+Un test de ordenar codigo contiene **un unico algoritmo**. En el frontmatter se definen las lineas en el orden CORRECTO. El runner las mezcla en el cliente al cargar.
+
+```yaml
+---
+title: "Ordenar: variables y constantes en C"
+description: "Arrastra las lineas para reconstruir un programa en C."
+slug: "ordenar-variables-c"
+category: "C"
+difficulty: "beginner"
+timeEstimate: 5             # minutos (activa el timer)
+kind: "code-ordering"       # OBLIGATORIO para este tipo
+algorithm:
+  prompt: "Ordena las lineas para armar un programa en C."
+  language: "c"
+  lines:                    # orden correcto, minimo 2 lineas
+    - "#include <stdio.h>"
+    - "int main() {"
+    - "    int edad = 18;"
+    - "    return 0;"
+    - "}"
+  explanation: "Por que este orden es correcto..."   # opcional
+---
+
+Contenido introductorio en Markdown (opcional).
+```
+
+**Reglas importantes para `code-ordering`:**
+
+- El `kind` debe ser exactamente `"code-ordering"`.
+- El array `algorithm.lines` contiene las lineas en el **orden correcto**. El shuffle se hace en el cliente al cargar.
+- Cada linea debe ser un string NO vacio (el schema lo valida con `.min(1)`). Si necesitas preservar indentacion, usalas con espacios.
+- Las comillas dobles dentro de una linea se escapan con `\"`, y el `\n` de C se escribe como `\\n` en YAML.
+- `timeEstimate` es opcional pero altamente recomendado: da la intensidad de "programa con tiempo".
+- `algorithm.explanation` se muestra junto al orden correcto cuando se verifica el resultado.
 
 ## Code Style Guidelines
 
@@ -266,12 +321,22 @@ npm install -D package-name     # devDependency
 4. Agregar `logo.svg`
 5. Registrar el icono en `src/components/Icon.astro` (clave = technology en lowercase)
 
-### Agregar un quiz nuevo
+### Agregar un quiz nuevo (multiple-choice)
 
 1. Crear `src/content/tests/[slug].md`
-2. Completar el frontmatter con `title`, `description`, `slug`, `category`, `questions[]`
+2. Completar el frontmatter con `title`, `description`, `slug`, `category`, `questions[]` (no hace falta `kind`, el default es `multiple-choice`)
 3. El `slug` **debe ser unico** — se valida en runtime con `assertUniqueTestSlugs()`
 4. El quiz queda disponible en `/test/[slug]` automaticamente
+
+### Agregar un test de ordenar codigo nuevo
+
+1. Crear `src/content/tests/[slug].md`
+2. Completar el frontmatter con `title`, `description`, `slug`, `category`, **`kind: "code-ordering"`**, `timeEstimate`, y `algorithm` (con `prompt`, `language`, `lines[]`, opcionalmente `explanation`)
+3. Las `lines` van en el orden CORRECTO, el shuffle lo hace el runner al cargar
+4. El `slug` **debe ser unico** — se valida en runtime
+5. El test queda disponible en `/test/[slug]` automaticamente y se muestra en el listing con el badge "Ordenar codigo"
+
+**Cuando usar `code-ordering`**: para ejercicios tipo "programa" con un unico algoritmo donde la logica esta en el ORDEN. Por ejemplo, reconstruir un programa completo en C despues de ver declaracion de variables, o ordenar los pasos de una funcion recursiva. **No** lo uses para probar conceptos sueltos; para eso ya tenes `multiple-choice`.
 
 ### Agregar una presentacion nueva
 
@@ -297,7 +362,7 @@ const { name, size = 'md' } = Astro.props;
 
 ---
 
-**Ultima actualizacion**: 2026-03-27
+**Ultima actualizacion**: 2026-04-23
 **Rama de Desarrollo**: `desarrollo`
 **Rama Principal**: `main`
 **Deploy URL**: https://facundouferer.github.io/programierds

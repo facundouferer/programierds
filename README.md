@@ -129,9 +129,18 @@ Definidas en `src/content.config.ts` con Zod:
 |---|---|---|
 | `courses` | `courses/**/index.md` | `description`, `technology`, `difficulty` |
 | `chapters` | `courses/**/*.md` (sin index) | `title` |
-| `tests` | `tests/**/*.md` | `title`, `description`, `slug`, `category`, `questions[]` |
+| `tests` | `tests/**/*.md` | `title`, `description`, `slug`, `category`, `kind`, y segun `kind`: `questions[]` o `algorithm` |
 
-### Schema de un quiz (`tests`)
+### Tipos de test (`kind`)
+
+Hay dos tipos soportados. Si no se especifica `kind`, se usa `multiple-choice`.
+
+| `kind` | Descripcion |
+|---|---|
+| `multiple-choice` (default) | Varias preguntas con opciones, feedback al final |
+| `code-ordering` | Un unico algoritmo con lineas mezcladas que hay que reordenar, contra tiempo |
+
+### Schema de un quiz `multiple-choice` (`tests`)
 
 ```yaml
 ---
@@ -141,6 +150,7 @@ slug: "fundamentos-javascript"
 category: "JavaScript"
 difficulty: "beginner"      # beginner | intermediate | advanced (opcional)
 timeEstimate: 10            # minutos (opcional)
+kind: "multiple-choice"     # opcional, este es el default
 questions:
   - id: "q1"
     prompt: "¿Cuanto es 2 + 2?"
@@ -157,6 +167,41 @@ questions:
 
 Contenido introductorio del quiz en Markdown (opcional).
 ```
+
+### Schema de un test `code-ordering` (`tests`)
+
+Un **unico algoritmo** con lineas en el orden correcto. El runner las mezcla en el cliente al cargar y el usuario las reordena arrastrando o con botones de flecha, contra tiempo.
+
+```yaml
+---
+title: "Ordenar: variables y constantes en C"
+description: "Arrastra las lineas para reconstruir un programa en C."
+slug: "ordenar-variables-c"
+category: "C"
+difficulty: "beginner"
+timeEstimate: 5             # minutos (activa el timer)
+kind: "code-ordering"       # OBLIGATORIO para este tipo
+algorithm:
+  prompt: "Ordena las lineas para armar un programa en C."
+  language: "c"
+  lines:                    # orden correcto, minimo 2 lineas
+    - "#include <stdio.h>"
+    - "int main() {"
+    - "    int edad = 18;"
+    - "    return 0;"
+    - "}"
+  explanation: "Por que este orden es correcto..."   # opcional
+---
+
+Contenido introductorio en Markdown (opcional).
+```
+
+**Notas importantes para `code-ordering`:**
+
+- `algorithm.lines` va en el **orden correcto**. El shuffle se hace en el cliente.
+- Cada linea tiene que ser un string NO vacio (`.min(1)` en el schema).
+- Para escapar comillas dobles en una linea: `\"`. Para representar `\n` en un `printf`: `\\n` en el YAML.
+- Se recomienda `timeEstimate` — este tipo de test esta pensado como "programa con tiempo".
 
 ## Como agregar un curso nuevo
 
@@ -191,9 +236,38 @@ Las paginas se generan automaticamente. No hay que tocar rutas ni configuracion.
 ## Como agregar un test/quiz nuevo
 
 1. Crear un archivo `.md` en `src/content/tests/` (ej: `mi-quiz.md`)
-2. El slug en el frontmatter debe ser unico — se valida en runtime
-3. Usar el schema definido en `content.config.ts`
-4. El quiz queda disponible automaticamente en `/test/[slug]`
+2. Elegir el `kind` (default: `multiple-choice`). Para tests de ordenar codigo: `kind: "code-ordering"`
+3. El slug en el frontmatter debe ser unico — se valida en runtime
+4. Usar el schema definido en `content.config.ts`
+5. El quiz queda disponible automaticamente en `/test/[slug]`
+
+### Ejemplo: agregar un test `code-ordering`
+
+```bash
+# crear archivo
+touch src/content/tests/ordenar-mi-algoritmo.md
+```
+
+```yaml
+# frontmatter
+---
+title: "Ordenar: mi algoritmo"
+description: "Descripcion breve."
+slug: "ordenar-mi-algoritmo"
+category: "C"
+difficulty: "beginner"
+timeEstimate: 5
+kind: "code-ordering"
+algorithm:
+  prompt: "Descripcion de lo que hay que ordenar."
+  language: "c"
+  lines:
+    - "linea 1"
+    - "linea 2"
+    - "linea 3"
+  explanation: "Opcional."
+---
+```
 
 ## Tests unitarios (Vitest)
 

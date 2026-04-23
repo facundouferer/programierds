@@ -23,50 +23,96 @@ const chapters = defineCollection({
 
 const tests = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/tests" }),
-  schema: z.object({
-    title: z.string().min(1),
-    description: z.string().min(1).max(180),
-    slug: z.string().min(1),
-    category: z.string().min(1),
-    difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
-    timeEstimate: z.number().int().positive().optional(),
-    questions: z
-      .array(
-        z.object({
-          id: z.string().min(1),
+  schema: z
+    .object({
+      title: z.string().min(1),
+      description: z.string().min(1).max(180),
+      slug: z.string().min(1),
+      category: z.string().min(1),
+      difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+      timeEstimate: z.number().int().positive().optional(),
+      kind: z.enum(["multiple-choice", "code-ordering"]).default("multiple-choice"),
+      questions: z
+        .array(
+          z.object({
+            id: z.string().min(1),
+            prompt: z.string().min(1),
+            code: z.string().optional(),
+            language: z.string().optional(),
+            options: z.array(z.string().min(1)).min(2),
+            correctAnswer: z.number().int().min(0),
+            explanation: z.string().optional(),
+          }).superRefine((question, context) => {
+            if (question.correctAnswer >= question.options.length) {
+              context.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "correctAnswer debe apuntar a una opcion existente.",
+                path: ["correctAnswer"],
+              });
+            }
+          }),
+        )
+        .min(1)
+        .superRefine((questions, context) => {
+          const ids = new Set<string>();
+
+          questions.forEach((question, index) => {
+            if (ids.has(question.id)) {
+              context.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `El id "${question.id}" esta repetido dentro del test.`,
+                path: [index, "id"],
+              });
+            }
+
+            ids.add(question.id);
+          });
+        })
+        .optional(),
+      algorithm: z
+        .object({
           prompt: z.string().min(1),
-          code: z.string().optional(),
-          language: z.string().optional(),
-          options: z.array(z.string().min(1)).min(2),
-          correctAnswer: z.number().int().min(0),
+          language: z.string().min(1),
+          lines: z.array(z.string().min(1)).min(2),
           explanation: z.string().optional(),
-        }).superRefine((question, context) => {
-          if (question.correctAnswer >= question.options.length) {
-            context.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "correctAnswer debe apuntar a una opcion existente.",
-              path: ["correctAnswer"],
-            });
-          }
-        }),
-      )
-      .min(1)
-      .superRefine((questions, context) => {
-        const ids = new Set<string>();
+        })
+        .optional(),
+    })
+    .superRefine((data, context) => {
+      if (data.kind === "multiple-choice") {
+        if (!data.questions || data.questions.length === 0) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'kind "multiple-choice" requiere al menos una pregunta en "questions".',
+            path: ["questions"],
+          });
+        }
+        if (data.algorithm) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'kind "multiple-choice" no debe definir "algorithm".',
+            path: ["algorithm"],
+          });
+        }
+      }
 
-        questions.forEach((question, index) => {
-          if (ids.has(question.id)) {
-            context.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: `El id "${question.id}" esta repetido dentro del test.`,
-              path: [index, "id"],
-            });
-          }
-
-          ids.add(question.id);
-        });
-      }),
-  }),
+      if (data.kind === "code-ordering") {
+        if (!data.algorithm) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'kind "code-ordering" requiere definir "algorithm" con sus lineas ordenadas.',
+            path: ["algorithm"],
+          });
+        }
+        if (data.questions && data.questions.length > 0) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'kind "code-ordering" no debe definir "questions".',
+            path: ["questions"],
+          });
+        }
+      }
+    }),
 });
 
 export const collections = { courses, chapters, tests };
