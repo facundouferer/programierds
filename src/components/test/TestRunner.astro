@@ -11,8 +11,14 @@ interface Props {
 }
 
 const { test } = Astro.props;
+
+if (!test.questions || test.questions.length === 0) {
+  throw new Error(`El test "${test.slug}" es multiple-choice pero no define questions.`);
+}
+
+const questions = test.questions;
 const stateId = `test-runner-${test.slug}`;
-const questionsPayload = JSON.stringify(test.questions);
+const questionsPayload = JSON.stringify(questions);
 const difficultyLabel = formatDifficultyLabel(test.difficulty);
 const initialDurationMs = (test.timeEstimate ?? 0) * 60 * 1000;
 const initialTimerLabel = formatCountdownTime(initialDurationMs);
@@ -45,7 +51,7 @@ const resultThresholds = TEST_RESULT_THRESHOLDS;
         </span>
       )}
       <span class="rounded-full border border-accent-brown/20 bg-accent-brown/10 px-4 py-2 text-accent-brown">
-        {test.questions.length} preguntas
+        {questions.length} preguntas
       </span>
     </div>
 
@@ -58,7 +64,7 @@ const resultThresholds = TEST_RESULT_THRESHOLDS;
   </div>
 
   <form class="mt-8 space-y-6" data-test-form novalidate>
-    {test.questions.map((question, questionIndex) => (
+    {questions.map((question, questionIndex) => (
       <article
         class="test-question rounded-[1.75rem] border border-primary/10 bg-white/70 p-5 transition-colors dark:bg-black/10 lg:p-7"
         data-question-id={question.id}

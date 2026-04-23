@@ -1,5 +1,7 @@
 export type TestDifficulty = 'beginner' | 'intermediate' | 'advanced';
 
+export type TestKind = 'multiple-choice' | 'code-ordering';
+
 export interface TestQuestion {
   id: string;
   prompt: string;
@@ -10,6 +12,13 @@ export interface TestQuestion {
   explanation?: string;
 }
 
+export interface CodeOrderingAlgorithm {
+  prompt: string;
+  language: string;
+  lines: string[];
+  explanation?: string;
+}
+
 export interface TestData {
   title: string;
   description: string;
@@ -17,7 +26,9 @@ export interface TestData {
   category: string;
   difficulty?: TestDifficulty;
   timeEstimate?: number;
-  questions: TestQuestion[];
+  kind: TestKind;
+  questions?: TestQuestion[];
+  algorithm?: CodeOrderingAlgorithm;
 }
 
 export interface TestCollectionEntryLike {
@@ -32,6 +43,7 @@ export interface TestSummary {
   category: string;
   difficulty?: TestDifficulty;
   timeEstimate?: number;
+  kind: TestKind;
   questionCount: number;
 }
 
@@ -55,6 +67,21 @@ export interface TestAnswerProgress {
   answeredCount: number;
   totalQuestions: number;
   percentage: number;
+}
+
+export interface CodeOrderingPosition {
+  index: number;
+  line: string;
+  expected: string;
+  isCorrect: boolean;
+}
+
+export interface CodeOrderingGrade {
+  totalLines: number;
+  correctCount: number;
+  incorrectCount: number;
+  scorePercentage: number;
+  positions: CodeOrderingPosition[];
 }
 
 export interface TestResultModalMessage {
@@ -86,15 +113,24 @@ export function assertUniqueTestSlugs(entries: TestCollectionEntryLike[]) {
 export function buildTestSummaries(entries: TestCollectionEntryLike[]): TestSummary[] {
   return [...entries]
     .sort((a, b) => a.data.title.localeCompare(b.data.title, 'es'))
-    .map((entry) => ({
-      title: entry.data.title,
-      description: entry.data.description,
-      slug: entry.data.slug,
-      category: entry.data.category,
-      difficulty: entry.data.difficulty,
-      timeEstimate: entry.data.timeEstimate,
-      questionCount: entry.data.questions.length,
-    }));
+    .map((entry) => {
+      const { data } = entry;
+      const questionCount =
+        data.kind === 'code-ordering'
+          ? data.algorithm?.lines.length ?? 0
+          : data.questions?.length ?? 0;
+
+      return {
+        title: data.title,
+        description: data.description,
+        slug: data.slug,
+        category: data.category,
+        difficulty: data.difficulty,
+        timeEstimate: data.timeEstimate,
+        kind: data.kind,
+        questionCount,
+      };
+    });
 }
 
 export function gradeTest(
@@ -202,4 +238,57 @@ export function getResultModalMessage(scorePercentage: number): TestResultModalM
     title: 'Salio mal',
     emoji: '🫠',
   };
+}
+
+export function gradeCodeOrdering(correctLines: string[], userLines: string[]): CodeOrderingGrade {
+  const totalLines = correctLines.length;
+  const positions: CodeOrderingPosition[] = correctLines.map((expected, index) => {
+    const line = userLines[index] ?? '';
+    return {
+      index,
+      line,
+      expected,
+      isCorrect: line === expected,
+    };
+  });
+
+  const correctCount = positions.filter((position) => position.isCorrect).length;
+  const incorrectCount = totalLines - correctCount;
+  const scorePercentage = totalLines === 0 ? 0 : Math.round((correctCount / totalLines) * 100);
+
+  return {
+    totalLines,
+    correctCount,
+    incorrectCount,
+    scorePercentage,
+    positions,
+  };
+}
+
+export function shuffleLinesSeeded(lines: string[], seed: number): string[] {
+  const result = [...lines];
+
+  if (result.length <= 1) {
+    return result;
+  }
+
+  let state = Math.abs(Math.trunc(seed)) + 1;
+
+  const nextRandom = () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 0x100000000;
+  };
+
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(nextRandom() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  const matchesOriginal = result.every((line, index) => line === lines[index]);
+
+  if (matchesOriginal) {
+    [result[0], result[result.length - 1]] = [result[result.length - 1], result[0]];
+  }
+
+  return result;
 }

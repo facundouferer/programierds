@@ -7,8 +7,10 @@ import {
   formatCountdownTime,
   getResultModalMessage,
   getTestOutcome,
+  gradeCodeOrdering,
   gradeTest,
   isTestExpired,
+  shuffleLinesSeeded,
   TEST_RESULT_THRESHOLDS,
   type TestCollectionEntryLike,
   type TestQuestion,
@@ -37,7 +39,7 @@ const sampleQuestions: TestQuestion[] = [
 ];
 
 const makeEntry = (
-  overrides: Partial<TestCollectionEntryLike['data']> & Pick<TestCollectionEntryLike['data'], 'title' | 'description' | 'slug' | 'category' | 'questions'>,
+  overrides: Partial<TestCollectionEntryLike['data']> & Pick<TestCollectionEntryLike['data'], 'title' | 'description' | 'slug' | 'category'>,
   id = `${overrides.slug}.md`,
 ): TestCollectionEntryLike => ({
   id,
@@ -46,7 +48,9 @@ const makeEntry = (
     description: overrides.description,
     slug: overrides.slug,
     category: overrides.category,
+    kind: overrides.kind ?? 'multiple-choice',
     questions: overrides.questions,
+    algorithm: overrides.algorithm,
     difficulty: overrides.difficulty,
     timeEstimate: overrides.timeEstimate,
   },
@@ -120,6 +124,7 @@ describe('buildTestSummaries', () => {
       expect.objectContaining({
         title: 'Alpha',
         slug: 'alpha',
+        kind: 'multiple-choice',
         questionCount: 3,
         difficulty: 'beginner',
         timeEstimate: 10,
@@ -127,9 +132,42 @@ describe('buildTestSummaries', () => {
       expect.objectContaining({
         title: 'Zeta',
         slug: 'zeta',
+        kind: 'multiple-choice',
         questionCount: 2,
       }),
     ]);
+  });
+
+  it('cuenta las lineas de un test code-ordering en questionCount', () => {
+    const entries = [
+      makeEntry({
+        title: 'Ordenar variables',
+        description: 'Orden de un programa C',
+        slug: 'ordenar-variables-c',
+        category: 'Ordenar codigo',
+        kind: 'code-ordering',
+        algorithm: {
+          prompt: 'Ordena las lineas del programa',
+          language: 'c',
+          lines: [
+            '#include <stdio.h>',
+            'int main() {',
+            '    int edad = 18;',
+            '    return 0;',
+            '}',
+          ],
+        },
+        timeEstimate: 5,
+      }),
+    ];
+
+    expect(buildTestSummaries(entries)[0]).toEqual(
+      expect.objectContaining({
+        slug: 'ordenar-variables-c',
+        kind: 'code-ordering',
+        questionCount: 5,
+      }),
+    );
   });
 });
 
@@ -198,5 +236,106 @@ describe('getResultModalMessage', () => {
       title: 'Salio mal',
       emoji: '🫠',
     });
+  });
+});
+
+describe('gradeCodeOrdering', () => {
+  const correctLines = [
+    '#include <stdio.h>',
+    'int main() {',
+    '    int edad = 18;',
+    '    return 0;',
+    '}',
+  ];
+
+  it('da 100% cuando la lista del usuario coincide con la correcta', () => {
+    const result = gradeCodeOrdering(correctLines, [...correctLines]);
+
+    expect(result.totalLines).toBe(5);
+    expect(result.correctCount).toBe(5);
+    expect(result.incorrectCount).toBe(0);
+    expect(result.scorePercentage).toBe(100);
+    expect(result.positions).toHaveLength(5);
+    expect(result.positions.every((position) => position.isCorrect)).toBe(true);
+  });
+
+  it('cuenta solo las posiciones exactas como correctas', () => {
+    const userLines = [
+      'int main() {',
+      '#include <stdio.h>',
+      '    int edad = 18;',
+      '    return 0;',
+      '}',
+    ];
+
+    const result = gradeCodeOrdering(correctLines, userLines);
+
+    expect(result.correctCount).toBe(3);
+    expect(result.incorrectCount).toBe(2);
+    expect(result.scorePercentage).toBe(60);
+    expect(result.positions[0]).toEqual(
+      expect.objectContaining({
+        index: 0,
+        line: 'int main() {',
+        expected: '#include <stdio.h>',
+        isCorrect: false,
+      }),
+    );
+    expect(result.positions[2]).toEqual(
+      expect.objectContaining({ index: 2, isCorrect: true }),
+    );
+  });
+
+  it('marca como incorrectas las posiciones faltantes si el usuario envia menos lineas', () => {
+    const result = gradeCodeOrdering(correctLines, ['#include <stdio.h>', 'int main() {']);
+
+    expect(result.totalLines).toBe(5);
+    expect(result.correctCount).toBe(2);
+    expect(result.incorrectCount).toBe(3);
+    expect(result.scorePercentage).toBe(40);
+  });
+});
+
+describe('shuffleLinesSeeded', () => {
+  const sampleLines = [
+    '#include <stdio.h>',
+    'int main() {',
+    '    int edad = 18;',
+    '    return 0;',
+    '}',
+  ];
+
+  it('devuelve la misma cantidad de lineas y conserva los elementos originales', () => {
+    const shuffled = shuffleLinesSeeded(sampleLines, 42);
+
+    expect(shuffled).toHaveLength(sampleLines.length);
+    expect([...shuffled].sort()).toEqual([...sampleLines].sort());
+  });
+
+  it('no muta el array original', () => {
+    const original = [...sampleLines];
+    shuffleLinesSeeded(sampleLines, 7);
+
+    expect(sampleLines).toEqual(original);
+  });
+
+  it('es deterministico para la misma semilla', () => {
+    const first = shuffleLinesSeeded(sampleLines, 123);
+    const second = shuffleLinesSeeded(sampleLines, 123);
+
+    expect(first).toEqual(second);
+  });
+
+  it('nunca devuelve el orden original cuando hay mas de una linea', () => {
+    for (let seed = 0; seed < 20; seed += 1) {
+      const shuffled = shuffleLinesSeeded(sampleLines, seed);
+      const isSameOrder = shuffled.every((line, index) => line === sampleLines[index]);
+
+      expect(isSameOrder).toBe(false);
+    }
+  });
+
+  it('devuelve el mismo array si solo hay una linea', () => {
+    expect(shuffleLinesSeeded(['una sola'], 99)).toEqual(['una sola']);
   });
 });

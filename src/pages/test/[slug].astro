@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 
 import Footer from '../../components/Footer.astro';
+import CodeOrderingRunner from '../../components/test/CodeOrderingRunner.astro';
 import TestRunner from '../../components/test/TestRunner.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getRelativePath } from '../../utils/paths';
@@ -20,6 +21,14 @@ export async function getStaticPaths() {
 const { testEntry } = Astro.props;
 const { Content } = await render(testEntry);
 const difficultyLabel = formatDifficultyLabel(testEntry.data.difficulty);
+const isCodeOrdering = testEntry.data.kind === 'code-ordering';
+const countValue = isCodeOrdering
+  ? testEntry.data.algorithm?.lines.length ?? 0
+  : testEntry.data.questions?.length ?? 0;
+const countLabel = isCodeOrdering ? 'Lineas' : 'Preguntas';
+const formatLabel = isCodeOrdering
+  ? 'Ordenar lineas con tiempo'
+  : 'Multiple choice con feedback final';
 ---
 
 <Layout title={`${testEntry.data.title} - Programierds Tests`}>
@@ -54,12 +63,12 @@ const difficultyLabel = formatDifficultyLabel(testEntry.data.difficulty);
 
             <div class="grid gap-3 rounded-[1.5rem] border border-primary/10 bg-background-light/80 p-5 dark:bg-background-dark/70">
               <div>
-                <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Preguntas</p>
-                <p class="mt-2 text-3xl font-black text-slate-900 dark:text-white">{testEntry.data.questions.length}</p>
+                <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{countLabel}</p>
+                <p class="mt-2 text-3xl font-black text-slate-900 dark:text-white">{countValue}</p>
               </div>
               <div>
                 <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Formato</p>
-                <p class="mt-2 text-base font-semibold text-slate-700 dark:text-slate-200">Multiple choice con feedback final</p>
+                <p class="mt-2 text-base font-semibold text-slate-700 dark:text-slate-200">{formatLabel}</p>
               </div>
             </div>
           </div>
@@ -71,7 +80,11 @@ const difficultyLabel = formatDifficultyLabel(testEntry.data.difficulty);
           )}
         </section>
 
-        <TestRunner test={testEntry.data} />
+        {isCodeOrdering ? (
+          <CodeOrderingRunner test={testEntry.data} />
+        ) : (
+          <TestRunner test={testEntry.data} />
+        )}
       </div>
     </main>
 
