@@ -1,10 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
 ---
 
-<Layout title="Operaciones con Arreglos - Programierds">
+<Layout title={lang === 'en' ? 'Array Operations - Programierds' : 'Operaciones con Arreglos - Programierds'}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 
@@ -89,17 +91,17 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="opa-hero">
 				<div class="opa-copy">
 					<span class="opa-badge">c / operaciones / arreglos</span>
-					<h1 class="opa-title">Operaciones con arreglos</h1>
-					<p class="opa-sub mt-4">Acá no vamos a repetir solo definiciones. Vas a ver, de forma visual, cómo un arreglo se recorre, cómo se busca un valor y cómo se inserta un nuevo elemento moviendo posiciones. La idea es que entiendas QUÉ hace el programa y por qué lo hace.</p>
+					<h1 class="opa-title">{lang === 'en' ? 'Array Operations' : 'Operaciones con arreglos'}</h1>
+					<p class="opa-sub mt-4">{lang === 'en' ? "We're not just repeating definitions here. You'll see, visually, how an array is traversed, how a value is searched for, and how a new element is inserted by moving positions. The idea is for you to understand WHAT the program does and WHY it does it." : "Acá no vamos a repetir solo definiciones. Vas a ver, de forma visual, cómo un arreglo se recorre, cómo se busca un valor y cómo se inserta un nuevo elemento moviendo posiciones. La idea es que entiendas QUÉ hace el programa y por qué lo hace."}</p>
 					<div class="opa-pills">
-						<div class="opa-pill"><strong>Recorrido</strong><span>visitar posición por posición</span></div>
-						<div class="opa-pill"><strong>Búsqueda</strong><span>encontrar un valor dentro del arreglo</span></div>
-						<div class="opa-pill"><strong>Inserción</strong><span>hacer lugar y agregar un dato</span></div>
+						<div class="opa-pill"><strong>{lang === 'en' ? 'Traversal' : 'Recorrido'}</strong><span>{lang === 'en' ? 'visit position by position' : 'visitar posición por posición'}</span></div>
+						<div class="opa-pill"><strong>{lang === 'en' ? 'Search' : 'Búsqueda'}</strong><span>{lang === 'en' ? 'find a value within the array' : 'encontrar un valor dentro del arreglo'}</span></div>
+						<div class="opa-pill"><strong>{lang === 'en' ? 'Insertion' : 'Inserción'}</strong><span>{lang === 'en' ? 'make room and add data' : 'hacer lugar y agregar un dato'}</span></div>
 					</div>
 				</div>
 				<div class="opa-visual">
 					<div class="opa-visual-box">
-						<div class="opa-mini-title">Visual general: un arreglo es una secuencia ordenada de posiciones</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'General view: an array is an ordered sequence of positions' : 'Visual general: un arreglo es una secuencia ordenada de posiciones'}</div>
 						<div class="opa-array" id="hero-ops-array">
 							<div class="opa-slot active"><span class="opa-index">[0]</span><span class="opa-value">10</span></div>
 							<div class="opa-slot"><span class="opa-index">[1]</span><span class="opa-value">20</span></div>
@@ -108,20 +110,20 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<div class="opa-slot"><span class="opa-index">[4]</span><span class="opa-value">50</span></div>
 						</div>
 						<div class="opa-grid mt-4">
-							<div class="opa-card span-4"><strong>Misma estructura</strong><p class="mt-2">Siempre es el mismo arreglo. Lo que cambia es la operación que hacemos sobre él.</p></div>
-							<div class="opa-card span-4"><strong>Mismo índice</strong><p class="mt-2">La variable índice nos dice en qué posición estamos trabajando.</p></div>
-							<div class="opa-card span-4"><strong>Mismo orden</strong><p class="mt-2">Casi todas las operaciones empiezan recorriendo desde el principio hacia el final.</p></div>
+							<div class="opa-card span-4"><strong>{lang === 'en' ? 'Same structure' : 'Misma estructura'}</strong><p class="mt-2">{lang === 'en' ? "It's always the same array. What changes is the operation we perform on it." : "Siempre es el mismo arreglo. Lo que cambia es la operación que hacemos sobre él."}</p></div>
+							<div class="opa-card span-4"><strong>{lang === 'en' ? 'Same index' : 'Mismo índice'}</strong><p class="mt-2">{lang === 'en' ? 'The index variable tells us which position we are working with.' : 'La variable índice nos dice en qué posición estamos trabajando.'}</p></div>
+							<div class="opa-card span-4"><strong>{lang === 'en' ? 'Same order' : 'Mismo orden'}</strong><p class="mt-2">{lang === 'en' ? 'Almost all operations start by traversing from the beginning toward the end.' : 'Casi todas las operaciones empiezan recorriendo desde el principio hacia el final.'}</p></div>
 						</div>
 					</div>
 				</div>
 			</section>
 
 			<section class="opa-section" data-reveal>
-				<h2 class="opa-section-title">1. Recorrer un arreglo</h2>
-				<p class="opa-section-sub">Recorrer significa visitar todos los elementos uno por uno. Es la operación base: sin recorrido no podés mostrar, sumar, comparar ni buscar.</p>
+				<h2 class="opa-section-title">{lang === 'en' ? '1. Traversing an Array' : '1. Recorrer un arreglo'}</h2>
+				<p class="opa-section-sub">{lang === 'en' ? 'Traversing means visiting all elements one by one. It is the base operation: without traversal you cannot display, sum, compare, or search.' : 'Recorrer significa visitar todos los elementos uno por uno. Es la operación base: sin recorrido no podés mostrar, sumar, comparar ni buscar.'}</p>
 				<div class="opa-grid">
 					<article class="opa-card span-7">
-						<div class="opa-mini-title">Simulación paso a paso del recorrido</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'Step-by-step traversal simulation' : 'Simulación paso a paso del recorrido'}</div>
 						<div class="opa-code" id="walk-code">
 							<span data-line="1"><span class="tp">int</span> numeros[<span class="nu">5</span>] = &#123;<span class="nu">10</span>, <span class="nu">20</span>, <span class="nu">30</span>, <span class="nu">40</span>, <span class="nu">50</span>&#125;;</span>
 							<span data-line="2"><span class="tp">int</span> i;</span>
@@ -129,17 +131,17 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<span data-line="4">&nbsp;&nbsp;<span class="fn">printf</span>(<span class="st">"Posicion %d -&gt; %d\n"</span>, i, numeros[i]);</span>
 							<span data-line="5">&#125;</span>
 						</div>
-						<div class="opa-copy-box mt-4" id="walk-copy"><strong>Paso 1:</strong> Se declara el arreglo con 5 valores.</div>
+						<div class="opa-copy-box mt-4" id="walk-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'The array is declared with 5 values.' : 'Se declara el arreglo con 5 valores.'}</div>
 						<div class="opa-track"><div class="opa-fill" id="walk-fill"></div></div>
 						<div class="opa-controls">
-							<button class="opa-btn" id="walk-prev" type="button">⬅ Retroceder</button>
-							<button class="opa-btn" id="walk-next" type="button">Avanzar ➡</button>
-							<button class="opa-btn" id="walk-auto" type="button">Auto-play ▶</button>
-							<span class="opa-badge" id="walk-step">Paso 1 / 7</span>
+							<button class="opa-btn" id="walk-prev" type="button">⬅ {lang === 'en' ? 'Back' : 'Retroceder'}</button>
+							<button class="opa-btn" id="walk-next" type="button">{lang === 'en' ? 'Forward' : 'Avanzar'} ➡</button>
+							<button class="opa-btn" id="walk-auto" type="button">{lang === 'en' ? 'Auto-play' : 'Auto-play'} ▶</button>
+							<span class="opa-badge" id="walk-step">{lang === 'en' ? 'Step' : 'Paso'} 1 / 7</span>
 						</div>
 					</article>
 					<article class="opa-card span-5">
-						<div class="opa-mini-title">Estado actual</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'Current state' : 'Estado actual'}</div>
 						<div class="opa-array" id="walk-array">
 							<div class="opa-slot"><span class="opa-index">[0]</span><span class="opa-value">10</span></div>
 							<div class="opa-slot"><span class="opa-index">[1]</span><span class="opa-value">20</span></div>
@@ -148,8 +150,8 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<div class="opa-slot"><span class="opa-index">[4]</span><span class="opa-value">50</span></div>
 						</div>
 						<div class="opa-state mt-4">
-							<div class="opa-state-item"><span>i actual</span><strong id="walk-i">-</strong></div>
-							<div class="opa-state-item"><span>valor leído</span><strong id="walk-value">-</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'current i' : 'i actual'}</span><strong id="walk-i">-</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'value read' : 'valor leído'}</span><strong id="walk-value">-</strong></div>
 						</div>
 						<div class="opa-console mt-4">
 							<div class="opa-console-head"><span>./recorrido</span><span>stdout</span></div>
@@ -157,15 +159,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						</div>
 					</article>
 				</div>
-				<div class="opa-tip mt-4">Idea importante: en un recorrido no “salteás mágicamente” al dato. El programa pasa por cada posición usando el índice <code>i</code>.</div>
+				<div class="opa-tip mt-4">{lang === 'en' ? 'Important idea: in a traversal you don\'t "magically skip" to the data. The program goes through each position using index i.' : 'Idea importante: en un recorrido no "salteás mágicamente" al dato. El programa pasa por cada posición usando el índice i.'}</div>
 			</section>
 
 			<section class="opa-section" data-reveal>
-				<h2 class="opa-section-title">2. Buscar un valor dentro del arreglo</h2>
-				<p class="opa-section-sub">Buscar significa comparar el valor buscado con cada elemento del arreglo hasta encontrar coincidencia o hasta terminar el recorrido.</p>
+				<h2 class="opa-section-title">{lang === 'en' ? '2. Searching for a Value in the Array' : '2. Buscar un valor dentro del arreglo'}</h2>
+				<p class="opa-section-sub">{lang === 'en' ? 'Searching means comparing the searched value with each element of the array until a match is found or until the traversal ends.' : 'Buscar significa comparar el valor buscado con cada elemento del arreglo hasta encontrar coincidencia o hasta terminar el recorrido.'}</p>
 				<div class="opa-grid">
 					<article class="opa-card span-7">
-						<div class="opa-mini-title">Simulación de búsqueda secuencial</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'Sequential search simulation' : 'Simulación de búsqueda secuencial'}</div>
 						<div class="opa-code" id="search-code">
 							<span data-line="1"><span class="tp">int</span> numeros[<span class="nu">6</span>] = &#123;<span class="nu">8</span>, <span class="nu">14</span>, <span class="nu">21</span>, <span class="nu">14</span>, <span class="nu">35</span>, <span class="nu">42</span>&#125;;</span>
 							<span data-line="2"><span class="tp">int</span> buscado = <span class="nu">14</span>;</span>
@@ -177,17 +179,17 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<span data-line="8">&nbsp;&nbsp;&#125;</span>
 							<span data-line="9">&#125;</span>
 						</div>
-						<div class="opa-copy-box mt-4" id="search-copy"><strong>Paso 1:</strong> Se prepara el arreglo y el valor que queremos encontrar.</div>
+						<div class="opa-copy-box mt-4" id="search-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'The array and the value we want to find are prepared.' : 'Se prepara el arreglo y el valor que queremos encontrar.'}</div>
 						<div class="opa-track"><div class="opa-fill" id="search-fill"></div></div>
 						<div class="opa-controls">
-							<button class="opa-btn" id="search-prev" type="button">⬅ Retroceder</button>
-							<button class="opa-btn" id="search-next" type="button">Avanzar ➡</button>
-							<button class="opa-btn" id="search-auto" type="button">Auto-play ▶</button>
-							<span class="opa-badge" id="search-step">Paso 1 / 6</span>
+							<button class="opa-btn" id="search-prev" type="button">⬅ {lang === 'en' ? 'Back' : 'Retroceder'}</button>
+							<button class="opa-btn" id="search-next" type="button">{lang === 'en' ? 'Forward' : 'Avanzar'} ➡</button>
+							<button class="opa-btn" id="search-auto" type="button">{lang === 'en' ? 'Auto-play' : 'Auto-play'} ▶</button>
+							<span class="opa-badge" id="search-step">{lang === 'en' ? 'Step' : 'Paso'} 1 / 6</span>
 						</div>
 					</article>
 					<article class="opa-card span-5">
-						<div class="opa-mini-title">Visual de comparación</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'Comparison visualization' : 'Visual de comparación'}</div>
 						<div class="opa-array" id="search-array">
 							<div class="opa-slot"><span class="opa-index">[0]</span><span class="opa-value">8</span></div>
 							<div class="opa-slot"><span class="opa-index">[1]</span><span class="opa-value">14</span></div>
@@ -197,21 +199,21 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<div class="opa-slot"><span class="opa-index">[5]</span><span class="opa-value">42</span></div>
 						</div>
 						<div class="opa-state mt-4">
-							<div class="opa-state-item"><span>buscado</span><strong>14</strong></div>
-							<div class="opa-state-item"><span>i actual</span><strong id="search-i">-</strong></div>
-							<div class="opa-state-item"><span>posición encontrada</span><strong id="search-pos">-1</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'searched' : 'buscado'}</span><strong>14</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'current i' : 'i actual'}</span><strong id="search-i">-</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'found position' : 'posición encontrada'}</span><strong id="search-pos">-1</strong></div>
 						</div>
 					</article>
 				</div>
-				<div class="opa-tip mt-4">Usamos <code>-1</code> porque ninguna posición válida del arreglo puede ser negativa. Entonces <code>-1</code> significa “todavía no encontré nada”.</div>
+				<div class="opa-tip mt-4">{lang === 'en' ? 'We use -1 because no valid array position can be negative. So -1 means "I haven\'t found anything yet".' : 'Usamos -1 porque ninguna posición válida del arreglo puede ser negativa. Entonces -1 significa "todavía no encontré nada".'}</div>
 			</section>
 
 			<section class="opa-section" data-reveal>
-				<h2 class="opa-section-title">3. Insertar un valor en el medio</h2>
-				<p class="opa-section-sub">Insertar no es simplemente “poner un valor”. Si la posición ya está ocupada, primero hay que desplazar elementos hacia la derecha para hacer lugar.</p>
+				<h2 class="opa-section-title">{lang === 'en' ? '3. Inserting a Value in the Middle' : '3. Insertar un valor en el medio'}</h2>
+				<p class="opa-section-sub">{lang === 'en' ? 'Inserting is not simply "putting a value". If the position is already occupied, elements must first be shifted to the right to make room.' : 'Insertar no es simplemente "poner un valor". Si la posición ya está ocupada, primero hay que desplazar elementos hacia la derecha para hacer lugar.'}</p>
 				<div class="opa-grid">
 					<article class="opa-card span-7">
-						<div class="opa-mini-title">Simulación de inserción con desplazamiento</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'Insertion simulation with shifting' : 'Simulación de inserción con desplazamiento'}</div>
 						<div class="opa-code" id="insert-code">
 							<span data-line="1"><span class="tp">int</span> numeros[<span class="nu">6</span>] = &#123;<span class="nu">10</span>, <span class="nu">20</span>, <span class="nu">40</span>, <span class="nu">50</span>&#125;;</span>
 							<span data-line="2"><span class="tp">int</span> cantidad = <span class="nu">4</span>;</span>
@@ -223,17 +225,17 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<span data-line="8">numeros[posicion] = nuevo;</span>
 							<span data-line="9">cantidad = cantidad + <span class="nu">1</span>;</span>
 						</div>
-						<div class="opa-copy-box mt-4" id="insert-copy"><strong>Paso 1:</strong> Tenemos espacio para 6 elementos, pero el arreglo está usando 4.</div>
+						<div class="opa-copy-box mt-4" id="insert-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'There is room for 6 elements, but the array is using 4.' : 'Tenemos espacio para 6 elementos, pero el arreglo está usando 4.'}</div>
 						<div class="opa-track"><div class="opa-fill" id="insert-fill"></div></div>
 						<div class="opa-controls">
-							<button class="opa-btn" id="insert-prev" type="button">⬅ Retroceder</button>
-							<button class="opa-btn" id="insert-next" type="button">Avanzar ➡</button>
-							<button class="opa-btn" id="insert-auto" type="button">Auto-play ▶</button>
-							<span class="opa-badge" id="insert-step">Paso 1 / 7</span>
+							<button class="opa-btn" id="insert-prev" type="button">⬅ {lang === 'en' ? 'Back' : 'Retroceder'}</button>
+							<button class="opa-btn" id="insert-next" type="button">{lang === 'en' ? 'Forward' : 'Avanzar'} ➡</button>
+							<button class="opa-btn" id="insert-auto" type="button">{lang === 'en' ? 'Auto-play' : 'Auto-play'} ▶</button>
+							<span class="opa-badge" id="insert-step">{lang === 'en' ? 'Step' : 'Paso'} 1 / 7</span>
 						</div>
 					</article>
 					<article class="opa-card span-5">
-						<div class="opa-mini-title">Visual del desplazamiento</div>
+						<div class="opa-mini-title">{lang === 'en' ? 'Shift visualization' : 'Visual del desplazamiento'}</div>
 						<div class="opa-array" id="insert-array">
 							<div class="opa-slot"><span class="opa-index">[0]</span><span class="opa-value">10</span></div>
 							<div class="opa-slot"><span class="opa-index">[1]</span><span class="opa-value">20</span></div>
@@ -243,23 +245,23 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<div class="opa-slot"><span class="opa-index">[5]</span><span class="opa-value">-</span></div>
 						</div>
 						<div class="opa-state mt-4">
-							<div class="opa-state-item"><span>cantidad actual</span><strong id="insert-count">4</strong></div>
-							<div class="opa-state-item"><span>posición de inserción</span><strong>2</strong></div>
-							<div class="opa-state-item"><span>nuevo valor</span><strong>30</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'current count' : 'cantidad actual'}</span><strong id="insert-count">4</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'insertion position' : 'posición de inserción'}</span><strong>2</strong></div>
+							<div class="opa-state-item"><span>{lang === 'en' ? 'new value' : 'nuevo valor'}</span><strong>30</strong></div>
 						</div>
 					</article>
 				</div>
-				<div class="opa-tip opa-warn mt-4">Error típico: mover desde la izquierda hacia la derecha. Eso pisa valores. Para insertar en el medio, el desplazamiento se hace desde el final hacia la posición de inserción.</div>
+				<div class="opa-tip opa-warn mt-4">{lang === 'en' ? 'Common error: moving from left to right. That overwrites values. To insert in the middle, the shift is done from the end toward the insertion position.' : 'Error típico: mover desde la izquierda hacia la derecha. Eso pisa valores. Para insertar en el medio, el desplazamiento se hace desde el final hacia la posición de inserción.'}</div>
 			</section>
 
 			<section class="opa-section" data-reveal>
-				<h2 class="opa-section-title">4. Qué te tenés que llevar</h2>
+				<h2 class="opa-section-title">{lang === 'en' ? '4. Key Takeaways' : '4. Qué te tenés que llevar'}</h2>
 				<div class="opa-grid">
-					<article class="opa-card span-4"><strong>Recorrer</strong><p class="mt-2">Es pasar por cada posición usando un índice. Sin eso no hay procesamiento real del arreglo.</p></article>
-					<article class="opa-card span-4"><strong>Buscar</strong><p class="mt-2">Es comparar uno por uno hasta encontrar el dato o terminar el recorrido.</p></article>
-					<article class="opa-card span-4"><strong>Insertar</strong><p class="mt-2">Es hacer lugar y recién después guardar el nuevo valor.</p></article>
+					<article class="opa-card span-4"><strong>{lang === 'en' ? 'Traverse' : 'Recorrer'}</strong><p class="mt-2">{lang === 'en' ? 'It\'s going through each position using an index. Without that, there\'s no real array processing.' : 'Es pasar por cada posición usando un índice. Sin eso no hay procesamiento real del arreglo.'}</p></article>
+					<article class="opa-card span-4"><strong>{lang === 'en' ? 'Search' : 'Buscar'}</strong><p class="mt-2">{lang === 'en' ? 'It\'s comparing one by one until you find the data or finish the traversal.' : 'Es comparar uno por uno hasta encontrar el dato o terminar el recorrido.'}</p></article>
+					<article class="opa-card span-4"><strong>{lang === 'en' ? 'Insert' : 'Insertar'}</strong><p class="mt-2">{lang === 'en' ? 'It\'s making room and only then saving the new value.' : 'Es hacer lugar y recién después guardar el nuevo valor.'}</p></article>
 				</div>
-				<a class="opa-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+				<a class="opa-back" href={getRelativePath('/presentaciones')}>← {lang === 'en' ? 'Back to presentations' : 'Volver a presentaciones'}</a>
 			</section>
 		</main>
 	</div>
@@ -267,13 +269,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<script>
 		type SimStep = {
 			line: number;
-			message: string;
+			message: { es: string; en: string };
 			activeIndex?: number;
 			values?: string[];
 			logs?: string[];
 			extra?: Record<string, string>;
 			movingIndex?: number;
 		};
+
+		const isEnglish = document.documentElement.lang === 'en';
 
 		const revealSections = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
 		const revealObserver = new IntersectionObserver((entries) => {
@@ -325,14 +329,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					window.clearInterval(timer);
 					timer = null;
 				}
-				auto.textContent = 'Auto-play ▶';
+				auto.textContent = isEnglish ? 'Auto-play ▶' : 'Auto-play ▶';
 			};
 
 			const render = (): void => {
 				const step = config.steps[current];
-				copy.innerHTML = `<strong>Paso ${current + 1}:</strong> ${step.message}`;
+				const lang = isEnglish ? 'en' : 'es';
+				copy.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${current + 1}:</strong> ${step.message[lang]}`;
 				fill.style.width = `${((current + 1) / config.steps.length) * 100}%`;
-				badge.textContent = `Paso ${current + 1} / ${config.steps.length}`;
+				badge.textContent = `${isEnglish ? 'Step' : 'Paso'} ${current + 1} / ${config.steps.length}`;
 				lines.forEach((line) => line.classList.toggle('active', Number(line.dataset.line) === step.line));
 				slots.forEach((slot, index) => {
 					slot.classList.toggle('active', index === step.activeIndex);
@@ -369,7 +374,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					stopAuto();
 					return;
 				}
-				auto.textContent = 'Pausar ⏸';
+				auto.textContent = isEnglish ? 'Pause ⏸' : 'Pausar ⏸';
 				timer = window.setInterval(() => {
 					if (current < config.steps.length - 1) {
 						current += 1;
@@ -385,13 +390,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		setupSimulation({
 			prefix: 'walk',
 			steps: [
-				{ line: 1, message: 'Se crea el arreglo con los valores 10, 20, 30, 40 y 50.', logs: [], extra: { i: '-', value: '-' } },
-				{ line: 2, message: 'Se declara la variable i, que se usará como índice.', logs: [], extra: { i: '-', value: '-' } },
-				{ line: 3, message: 'Empieza el recorrido con i = 0.', activeIndex: 0, logs: [], extra: { i: '0', value: '-' } },
-				{ line: 4, message: 'Se imprime la posición 0 y su valor 10.', activeIndex: 0, logs: ['Posicion 0 -> 10'], extra: { i: '0', value: '10' } },
-				{ line: 4, message: 'Ahora i vale 1 y se lee la segunda posición.', activeIndex: 1, logs: ['Posicion 0 -> 10', 'Posicion 1 -> 20'], extra: { i: '1', value: '20' } },
-				{ line: 4, message: 'Después i vale 2 y se lee el valor 30.', activeIndex: 2, logs: ['Posicion 0 -> 10', 'Posicion 1 -> 20', 'Posicion 2 -> 30'], extra: { i: '2', value: '30' } },
-				{ line: 4, message: 'Finalmente también se visitan las posiciones 3 y 4.', activeIndex: 4, logs: ['Posicion 0 -> 10', 'Posicion 1 -> 20', 'Posicion 2 -> 30', 'Posicion 3 -> 40', 'Posicion 4 -> 50'], extra: { i: '4', value: '50' } },
+				{ line: 1, message: { es: 'Se crea el arreglo con los valores 10, 20, 30, 40 y 50.', en: 'The array is created with values 10, 20, 30, 40, and 50.' }, logs: [], extra: { i: '-', value: '-' } },
+				{ line: 2, message: { es: 'Se declara la variable i, que se usará como índice.', en: 'Variable i is declared, to be used as the index.' }, logs: [], extra: { i: '-', value: '-' } },
+				{ line: 3, message: { es: 'Empieza el recorrido con i = 0.', en: 'Traversal starts with i = 0.' }, activeIndex: 0, logs: [], extra: { i: '0', value: '-' } },
+				{ line: 4, message: { es: 'Se imprime la posición 0 y su valor 10.', en: 'Position 0 and its value 10 are printed.' }, activeIndex: 0, logs: ['Posicion 0 -> 10'], extra: { i: '0', value: '10' } },
+				{ line: 4, message: { es: 'Ahora i vale 1 y se lee la segunda posición.', en: 'Now i equals 1 and the second position is read.' }, activeIndex: 1, logs: ['Posicion 0 -> 10', 'Posicion 1 -> 20'], extra: { i: '1', value: '20' } },
+				{ line: 4, message: { es: 'Después i vale 2 y se lee el valor 30.', en: 'Then i equals 2 and value 30 is read.' }, activeIndex: 2, logs: ['Posicion 0 -> 10', 'Posicion 1 -> 20', 'Posicion 2 -> 30'], extra: { i: '2', value: '30' } },
+				{ line: 4, message: { es: 'Finalmente también se visitan las posiciones 3 y 4.', en: 'Finally positions 3 and 4 are also visited.' }, activeIndex: 4, logs: ['Posicion 0 -> 10', 'Posicion 1 -> 20', 'Posicion 2 -> 30', 'Posicion 3 -> 40', 'Posicion 4 -> 50'], extra: { i: '4', value: '50' } },
 			],
 			arraySelector: '#walk-array',
 			codeSelector: '#walk-code',
@@ -405,12 +410,12 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		setupSimulation({
 			prefix: 'search',
 			steps: [
-				{ line: 1, message: 'Tenemos un arreglo de 6 elementos y vamos a buscar el valor 14.', extra: { i: '-', pos: '-1' } },
-				{ line: 4, message: 'Empieza la búsqueda desde i = 0.', activeIndex: 0, extra: { i: '0', pos: '-1' } },
-				{ line: 5, message: 'Se compara numeros[0] = 8 con 14. No coinciden.', activeIndex: 0, extra: { i: '0', pos: '-1' } },
-				{ line: 5, message: 'Ahora i = 1. Se compara numeros[1] = 14 con 14.', activeIndex: 1, extra: { i: '1', pos: '-1' } },
-				{ line: 6, message: 'Como coincide, guardamos posicion = 1.', activeIndex: 1, extra: { i: '1', pos: '1' } },
-				{ line: 7, message: 'Con break se corta el ciclo porque ya encontramos el dato.', activeIndex: 1, extra: { i: '1', pos: '1' } },
+				{ line: 1, message: { es: 'Tenemos un arreglo de 6 elementos y vamos a buscar el valor 14.', en: 'We have an array of 6 elements and we will search for value 14.' }, extra: { i: '-', pos: '-1' } },
+				{ line: 4, message: { es: 'Empieza la búsqueda desde i = 0.', en: 'Search starts from i = 0.' }, activeIndex: 0, extra: { i: '0', pos: '-1' } },
+				{ line: 5, message: { es: 'Se compara numeros[0] = 8 con 14. No coinciden.', en: 'numeros[0] = 8 is compared with 14. They don\'t match.' }, activeIndex: 0, extra: { i: '0', pos: '-1' } },
+				{ line: 5, message: { es: 'Ahora i = 1. Se compara numeros[1] = 14 con 14.', en: 'Now i = 1. numeros[1] = 14 is compared with 14.' }, activeIndex: 1, extra: { i: '1', pos: '-1' } },
+				{ line: 6, message: { es: 'Como coincide, guardamos posicion = 1.', en: 'Since they match, we save position = 1.' }, activeIndex: 1, extra: { i: '1', pos: '1' } },
+				{ line: 7, message: { es: 'Con break se corta el ciclo porque ya encontramos el dato.', en: 'With break the cycle stops because we already found the data.' }, activeIndex: 1, extra: { i: '1', pos: '1' } },
 			],
 			arraySelector: '#search-array',
 			codeSelector: '#search-code',
@@ -423,13 +428,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		setupSimulation({
 			prefix: 'insert',
 			steps: [
-				{ line: 1, message: 'El arreglo tiene lugar para 6 valores, pero por ahora usa 4.', values: ['10', '20', '40', '50', '-', '-'], extra: { count: '4' } },
-				{ line: 5, message: 'Empieza el desplazamiento desde el final ocupado hacia la derecha.', values: ['10', '20', '40', '50', '-', '-'], movingIndex: 4, extra: { count: '4' } },
-				{ line: 6, message: 'Se copia el 50 desde la posición 3 hacia la posición 4.', values: ['10', '20', '40', '50', '50', '-'], movingIndex: 4, extra: { count: '4' } },
-				{ line: 6, message: 'Ahora se copia el 40 desde la posición 2 hacia la posición 3.', values: ['10', '20', '40', '40', '50', '-'], movingIndex: 3, extra: { count: '4' } },
-				{ line: 8, message: 'Ya hay lugar en la posición 2. Allí se guarda el nuevo valor 30.', values: ['10', '20', '30', '40', '50', '-'], activeIndex: 2, extra: { count: '4' } },
-				{ line: 9, message: 'La cantidad lógica del arreglo aumenta de 4 a 5.', values: ['10', '20', '30', '40', '50', '-'], extra: { count: '5' } },
-				{ line: 9, message: 'Resultado final: 10, 20, 30, 40, 50.', values: ['10', '20', '30', '40', '50', '-'], extra: { count: '5' } },
+				{ line: 1, message: { es: 'El arreglo tiene lugar para 6 valores, pero por ahora usa 4.', en: 'The array has room for 6 values, but currently uses 4.' }, values: ['10', '20', '40', '50', '-', '-'], extra: { count: '4' } },
+				{ line: 5, message: { es: 'Empieza el desplazamiento desde el final ocupado hacia la derecha.', en: 'Shifting starts from the occupied end toward the right.' }, values: ['10', '20', '40', '50', '-', '-'], movingIndex: 4, extra: { count: '4' } },
+				{ line: 6, message: { es: 'Se copia el 50 desde la posición 3 hacia la posición 4.', en: '50 is copied from position 3 to position 4.' }, values: ['10', '20', '40', '50', '50', '-'], movingIndex: 4, extra: { count: '4' } },
+				{ line: 6, message: { es: 'Ahora se copia el 40 desde la posición 2 hacia la posición 3.', en: 'Now 40 is copied from position 2 to position 3.' }, values: ['10', '20', '40', '40', '50', '-'], movingIndex: 3, extra: { count: '4' } },
+				{ line: 8, message: { es: 'Ya hay lugar en la posición 2. Allí se guarda el nuevo valor 30.', en: 'There is now room at position 2. The new value 30 is saved there.' }, values: ['10', '20', '30', '40', '50', '-'], activeIndex: 2, extra: { count: '4' } },
+				{ line: 9, message: { es: 'La cantidad lógica del arreglo aumenta de 4 a 5.', en: 'The logical count of the array increases from 4 to 5.' }, values: ['10', '20', '30', '40', '50', '-'], extra: { count: '5' } },
+				{ line: 9, message: { es: 'Resultado final: 10, 20, 30, 40, 50.', en: 'Final result: 10, 20, 30, 40, 50.' }, values: ['10', '20', '30', '40', '50', '-'], extra: { count: '5' } },
 			],
 			arraySelector: '#insert-array',
 			codeSelector: '#insert-code',

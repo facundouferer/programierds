@@ -1,7 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
 ---
 
 <Layout title="Switch paso a paso - Programierds">
@@ -50,13 +53,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<div class="sw-screen">
 		<main class="sw-shell">
 			<header class="mb-6">
-				<p class="sw-badge">switch / paso a paso</p>
-				<h1 class="sw-title mt-3"><code>switch</code> linea por linea</h1>
-				<p class="sw-sub mt-3">Aca se ve como <code>switch</code> compara casos, encuentra coincidencia y corta con <code>break</code>.</p>
+				<p class="sw-badge">{lang === 'en' ? 'switch / step by step' : 'switch / paso a paso'}</p>
+				<h1 class="sw-title mt-3">{lang === 'en' ? '<code>switch</code> line by line' : '<code>switch</code> linea por linea'}</h1>
+				<p class="sw-sub mt-3">{lang === 'en' ? 'See how <code>switch</code> compares cases, finds a match, and breaks.' : 'Aca se ve como <code>switch</code> compara casos, encuentra coincidencia y corta con <code>break</code>.'}</p>
 			</header>
 			<section class="sw-grid" aria-live="polite">
 				<article class="sw-card sw-code">
-					<div class="sw-head"><strong>1) Codigo</strong><span class="sw-badge" id="sw-line">Linea activa: 1</span></div>
+					<div class="sw-head"><strong>{lang === 'en' ? '1) Code' : '1) Codigo'}</strong><span class="sw-badge" id="sw-line">{lang === 'en' ? 'Active line: 1' : 'Linea activa: 1'}</span></div>
 					<div class="sw-panel">
 						<div class="sw-row" data-line="1"><span class="sw-ln">1</span><span>char dia[] = "martes";</span></div>
 						<div class="sw-row" data-line="2"><span class="sw-ln">2</span><span>switch (dia) &#123;</span></div>
@@ -71,47 +74,47 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="sw-row" data-line="11"><span class="sw-ln">11</span><span>&#125;</span></div>
 						<div class="sw-row" data-line="12"><span class="sw-ln">12</span><span>printf("Fin del switch\n");</span></div>
 					</div>
-					<div class="sw-copy" id="sw-copy"><strong>Paso 1:</strong> Se define <code>dia</code> como 'martes'.</div>
+					<div class="sw-copy" id="sw-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'Defines <code>dia</code> as \'martes\'.' : 'Se define <code>dia</code> como \'martes\'.'}</div>
 					<div class="sw-track"><div class="sw-fill" id="sw-fill"></div></div>
 					<div class="sw-controls">
-						<button class="sw-btn" id="sw-prev" type="button">⬅ Retroceder</button>
-						<button class="sw-btn" id="sw-next" type="button">Avanzar ➡</button>
-						<button class="sw-btn" id="sw-auto" type="button">Auto-play ▶</button>
-						<select class="sw-select" id="sw-level" aria-label="Nivel de detalle">
-							<option value="basico" selected>Basico</option>
-							<option value="intermedio">Intermedio</option>
+						<button class="sw-btn" id="sw-prev" type="button">{lang === 'en' ? '⬅ Back' : '⬅ Retroceder'}</button>
+						<button class="sw-btn" id="sw-next" type="button">{lang === 'en' ? 'Next ➡' : 'Avanzar ➡'}</button>
+						<button class="sw-btn" id="sw-auto" type="button">{lang === 'en' ? 'Auto-play ▶' : 'Auto-play ▶'}</button>
+						<select class="sw-select" id="sw-level" aria-label={lang === 'en' ? 'Detail level' : 'Nivel de detalle'}>
+							<option value="basico" selected>{lang === 'en' ? 'Basic' : 'Basico'}</option>
+							<option value="intermedio">{lang === 'en' ? 'Intermediate' : 'Intermedio'}</option>
 						</select>
-						<span class="sw-badge" id="sw-step">Paso 1 / 8</span>
+						<span class="sw-badge" id="sw-step">{lang === 'en' ? 'Step 1 / 8' : 'Paso 1 / 8'}</span>
 					</div>
 				</article>
 				<article class="sw-card sw-state">
-					<div class="sw-head"><strong>2) Variables</strong></div>
+					<div class="sw-head"><strong>{lang === 'en' ? '2) Variables' : '2) Variables'}</strong></div>
 					<div class="sw-state-item"><span>dia</span><span id="sw-dia" class="sw-value">martes</span></div>
-					<div class="sw-state-item"><span>Case actual</span><span id="sw-case" class="sw-value">-</span></div>
+					<div class="sw-state-item"><span>{lang === 'en' ? 'Current case' : 'Case actual'}</span><span id="sw-case" class="sw-value">-</span></div>
 				</article>
 				<article class="sw-card sw-console">
-					<div class="sw-head"><strong>3) Consola simulada</strong></div>
+					<div class="sw-head"><strong>{lang === 'en' ? '3) Simulated console' : '3) Consola simulada'}</strong></div>
 					<div class="sw-console-win">
 						<div class="sw-console-head"><span>./switch-demo</span><span>stdout</span></div>
 						<div class="sw-console-body" id="sw-console"></div>
 					</div>
 				</article>
 			</section>
-			<a class="sw-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+			<a class="sw-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
 		</main>
 	</div>
 
 	<script>
-		type Step = { line: number; message: string; dia: string; selectedCase: string; logs: string[] };
+		type Step = { line: number; message: { es: string; en: string }; dia: string; selectedCase: string; logs: string[] };
 		const baseSteps: Step[] = [
-			{ line: 1, message: 'Se declara dia = martes.', dia: 'martes', selectedCase: '-', logs: [] },
-			{ line: 2, message: 'Comienza switch y compara contra cada case.', dia: 'martes', selectedCase: 'comparando', logs: [] },
-			{ line: 3, message: 'Case lunes no coincide.', dia: 'martes', selectedCase: 'lunes (no)', logs: [] },
-			{ line: 6, message: 'Case martes SI coincide.', dia: 'martes', selectedCase: 'martes (si)', logs: [] },
-			{ line: 7, message: 'Ejecuta el bloque del case martes.', dia: 'martes', selectedCase: 'martes (si)', logs: ['Seguimos con energia'] },
-			{ line: 8, message: 'El break corta y evita seguir al default.', dia: 'martes', selectedCase: 'break', logs: ['Seguimos con energia'] },
-			{ line: 11, message: 'Cierra switch.', dia: 'martes', selectedCase: 'break', logs: ['Seguimos con energia'] },
-			{ line: 12, message: 'Sigue el flujo del programa.', dia: 'martes', selectedCase: 'final', logs: ['Seguimos con energia', 'Fin del switch'] },
+			{ line: 1, message: { es: 'Se declara dia = martes.', en: 'Declares dia = martes.' }, dia: 'martes', selectedCase: '-', logs: [] },
+			{ line: 2, message: { es: 'Comienza switch y compara contra cada case.', en: 'Switch starts and compares against each case.' }, dia: 'martes', selectedCase: 'comparando', logs: [] },
+			{ line: 3, message: { es: 'Case lunes no coincide.', en: 'Case lunes does not match.' }, dia: 'martes', selectedCase: 'lunes (no)', logs: [] },
+			{ line: 6, message: { es: 'Case martes SI coincide.', en: 'Case martes DOES match.' }, dia: 'martes', selectedCase: 'martes (si)', logs: [] },
+			{ line: 7, message: { es: 'Ejecuta el bloque del case martes.', en: 'Executes the martes case block.' }, dia: 'martes', selectedCase: 'martes (si)', logs: ['Seguimos con energia'] },
+			{ line: 8, message: { es: 'El break corta y evita seguir al default.', en: 'The break cuts and avoids falling through to default.' }, dia: 'martes', selectedCase: 'break', logs: ['Seguimos con energia'] },
+			{ line: 11, message: { es: 'Cierra switch.', en: 'Closes switch.' }, dia: 'martes', selectedCase: 'break', logs: ['Seguimos con energia'] },
+			{ line: 12, message: { es: 'Sigue el flujo del programa.', en: 'Continues the program flow.' }, dia: 'martes', selectedCase: 'final', logs: ['Seguimos con energia', 'Fin del switch'] },
 		];
 
 		const buildIntermediateSteps = (steps: Step[]): Step[] => {
@@ -119,7 +122,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			steps.forEach((stepState, index) => {
 				enriched.push(stepState);
 				if (index < steps.length - 1) {
-					enriched.push({ ...stepState, message: `Detalle intermedio: ${stepState.message}` });
+					enriched.push({ ...stepState, message: { es: `Detalle intermedio: ${stepState.message.es}`, en: `Intermediate detail: ${stepState.message.en}` } });
 				}
 			});
 			return enriched;
@@ -147,13 +150,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		const consoleBody = document.getElementById('sw-console') as HTMLElement;
 		const fill = document.getElementById('sw-fill') as HTMLElement;
 		let autoPlayTimer: number | null = null;
+		const isEnglish = document.documentElement.lang === 'en';
 
 		function stopAutoPlay(): void {
 			if (autoPlayTimer !== null) {
 				window.clearInterval(autoPlayTimer);
 				autoPlayTimer = null;
 			}
-			auto.textContent = 'Auto-play ▶';
+			auto.textContent = isEnglish ? 'Auto-play ▶' : 'Auto-play ▶';
 		}
 
 		function toggleAutoPlay(): void {
@@ -161,7 +165,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				stopAutoPlay();
 				return;
 			}
-			auto.textContent = 'Pausar ⏸';
+			auto.textContent = isEnglish ? 'Pause ⏸' : 'Pausar ⏸';
 			autoPlayTimer = window.setInterval(() => {
 				if (currentStep < activeSteps.length - 1) {
 					currentStep += 1;
@@ -175,9 +179,9 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		function render(): void {
 			const state = activeSteps[currentStep];
 			document.querySelectorAll<HTMLElement>('.sw-row').forEach((row) => row.classList.toggle('active', Number(row.dataset.line) === state.line));
-			line.textContent = `Linea activa: ${state.line}`;
-			step.textContent = `Paso ${currentStep + 1} / ${activeSteps.length}`;
-			copy.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${state.message}`;
+			line.textContent = isEnglish ? `Active line: ${state.line}` : `Linea activa: ${state.line}`;
+			step.textContent = isEnglish ? `Step ${currentStep + 1} / ${activeSteps.length}` : `Paso ${currentStep + 1} / ${activeSteps.length}`;
+			copy.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${state.message[isEnglish ? 'en' : 'es']}`;
 			dia.textContent = state.dia;
 			selected.textContent = state.selectedCase;
 			consoleBody.innerHTML = '';

@@ -1,10 +1,13 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
 ---
 
-<Layout title="Tipos de Datos en C - Programierds Retro View">
+<Layout title={lang === 'en' ? 'Data Types in JavaScript - Programierds Retro View' : 'Tipos de Datos en C - Programierds Retro View'}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap');
 
@@ -642,21 +645,21 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 					<div class="anim-item" style="--delay: 200ms">
 						<h1 class="intro-title uppercase tracking-tight mb-4">
-							&gt; Tipos de Datos
+							&gt; {lang === 'en' ? 'Data Types' : 'Tipos de Datos'}
 						</h1>
 						<h1 class="intro-title uppercase tracking-tight mb-8" style="color: rgba(13,242,89,0.6)">
-							en C
+							{lang === 'en' ? 'in JavaScript' : 'en JavaScript'}
 						</h1>
 					</div>
 
 					<div class="anim-item flex justify-center" style="--delay: 400ms">
 						<p class="intro-subtitle text-lg md:text-xl" id="intro-subtitle">
-							Cada valor tiene una identidad. Conocelas.
+							{lang === 'en' ? 'Every value has an identity. Get to know them.' : 'Cada valor tiene una identidad. Conocelas.'}
 						</p>
 					</div>
 
 					<div class="anim-item mt-12 opacity-50" style="--delay: 600ms">
-						<p class="text-sm animate-bounce" style="animation: float 2s ease-in-out infinite">&#8595; scroll para continuar</p>
+						<p class="text-sm animate-bounce" style="animation: float 2s ease-in-out infinite">&#8595; {lang === 'en' ? 'scroll to continue' : 'scroll para continuar'}</p>
 					</div>
 				</div>
 			</section>
@@ -668,50 +671,51 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">
-							Primitivos <span class="opacity-30">vs</span> Objetos
+							{lang === 'en' ? 'Primitives' : 'Primitivos'} <span class="opacity-30">vs</span> {lang === 'en' ? 'Objects' : 'Objetos'}
 						</h2>
-						<p class="text-sm opacity-50 mt-2">El universo de los datos tiene DOS categorías fundamentales</p>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'The data universe has TWO fundamental categories' : 'El universo de los datos tiene DOS categorías fundamentales'}</p>
 					</div>
 
 					<div class="flex gap-8 split-grid">
 						<!-- Primitivos -->
 						<div class="split-col flex-1 anim-item" style="--delay: 150ms">
-							<h3 class="font-retro text-3xl mb-2 text-center">Primitivos</h3>
-							<p class="text-xs text-center opacity-50 mb-6">Valores simples, copiados por valor</p>
+							<h3 class="font-retro text-3xl mb-2 text-center">{lang === 'en' ? 'Primitives' : 'Primitivos'}</h3>
+							<p class="text-xs text-center opacity-50 mb-6">{lang === 'en' ? 'Simple values, copied by value' : 'Valores simples, copiados por valor'}</p>
 							<div class="flex flex-wrap justify-center gap-1 mb-6">
-								<span class="prim-badge anim-item" style="--delay: 250ms">char</span>
-								<span class="prim-badge anim-item" style="--delay: 320ms">int</span>
+								<span class="prim-badge anim-item" style="--delay: 250ms">string</span>
+								<span class="prim-badge anim-item" style="--delay: 320ms">number</span>
 								<span class="prim-badge anim-item" style="--delay: 390ms">boolean</span>
-								<span class="prim-badge anim-item" style="--delay: 460ms">float</span>
-								<span class="prim-badge anim-item" style="--delay: 530ms">double</span>
-								<span class="prim-badge anim-item" style="--delay: 600ms">char *</span>
-								<span class="prim-badge anim-item" style="--delay: 670ms">size_t</span>
+								<span class="prim-badge anim-item" style="--delay: 460ms">undefined</span>
+								<span class="prim-badge anim-item" style="--delay: 530ms">null</span>
+								<span class="prim-badge anim-item" style="--delay: 600ms">symbol</span>
+								<span class="prim-badge anim-item" style="--delay: 670ms">bigint</span>
 							</div>
 							<div class="code-block text-xs">
-								<span class="code-type">int</span> x = <span class="code-number">42</span>;<br>
-								<span class="code-type">int</span> y = x; <span class="code-comment">// copia del valor</span><br>
+								<span class="code-keyword">let</span> x = <span class="code-number">42</span>;<br>
+								<span class="code-keyword">let</span> y = x; <span class="code-comment">// copy of the value</span><br>
 								y = <span class="code-number">99</span>;<br>
-								<span class="code-comment">// x sigue siendo 42</span>
+								<span class="code-comment">// x is still 42</span>
 							</div>
 						</div>
 
 						<!-- Objetos -->
 						<div class="split-col flex-1 anim-item" style="--delay: 300ms">
-							<h3 class="font-retro text-3xl mb-2 text-center" style="color: #93c5fd">Objetos</h3>
-							<p class="text-xs text-center opacity-50 mb-6">Estructuras complejas, manipuladas mediante direcciones</p>
+							<h3 class="font-retro text-3xl mb-2 text-center" style="color: #93c5fd">{lang === 'en' ? 'Objects' : 'Objetos'}</h3>
+							<p class="text-xs text-center opacity-50 mb-6">{lang === 'en' ? 'Complex structures, manipulated by reference' : 'Estructuras complejas, manipuladas por referencia'}</p>
 							<div class="flex flex-wrap justify-center gap-1 mb-6">
-								<span class="obj-badge anim-item" style="--delay: 400ms">struct</span>
-								<span class="obj-badge anim-item" style="--delay: 470ms">array</span>
-								<span class="obj-badge anim-item" style="--delay: 540ms">funcion</span>
-								<span class="obj-badge anim-item" style="--delay: 610ms">union</span>
-								<span class="obj-badge anim-item" style="--delay: 680ms">enum</span>
-								<span class="obj-badge anim-item" style="--delay: 750ms">pointer</span>
+								<span class="obj-badge anim-item" style="--delay: 400ms">Object</span>
+								<span class="obj-badge anim-item" style="--delay: 470ms">Array</span>
+								<span class="obj-badge anim-item" style="--delay: 540ms">Function</span>
+								<span class="obj-badge anim-item" style="--delay: 610ms">Date</span>
+								<span class="obj-badge anim-item" style="--delay: 680ms">RegExp</span>
+								<span class="obj-badge anim-item" style="--delay: 750ms">Map</span>
+								<span class="obj-badge anim-item" style="--delay: 820ms">Set</span>
 							</div>
 							<div class="code-block text-xs">
-								<span class="code-keyword">struct</span> Punto a = &lbrace; <span class="code-number">42</span> &rbrace;;<br>
-								<span class="code-keyword">struct</span> Punto *b = &amp;a; <span class="code-comment">// direccion de memoria</span><br>
-								b-&gt;score = <span class="code-number">99</span>;<br>
-								<span class="code-comment">// a.score tambi&eacute;n es 99</span>
+								<span class="code-keyword">let</span> a = &lbrace; <span class="code-number">42</span> &rbrace;;<br>
+								<span class="code-keyword">let</span> b = a; <span class="code-comment">// reference copy</span><br>
+								b.value = <span class="code-number">99</span>;<br>
+								<span class="code-comment">// a.value is also 99</span>
 							</div>
 						</div>
 					</div>
@@ -726,25 +730,25 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 						<div>
 							<div class="anim-item mb-4" style="--delay: 0ms">
-								<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPO_01</span>
-								<h2 class="font-retro text-5xl uppercase tracking-tight">char[]</h2>
-								<p class="text-sm opacity-60 mt-1">Cadenas de texto — arreglos de caracteres terminados en null</p>
+								<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TYPE_01</span>
+								<h2 class="font-retro text-5xl uppercase tracking-tight">String</h2>
+								<p class="text-sm opacity-60 mt-1">{lang === 'en' ? 'Text strings — sequences of UTF-16 code units' : 'Cadenas de texto — secuencias de unidades de código UTF-16'}</p>
 							</div>
 
 							<div class="anim-item mb-6" style="--delay: 150ms">
 								<ul class="space-y-3 text-sm opacity-80">
-									<li class="flex items-start gap-2"><span class="text-primary">›</span> Se declaran con comillas dobles y se guardan como <code class="code-block px-2 py-0.5 text-xs">char[]</code> o <code class="code-block px-2 py-0.5 text-xs">char *</code></li>
-									<li class="flex items-start gap-2"><span class="text-primary">›</span> El final del string se marca con <strong>\0</strong></li>
-									<li class="flex items-start gap-2"><span class="text-primary">›</span> Mutable si trabaj&aacute;s con un arreglo propio de chars</li>
+									<li class="flex items-start gap-2"><span class="text-primary">›</span> {lang === 'en' ? 'Declared with single or double quotes' : 'Se declaran con comillas simples o dobles'}</li>
+									<li class="flex items-start gap-2"><span class="text-primary">›</span> {lang === 'en' ? 'Immutable — any operation returns a NEW string' : 'Inmutable — cualquier operación devuelve un NUEVO string'}</li>
+									<li class="flex items-start gap-2"><span class="text-primary">›</span> {lang === 'en' ? 'Template literals use backticks' : 'Los template literals usan backticks'}</li>
 								</ul>
 							</div>
 
 							<div class="anim-item code-block text-xs" style="--delay: 300ms">
-								<span class="code-type">char</span> nombre[] = <span class="code-string">"Ana"</span>;<br>
-								<span class="code-type">char</span> saludo[] = <span class="code-string">"Hola, Ana!"</span>;<br>
-								<span class="code-type">size_t</span> largo = strlen(nombre); <span class="code-comment">// 3</span><br>
-								nombre[<span class="code-number">0</span>]; <span class="code-comment">// 'A'</span><br>
-								nombre[<span class="code-number">1</span>] = <span class="code-string">'n'</span>;
+								<span class="code-keyword">const</span> nombre = <span class="code-string">"Ana"</span>;<br>
+								<span class="code-keyword">const</span> saludo = <span class="code-string">`Hola, &#36;&#123;nombre&#125;!`</span>;<br>
+								<span class="code-keyword">const</span> largo = nombre.length; <span class="code-comment">// 3</span><br>
+								nombre[<span class="code-number">0</span>]; <span class="code-comment">// "A"</span><br>
+								<span class="code-comment">// nombre[0] = "B" ❌ not allowed</span>
 							</div>
 						</div>
 
@@ -755,7 +759,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<div id="typed-hello" class="font-retro text-5xl text-center" style="min-width: 200px; min-height: 60px;"></div>
 								<span class="quote-anim quote-right font-retro text-8xl text-primary">&rdquo;</span>
 							</div>
-							<p class="text-xs opacity-40 mt-4">cada letra ocupa una celda consecutiva en memoria</p>
+							<p class="text-xs opacity-40 mt-4">{lang === 'en' ? 'each character occupies a consecutive memory cell' : 'cada letra ocupa una celda consecutivas en memoria'}</p>
 							<div class="flex gap-1 mt-4" id="char-boxes"></div>
 						</div>
 					</div>
@@ -775,7 +779,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<div class="orbit-ring" style="width:70%;height:70%;top:15%;left:15%;"></div>
 
 								<div class="orbit-center">
-									<div>int / float</div>
+									<div>number</div>
 									<div style="font-size:0.7rem; opacity:0.5">IEEE 754</div>
 								</div>
 
@@ -797,29 +801,29 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 						<div class="order-1 md:order-2">
 							<div class="anim-item mb-4" style="--delay: 0ms">
-								<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPO_02</span>
+								<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TYPE_02</span>
 								<h2 class="font-retro text-5xl uppercase tracking-tight">Number</h2>
-								<p class="text-sm opacity-60 mt-1">C distingue enteros y flotantes</p>
+								<p class="text-sm opacity-60 mt-1">{lang === 'en' ? 'One type for all numbers — integers and floats' : 'Un solo tipo para todos los números — enteros y decimales'}</p>
 							</div>
 
 							<div class="anim-item mb-6" style="--delay: 150ms">
 								<div class="type-card mb-3">
-									<p class="text-xs opacity-50 mb-1">CLAVE</p>
-									<p class="text-sm">C S&Iacute; tiene <code class="text-yellow-400">int</code>, <code class="text-yellow-400">float</code>, <code class="text-yellow-400">double</code> y m&aacute;s.</p>
+									<p class="text-xs opacity-50 mb-1">{lang === 'en' ? 'KEY' : 'CLAVE'}</p>
+									<p class="text-sm">{lang === 'en' ? 'JS uses' : 'JS usa'} <code class="text-yellow-400">number</code> {lang === 'en' ? 'for both integers and floating-point numbers.' : 'para enteros y números de punto flotante.'}</p>
 								</div>
 								<div class="type-card mb-3">
-									<p class="text-xs opacity-50 mb-1">CASOS ESPECIALES</p>
-									<p class="text-sm"><code class="text-red-400">overflow</code> — resultado fuera del rango esperado</p>
-									<p class="text-sm"><code class="text-blue-400">precision</code> — cuidado con floats y doubles</p>
+									<p class="text-xs opacity-50 mb-1">{lang === 'en' ? 'SPECIAL CASES' : 'CASOS ESPECIALES'}</p>
+									<p class="text-sm"><code class="text-red-400">NaN</code> — {lang === 'en' ? 'result of invalid math operation' : 'resultado de operación matemática inválida'}</p>
+									<p class="text-sm"><code class="text-blue-400">Infinity</code> — {lang === 'en' ? 'division by zero or overflow' : 'división por cero o desbordamiento'}</p>
 								</div>
 							</div>
 
 							<div class="anim-item code-block text-xs" style="--delay: 300ms">
-								<span class="code-type">int</span> entero = <span class="code-number">42</span>;<br>
-								<span class="code-type">float</span> decimal = <span class="code-number">3.14f</span>;<br>
-								<span class="code-type">double</span> grande = <span class="code-number">3.1415926535</span>;<br>
-								<span class="code-type">int</span> division = <span class="code-number">7</span> / <span class="code-number">2</span>; <span class="code-comment">// 3</span><br>
-								<span class="code-type">double</span> precisa = <span class="code-number">7.0</span> / <span class="code-number">2.0</span>; <span class="code-comment">// 3.5</span>
+								<span class="code-keyword">const</span> entero = <span class="code-number">42</span>;<br>
+								<span class="code-keyword">const</span> decimal = <span class="code-number">3.14</span>;<br>
+								<span class="code-keyword">const</span> grande = <span class="code-number">1e308</span>;<br>
+								<span class="code-keyword">const</span> division = <span class="code-number">7</span> / <span class="code-number">2</span>; <span class="code-comment">// 3.5</span><br>
+								<span class="code-keyword">const</span> entera = Math.floor(<span class="code-number">7</span> / <span class="code-number">2</span>); <span class="code-comment">// 3</span>
 							</div>
 						</div>
 					</div>
@@ -832,9 +836,9 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-boolean">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-8" style="--delay: 0ms">
-						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPO_03</span>
+						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TYPE_03</span>
 						<h2 class="font-retro text-5xl uppercase tracking-tight">Boolean</h2>
-						<p class="text-sm opacity-60 mt-1">El tipo más simple y el más poderoso</p>
+						<p class="text-sm opacity-60 mt-1">{lang === 'en' ? 'The simplest type and the most powerful' : 'El tipo más simple y el más poderoso'}</p>
 					</div>
 
 					<!-- Binary rain -->
@@ -858,7 +862,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					<div class="flex gap-8 split-grid">
 						<div class="flex-1 anim-item bool-box bool-true" style="--delay: 200ms">
 							<div class="bool-label" style="color: #0df259">true</div>
-							<div class="text-xs mt-4 opacity-60">1 / condición cumplida / encendido</div>
+							<div class="text-xs mt-4 opacity-60">{lang === 'en' ? '1 / condition met / on' : '1 / condición cumplida / encendido'}</div>
 							<div class="mt-4 code-block text-xs text-left">
 								<span class="code-number">5</span> &gt; <span class="code-number">3</span> <span class="code-comment">// true</span><br>
 								<span class="code-string">"hola"</span>.length &gt; <span class="code-number">0</span> <span class="code-comment">// true</span>
@@ -866,7 +870,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						</div>
 						<div class="flex-1 anim-item bool-box bool-false" style="--delay: 350ms">
 							<div class="bool-label" style="color: #ef4444">false</div>
-							<div class="text-xs mt-4 opacity-60">0 / condición no cumplida / apagado</div>
+							<div class="text-xs mt-4 opacity-60">{lang === 'en' ? '0 / condition not met / off' : '0 / condición no cumplida / apagado'}</div>
 							<div class="mt-4 code-block text-xs text-left">
 								<span class="code-number">5</span> &lt; <span class="code-number">3</span> <span class="code-comment">// false</span><br>
 								<span class="code-string">""</span>.length &gt; <span class="code-number">0</span> <span class="code-comment">// false</span>
@@ -875,7 +879,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					</div>
 
 					<div class="anim-item mt-6 type-card" style="--delay: 500ms">
-						<p class="text-xs opacity-50 mb-1">FALSY VALUES — todo esto es falso en un booleano</p>
+						<p class="text-xs opacity-50 mb-1">{lang === 'en' ? 'FALSY VALUES — all of these are false in a boolean' : 'FALSY VALUES — todo esto es falso en un booleano'}</p>
 						<div class="flex flex-wrap gap-2 mt-2">
 							<span class="prim-badge">false</span>
 							<span class="prim-badge">0</span>
@@ -894,17 +898,17 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-undef">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPOS_04 &amp; 05</span>
+						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TYPES_04 &amp; 05</span>
 						<h2 class="font-retro text-5xl uppercase tracking-tight">undefined <span class="opacity-30">vs</span> null</h2>
-						<p class="text-sm opacity-60 mt-2">La distinción más malinterpretada de JS. Prestá atención.</p>
+						<p class="text-sm opacity-60 mt-2">{lang === 'en' ? 'The most misunderstood distinction in JS. Pay attention.' : 'La distinción más malinterpretada de JS. Prestá atención.'}</p>
 					</div>
 
 					<div class="flex gap-8 split-grid mb-8">
 						<div class="flex-1 anim-item undef-box" style="--delay: 150ms">
 							<div class="big-symbol opacity-60">?</div>
 							<h3 class="font-retro text-3xl mt-2">undefined</h3>
-							<p class="text-xs mt-3 opacity-60">Variable declarada pero sin valor asignado</p>
-							<p class="text-xs mt-1 opacity-40 italic">"el sistema dice: no sé qué hay acá"</p>
+							<p class="text-xs mt-3 opacity-60">{lang === 'en' ? 'Declared variable but no value assigned' : 'Variable declarada pero sin valor asignado'}</p>
+							<p class="text-xs mt-1 opacity-40 italic">{lang === 'en' ? '"the system says: I don\'t know what\'s here"' : '"el sistema dice: no sé qué hay acá"'}</p>
 							<div class="mt-4 code-block text-xs text-left">
 								<span class="code-keyword">let</span> nombre;<br>
 								<span class="code-comment">// nombre === undefined</span><br>
@@ -915,23 +919,23 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="flex-1 anim-item null-box" style="--delay: 300ms">
 							<div class="big-symbol" style="color: #ef4444">&#10007;</div>
 							<h3 class="font-retro text-3xl mt-2" style="color: #ef4444">null</h3>
-							<p class="text-xs mt-3 opacity-60">Ausencia intencional de valor (lo pusiste vos)</p>
-							<p class="text-xs mt-1 opacity-40 italic">"el programador dice: acá no hay nada, a propósito"</p>
+							<p class="text-xs mt-3 opacity-60">{lang === 'en' ? 'Intentional absence of value (you set it)' : 'Ausencia intencional de valor (lo pusiste vos)'}</p>
+							<p class="text-xs mt-1 opacity-40 italic">{lang === 'en' ? '"the programmer says: there\'s nothing here, on purpose"' : '"el programador dice: acá no hay nada, a propósito"'}</p>
 							<div class="mt-4 code-block text-xs text-left">
 								<span class="code-keyword">let</span> usuario = <span class="code-keyword">null</span>;<br>
-								<span class="code-comment">// explícitamente vacío</span><br>
+								<span class="code-comment">// explicitly empty</span><br>
 								<span class="code-keyword">typeof</span> usuario; <span class="code-comment">// "object" (!)</span>
 							</div>
 						</div>
 					</div>
 
-					<div class="anim-item type-card" style="--delay: 450ms" style="border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.05)">
-						<p class="text-xs opacity-50 mb-2">EL BUG HISTORICO DE JS</p>
+					<div class="anim-item type-card" style="--delay: 450ms">
+						<p class="text-xs opacity-50 mb-2">{lang === 'en' ? 'JS HISTORICAL BUG' : 'EL BUG HISTORICO DE JS'}</p>
 						<div class="code-block text-xs">
-							<span class="code-keyword">typeof</span> <span class="code-keyword">null</span> === <span class="code-string">"object"</span> <span class="code-comment">// true — pero null NO es un objeto</span><br>
-							<span class="code-comment">// Este bug existe desde 1995 y no se puede arreglar (rompería internet)</span><br>
+							<span class="code-keyword">typeof</span> <span class="code-keyword">null</span> === <span class="code-string">"object"</span> <span class="code-comment">// true — but null is NOT an object</span><br>
+							<span class="code-comment">// This bug exists since 1995 and can't be fixed (would break the web)</span><br>
 							<span class="code-keyword">null</span> == <span class="code-keyword">undefined</span> <span class="code-comment">// true (loose)</span><br>
-							<span class="code-keyword">null</span> === <span class="code-keyword">undefined</span> <span class="code-comment">// false (strict) — son distintos</span>
+							<span class="code-keyword">null</span> === <span class="code-keyword">undefined</span> <span class="code-comment">// false (strict) — they are different</span>
 						</div>
 					</div>
 				</div>
@@ -943,9 +947,9 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-exotic">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TIPOS_06 &amp; 07</span>
+						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">TYPES_06 &amp; 07</span>
 						<h2 class="font-retro text-5xl uppercase tracking-tight">Symbol &amp; BigInt</h2>
-						<p class="text-sm opacity-60 mt-2">Los dos primitivos más modernos de JS</p>
+						<p class="text-sm opacity-60 mt-2">{lang === 'en' ? 'The two most modern primitives in JS' : 'Los dos primitivos más modernos de JS'}</p>
 					</div>
 
 					<div class="flex gap-8 split-grid">
@@ -954,13 +958,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<span class="fingerprint">&#x1F4CD;</span>
 								<h3 class="font-retro text-3xl">Symbol</h3>
 							</div>
-							<p class="text-sm opacity-70 mb-4">Valor único e irrepetible. Cada <code class="text-yellow-400">Symbol()</code> es diferente a todos los demás, incluso con la misma descripción.</p>
+							<p class="text-sm opacity-70 mb-4">{lang === 'en' ? 'Unique and unrepeatable value. Each' : 'Valor único e irrepetible. Cada'} <code class="text-yellow-400">Symbol()</code> {lang === 'en' ? 'is different from all others, even with the same description.' : 'es diferente a todos los demás, incluso con la misma descripción.'}</p>
 							<div class="code-block text-xs">
 								<span class="code-keyword">const</span> a = Symbol(<span class="code-string">"id"</span>);<br>
 								<span class="code-keyword">const</span> b = Symbol(<span class="code-string">"id"</span>);<br>
 								a === b; <span class="code-comment">// false (!!!)</span><br>
 								<span class="code-keyword">typeof</span> a; <span class="code-comment">// "symbol"</span><br>
-								<span class="code-comment">// Uso: property keys privadas</span>
+								<span class="code-comment">// Use: private property keys</span>
 							</div>
 						</div>
 
@@ -969,12 +973,12 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<span class="fingerprint" style="font-size:4rem; animation-delay: 1s">&#8734;</span>
 								<h3 class="font-retro text-3xl">BigInt</h3>
 							</div>
-							<p class="text-sm opacity-70 mb-4">Para enteros MÁS GRANDES que <code class="text-yellow-400">Number.MAX_SAFE_INTEGER</code> (2^53 - 1). Se escribe con <code class="text-yellow-400">n</code> al final.</p>
+							<p class="text-sm opacity-70 mb-4">{lang === 'en' ? 'For integers LARGER than' : 'Para enteros MÁS GRANDES que'} <code class="text-yellow-400">Number.MAX_SAFE_INTEGER</code> (2^53 - 1). {lang === 'en' ? 'Written with' : 'Se escribe con'} <code class="text-yellow-400">n</code> {lang === 'en' ? 'at the end.' : 'al final.'}</p>
 							<div class="code-block text-xs">
 								<div class="bigint-num mb-2" id="bigint-display">9007199254740993n</div>
 								<span class="code-keyword">typeof</span> <span class="code-number">42n</span>; <span class="code-comment">// "bigint"</span><br>
 								<span class="code-number">42n</span> + <span class="code-number">1n</span>; <span class="code-comment">// 43n</span><br>
-								<span class="code-comment">// No se puede mezclar con Number</span>
+								<span class="code-comment">// Cannot be mixed with Number</span>
 							</div>
 						</div>
 					</div>
@@ -987,9 +991,9 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-typeof">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-8" style="--delay: 0ms">
-						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">OPERADOR</span>
+						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">OPERATOR</span>
 						<h2 class="font-retro text-5xl uppercase tracking-tight">typeof</h2>
-						<p class="text-sm opacity-60 mt-2">Tu detector de tipos en runtime</p>
+						<p class="text-sm opacity-60 mt-2">{lang === 'en' ? 'Your runtime type detector' : 'Tu detector de tipos en runtime'}</p>
 					</div>
 
 					<div class="anim-item" style="--delay: 150ms">
@@ -1042,7 +1046,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 									<span style="float:right" class="code-result" style="color:#93c5fd">"function"</span>
 								</div>
 								<div class="terminal-line" style="--delay: 2200ms">
-									<span style="opacity:0.4">&gt; </span><span class="cursor-blink"></span>
+									<span class="cursor-blink"></span>
 								</div>
 							</div>
 						</div>
@@ -1056,20 +1060,20 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-coercion">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-8" style="--delay: 0ms">
-						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">PELIGRO</span>
-						<h2 class="font-retro text-5xl uppercase tracking-tight" style="color: #ef4444">Coercion</h2>
-						<p class="text-sm opacity-60 mt-2">Cuando JS convierte tipos en silencio — y te rompe el código</p>
+						<span class="text-xs tracking-widest opacity-40 font-retro text-lg">{lang === 'en' ? 'DANGER' : 'PELIGRO'}</span>
+						<h2 class="font-retro text-5xl uppercase tracking-tight" style="color: #ef4444">{lang === 'en' ? 'Coercion' : 'Coercion'}</h2>
+						<p class="text-sm opacity-60 mt-2">{lang === 'en' ? 'When JS converts types silently — and breaks your code' : 'Cuando JS convierte tipos en silencio — y te rompe el código'}</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 						<!-- Ejemplos coercion -->
 						<div class="anim-item" style="--delay: 150ms">
-							<p class="text-xs opacity-50 mb-3 tracking-widest">COMPORTAMIENTO INESPERADO</p>
+							<p class="text-xs opacity-50 mb-3 tracking-widest">{lang === 'en' ? 'UNEXPECTED BEHAVIOR' : 'COMPORTAMIENTO INESPERADO'}</p>
 							<div class="space-y-3">
 								<div class="coercion-row coercion-bad-row">
 									<span>"5"</span><span class="opacity-40">+</span><span>3</span><span class="opacity-40">=</span>
 									<span style="color:#ef4444; font-size:1.8rem">"53"</span>
-									<span class="text-xs opacity-50 ml-auto">concat!</span>
+									<span class="text-xs opacity-50 ml-auto">{lang === 'en' ? 'concat!' : 'concat!'}</span>
 								</div>
 								<div class="coercion-row coercion-ok-row">
 									<span>"5"</span><span class="opacity-40">-</span><span>3</span><span class="opacity-40">=</span>
@@ -1082,11 +1086,11 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 									<span class="text-xs opacity-50 ml-auto">&#129300;</span>
 								</div>
 								<div class="coercion-row coercion-bad-row">
-									<span>[] + {}</span><span class="opacity-40">=</span>
-									<span style="color:#ef4444; font-size:1.1rem">"[object struct]"</span>
+									<span>[] + &#123;&#125;</span><span class="opacity-40">=</span>
+									<span style="color:#ef4444; font-size:1.1rem">"[object Object]"</span>
 								</div>
 								<div class="coercion-row coercion-bad-row">
-									<span>{} + []</span><span class="opacity-40">=</span>
+									<span>&#123;&#125; + []</span><span class="opacity-40">=</span>
 									<span style="color:#ef4444">0</span>
 									<span class="text-xs opacity-50 ml-auto">&#128561;</span>
 								</div>
@@ -1095,11 +1099,11 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 						<!-- == vs === -->
 						<div class="anim-item" style="--delay: 300ms">
-							<p class="text-xs opacity-50 mb-3 tracking-widest">LA SOLUCION: == vs ===</p>
+							<p class="text-xs opacity-50 mb-3 tracking-widest">{lang === 'en' ? 'THE SOLUTION: == vs ===' : 'LA SOLUCION: == vs ==='}</p>
 							<div class="space-y-4">
 								<div class="eq-box eq-loose">
 									<div class="text-3xl mb-2 font-retro">&nbsp;==&nbsp;</div>
-									<p class="text-xs opacity-70 mb-2">Igualdad débil — convierte tipos antes de comparar</p>
+									<p class="text-xs opacity-70 mb-2">{lang === 'en' ? 'Loose equality — converts types before comparing' : 'Igualdad débil — convierte tipos antes de comparar'}</p>
 									<div class="code-block text-xs text-left">
 										<span class="code-number">1</span> == <span class="code-string">"1"</span> <span class="code-comment">// true (!!)</span><br>
 										<span class="code-number">0</span> == <span class="code-keyword">false</span> <span class="code-comment">// true (!!)</span><br>
@@ -1108,7 +1112,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								</div>
 								<div class="eq-box eq-strict">
 									<div class="text-3xl mb-2 font-retro">&nbsp;===&nbsp;</div>
-									<p class="text-xs opacity-70 mb-2">Igualdad estricta — mismo valor Y mismo tipo</p>
+									<p class="text-xs opacity-70 mb-2">{lang === 'en' ? 'Strict equality — same value AND same type' : 'Igualdad estricta — mismo valor Y mismo tipo'}</p>
 									<div class="code-block text-xs text-left">
 										<span class="code-number">1</span> === <span class="code-string">"1"</span> <span class="code-comment">// false</span><br>
 										<span class="code-number">0</span> === <span class="code-keyword">false</span> <span class="code-comment">// false</span><br>
@@ -1116,7 +1120,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 									</div>
 								</div>
 							</div>
-							<p class="text-xs opacity-40 mt-3">Regla: SIEMPRE usá <code>===</code>. Usá <code>==</code> solo si sabés exactamente por qué.</p>
+							<p class="text-xs opacity-40 mt-3">{lang === 'en' ? 'Rule: ALWAYS use' : 'Regla: SIEMPRE usá'} <code>===</code>. {lang === 'en' ? 'Use' : 'Usá'} <code>==</code> {lang === 'en' ? 'only if you know exactly why.' : 'solo si sabés exactamente por qué.'}</p>
 						</div>
 					</div>
 				</div>
@@ -1128,93 +1132,93 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-resumen">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-8" style="--delay: 0ms">
-						<h2 class="font-retro text-5xl uppercase tracking-tight">REPORTE FINAL</h2>
-						<p class="text-sm opacity-60 mt-2">Todos los tipos, de un vistazo</p>
+						<h2 class="font-retro text-5xl uppercase tracking-tight">{lang === 'en' ? 'FINAL REPORT' : 'REPORTE FINAL'}</h2>
+						<p class="text-sm opacity-60 mt-2">{lang === 'en' ? 'All types at a glance' : 'Todos los tipos, de un vistazo'}</p>
 					</div>
 
 					<div class="anim-item mb-8" style="--delay: 150ms">
 						<table class="summary-table">
 							<thead>
 								<tr>
-									<th>Tipo</th>
-									<th>Categoría</th>
+									<th>{lang === 'en' ? 'Type' : 'Tipo'}</th>
+									<th>{lang === 'en' ? 'Category' : 'Categoría'}</th>
 									<th>typeof</th>
-									<th>Ejemplo</th>
-									<th>Nota</th>
+									<th>{lang === 'en' ? 'Example' : 'Ejemplo'}</th>
+									<th>{lang === 'en' ? 'Note' : 'Nota'}</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td class="font-retro text-lg">string</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"string"</code></td>
 									<td><code class="code-string">"hola"</code></td>
-									<td class="text-xs opacity-50">Inmutable</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'Immutable' : 'Inmutable'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">number</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"number"</code></td>
 									<td><code class="code-number">42, 3.14, NaN</code></td>
 									<td class="text-xs opacity-50">IEEE 754</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">boolean</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"boolean"</code></td>
 									<td><code class="code-keyword">true / false</code></td>
-									<td class="text-xs opacity-50">Control de flujo</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'Flow control' : 'Control de flujo'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">undefined</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"undefined"</code></td>
 									<td><code style="opacity:0.6">let x;</code></td>
-									<td class="text-xs opacity-50">Sin valor asignado</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'No value assigned' : 'Sin valor asignado'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">null</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"object"</code> <span class="text-red-400 text-xs">&#9888;</span></td>
 									<td><code class="code-keyword">null</code></td>
-									<td class="text-xs opacity-50">Vacío intencional</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'Intentional emptiness' : 'Vacío intencional'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">symbol</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"symbol"</code></td>
 									<td><code style="opacity:0.8">Symbol("id")</code></td>
-									<td class="text-xs opacity-50">Único e irrepetible</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'Unique and unrepeatable' : 'Único e irrepetible'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">bigint</td>
-									<td><span class="badge-prim">primitivo</span></td>
+									<td><span class="badge-prim">{lang === 'en' ? 'primitive' : 'primitivo'}</span></td>
 									<td><code class="code-comment">"bigint"</code></td>
 									<td><code class="code-number">9007...n</code></td>
-									<td class="text-xs opacity-50">Enteros grandes</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'Large integers' : 'Enteros grandes'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">object</td>
-									<td><span class="badge-obj">objeto</span></td>
+									<td><span class="badge-obj">{lang === 'en' ? 'object' : 'objeto'}</span></td>
 									<td><code class="code-comment" style="color:#93c5fd">"object"</code></td>
 									<td><code style="color:#93c5fd">&#123;&#125;, [], null</code></td>
-									<td class="text-xs opacity-50">Por referencia</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'By reference' : 'Por referencia'}</td>
 								</tr>
 								<tr>
 									<td class="font-retro text-lg">function</td>
-									<td><span class="badge-obj">objeto</span></td>
+									<td><span class="badge-obj">{lang === 'en' ? 'object' : 'objeto'}</span></td>
 									<td><code class="code-comment" style="color:#93c5fd">"function"</code></td>
 									<td><code style="color:#93c5fd">function(){}</code></td>
-									<td class="text-xs opacity-50">Objeto especial</td>
+									<td class="text-xs opacity-50">{lang === 'en' ? 'Special object' : 'Objeto especial'}</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 
 					<div class="anim-item text-center mt-10" style="--delay: 400ms">
-						<p class="text-xs opacity-30 mb-6 tracking-widest">FIN DE SESIÓN // DATOS PROCESADOS CORRECTAMENTE</p>
+						<p class="text-xs opacity-30 mb-6 tracking-widest">{lang === 'en' ? 'END OF SESSION // DATA PROCESSED CORRECTLY' : 'FIN DE SESIÓN // DATOS PROCESADOS CORRECTAMENTE'}</p>
 						<a href={getRelativePath('/presentaciones')} class="terminal-btn">
-							&#8592; VOLVER A PRESENTACIONES
+							&#8592; {lang === 'en' ? 'BACK TO PRESENTATIONS' : 'VOLVER A PRESENTACIONES'}
 						</a>
 					</div>
 				</div>
@@ -1224,6 +1228,8 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	</div>
 
 	<script>
+		const isEnglish = document.documentElement.lang === 'en';
+
 		// ——— Progress bar ———
 		const progressBar = document.getElementById('progress-bar') as HTMLElement;
 
@@ -1279,10 +1285,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		}
 
 		// STRING: typed word + char boxes
+		const typedWords = {
+			es: 'Hola Mundo',
+			en: 'Hello World'
+		};
+
 		function triggerStringAnim(): void {
 			const container = document.getElementById('typed-hello') as HTMLElement | null;
 			const boxContainer = document.getElementById('char-boxes') as HTMLElement | null;
-			const word = 'Hola Mundo';
+			const word = isEnglish ? typedWords.en : typedWords.es;
 
 			if (!container || !boxContainer) return;
 

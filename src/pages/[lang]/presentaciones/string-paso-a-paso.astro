@@ -1,10 +1,13 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
 ---
 
-<Layout title="Strings en C paso a paso - Programierds">
+<Layout title={lang === 'en' ? "Strings in C step by step - Programierds" : "Strings en C paso a paso - Programierds"}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 		.st-screen {
@@ -50,13 +53,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<div class="st-screen">
 		<main class="st-shell">
 			<header class="mb-6">
-				<p class="st-badge">string / paso a paso</p>
-				<h1 class="st-title mt-3">Strings en C, linea por linea</h1>
-				<p class="st-sub mt-3">En este ejemplo ves <code>strlen()</code>, una copia en mayusculas y un recorte manual del string con el valor de cada variable en cada linea.</p>
+				<p class="st-badge">{lang === 'en' ? 'string / step by step' : 'string / paso a paso'}</p>
+				<h1 class="st-title mt-3">{lang === 'en' ? 'Strings in C, line by line' : 'Strings en C, linea por linea'}</h1>
+				<p class="st-sub mt-3">{lang === 'en' ? 'This example shows strlen(), an uppercase copy, and a manual string slice with the value of each variable on every line.' : 'En este ejemplo ves strlen(), una copia en mayusculas y un recorte manual del string con el valor de cada variable en cada linea.'}</p>
 			</header>
 			<section class="st-grid" aria-live="polite">
 				<article class="st-card st-code">
-					<div class="st-head"><strong>1) Codigo</strong><span class="st-badge" id="st-line">Linea activa: 1</span></div>
+					<div class="st-head"><strong>1) {lang === 'en' ? 'Code' : 'Codigo'}</strong><span class="st-badge" id="st-line">{lang === 'en' ? 'Active line: 1' : 'Linea activa: 1'}</span></div>
 					<div class="st-panel">
 						<div class="st-row" data-line="1"><span class="st-ln">1</span><span>char texto[] = "Programierds";</span></div>
 						<div class="st-row" data-line="2"><span class="st-ln">2</span><span>int largo = strlen(texto);</span></div>
@@ -66,48 +69,48 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="st-row" data-line="6"><span class="st-ln">6</span><span>printf("%s\n", mayus);</span></div>
 						<div class="st-row" data-line="7"><span class="st-ln">7</span><span>printf("%s\n", parte);</span></div>
 					</div>
-					<div class="st-copy" id="st-copy"><strong>Paso 1:</strong> Se crea <code>texto</code> con 'Programierds'.</div>
+					<div class="st-copy" id="st-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'texto is created with' : 'Se crea'} <code>texto</code> {lang === 'en' ? 'with' : 'con'} 'Programierds'.</div>
 					<div class="st-track"><div class="st-fill" id="st-fill"></div></div>
 					<div class="st-controls">
-						<button class="st-btn" id="st-prev" type="button">⬅ Retroceder</button>
-						<button class="st-btn" id="st-next" type="button">Avanzar ➡</button>
-						<button class="st-btn" id="st-auto" type="button">Auto-play ▶</button>
-						<select class="st-select" id="st-level" aria-label="Nivel de detalle">
-							<option value="basico" selected>Basico</option>
-							<option value="intermedio">Intermedio</option>
+						<button class="st-btn" id="st-prev" type="button">{lang === 'en' ? '← Back' : '⬅ Retroceder'}</button>
+						<button class="st-btn" id="st-next" type="button">{lang === 'en' ? 'Next →' : 'Avanzar ➡'}</button>
+						<button class="st-btn" id="st-auto" type="button">{lang === 'en' ? 'Auto-play ▶' : 'Auto-play ▶'}</button>
+						<select class="st-select" id="st-level" aria-label={lang === 'en' ? 'Detail level' : 'Nivel de detalle'}>
+							<option value="basico" selected>{lang === 'en' ? 'Basic' : 'Basico'}</option>
+							<option value="intermedio">{lang === 'en' ? 'Intermediate' : 'Intermedio'}</option>
 						</select>
-						<span class="st-badge" id="st-step">Paso 1 / 7</span>
+						<span class="st-badge" id="st-step">{lang === 'en' ? 'Step 1 / 7' : 'Paso 1 / 7'}</span>
 					</div>
 				</article>
 				<article class="st-card st-state">
-					<div class="st-head"><strong>2) Variables</strong></div>
+					<div class="st-head"><strong>2) {lang === 'en' ? 'Variables' : 'Variables'}</strong></div>
 					<div class="st-state-item"><span>texto</span><span id="st-texto" class="st-value">Programierds</span></div>
 					<div class="st-state-item"><span>largo</span><span id="st-largo" class="st-value">-</span></div>
 					<div class="st-state-item"><span>mayus</span><span id="st-mayus" class="st-value">-</span></div>
 					<div class="st-state-item"><span>parte</span><span id="st-parte" class="st-value">-</span></div>
 				</article>
 				<article class="st-card st-console">
-					<div class="st-head"><strong>3) Consola simulada</strong></div>
+					<div class="st-head"><strong>3) {lang === 'en' ? 'Simulated Console' : 'Consola simulada'}</strong></div>
 					<div class="st-console-win">
 						<div class="st-console-head"><span>./string-demo</span><span>stdout</span></div>
 						<div class="st-console-body" id="st-console"></div>
 					</div>
 				</article>
 			</section>
-			<a class="st-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+			<a class="st-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
 		</main>
 	</div>
 
 	<script>
-		type Step = { line: number; message: string; texto: string; largo: string; mayus: string; parte: string; logs: string[] };
+		type Step = { line: number; message: { es: string; en: string }; texto: string; largo: string; mayus: string; parte: string; logs: string[] };
 		const baseSteps: Step[] = [
-			{ line: 1, message: 'Se define texto.', texto: 'Programierds', largo: '-', mayus: '-', parte: '-', logs: [] },
-			{ line: 2, message: 'Calcula strlen: Programierds tiene 11 caracteres.', texto: 'Programierds', largo: '11', mayus: '-', parte: '-', logs: [] },
-			{ line: 3, message: 'Se prepara una copia en mayusculas del string original.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: '-', logs: [] },
-			{ line: 4, message: 'Se arma un recorte manual con los primeros 4 caracteres.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: [] },
-			{ line: 5, message: 'Imprime largo.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11'] },
-			{ line: 6, message: 'Imprime mayus.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11', 'PROGRAMIERDS'] },
-			{ line: 7, message: 'Imprime parte.', texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11', 'PROGRAMIERDS', 'Prog'] },
+			{ line: 1, message: { es: 'Se define texto.', en: 'texto is defined.' }, texto: 'Programierds', largo: '-', mayus: '-', parte: '-', logs: [] },
+			{ line: 2, message: { es: 'Calcula strlen: Programierds tiene 11 caracteres.', en: 'Calculates strlen: Programierds has 11 characters.' }, texto: 'Programierds', largo: '11', mayus: '-', parte: '-', logs: [] },
+			{ line: 3, message: { es: 'Se prepara una copia en mayusculas del string original.', en: 'An uppercase copy of the original string is prepared.' }, texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: '-', logs: [] },
+			{ line: 4, message: { es: 'Se arma un recorte manual con los primeros 4 caracteres.', en: 'A manual slice with the first 4 characters is assembled.' }, texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: [] },
+			{ line: 5, message: { es: 'Imprime largo.', en: 'Prints largo.' }, texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11'] },
+			{ line: 6, message: { es: 'Imprime mayus.', en: 'Prints mayus.' }, texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11', 'PROGRAMIERDS'] },
+			{ line: 7, message: { es: 'Imprime parte.', en: 'Prints parte.' }, texto: 'Programierds', largo: '11', mayus: 'PROGRAMIERDS', parte: 'Prog', logs: ['11', 'PROGRAMIERDS', 'Prog'] },
 		];
 
 		const buildIntermediateSteps = (steps: Step[]): Step[] => {
@@ -115,7 +118,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			steps.forEach((stepState, index) => {
 				enriched.push(stepState);
 				if (index < steps.length - 1) {
-					enriched.push({ ...stepState, message: `Detalle intermedio: ${stepState.message}` });
+					enriched.push({ ...stepState, message: { es: `Detalle intermedio: ${stepState.message.es}`, en: `Intermediate detail: ${stepState.message.en}` } });
 				}
 			});
 			return enriched;
@@ -171,11 +174,12 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		}
 
 		function render(): void {
+			const isEnglish = document.documentElement.lang === 'en';
 			const state = activeSteps[currentStep];
 			document.querySelectorAll<HTMLElement>('.st-row').forEach((row) => row.classList.toggle('active', Number(row.dataset.line) === state.line));
-			line.textContent = `Linea activa: ${state.line}`;
-			step.textContent = `Paso ${currentStep + 1} / ${activeSteps.length}`;
-			copy.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${state.message}`;
+			line.textContent = isEnglish ? `Active line: ${state.line}` : `Linea activa: ${state.line}`;
+			step.textContent = isEnglish ? `Step ${currentStep + 1} / ${activeSteps.length}` : `Paso ${currentStep + 1} / ${activeSteps.length}`;
+			copy.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${state.message[isEnglish ? 'en' : 'es']}`;
 			texto.textContent = state.texto;
 			largo.textContent = state.largo;
 			mayus.textContent = state.mayus;

@@ -1,7 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
 ---
 
 <Layout title="For paso a paso - Programierds">
@@ -72,16 +75,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<div class="for-screen">
 		<main class="for-shell">
 			<header class="mb-6">
-				<p class="for-badge">for / simulacion guiada</p>
-				<h1 class="for-title mt-3">Ciclo <code>for</code> paso a paso</h1>
-				<p class="for-sub mt-3">Aca se entiende perfecto el ritmo del <code>for</code>: inicializacion, condicion, bloque y actualizacion. Todo en orden y sin magia.</p>
+				<p class="for-badge">{lang === 'en' ? 'for / guided simulation' : 'for / simulacion guiada'}</p>
+				<h1 class="for-title mt-3">{lang === 'en' ? 'For loop step by step' : <>Ciclo <code>for</code> paso a paso</>}</h1>
+				<p class="for-sub mt-3">{lang === 'en' ? 'Here you understand perfectly the rhythm of the for: initialization, condition, block, and update. Everything in order, no magic.' : 'Aca se entiende perfecto el ritmo del <code>for</code>: inicializacion, condicion, bloque y actualizacion. Todo en orden y sin magia.'}</p>
 			</header>
 
 			<section class="for-grid" aria-live="polite">
 				<article class="for-card for-code">
 					<div class="for-head">
-						<strong>1) Codigo y linea activa</strong>
-						<span class="for-badge" id="for-line">Linea activa: 1</span>
+						<strong>{lang === 'en' ? '1) Code and active line' : '1) Codigo y linea activa'}</strong>
+						<span class="for-badge" id="for-line">{lang === 'en' ? 'Active line: 1' : 'Linea activa: 1'}</span>
 					</div>
 					<div class="for-code-panel">
 						<div class="for-row" data-line="1"><span class="for-ln">1</span><span>for (int i = 1; i &lt;= 4; i++) &#123;</span></div>
@@ -90,17 +93,17 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="for-row" data-line="4"><span class="for-ln">4</span><span>printf("Fin for\n");</span></div>
 					</div>
 
-					<div class="for-copy" id="for-copy"><strong>Paso 1:</strong> Arranca la inicializacion de i en 1.</div>
+					<div class="for-copy" id="for-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'} {lang === 'en' ? 'Initializes i = 1.' : 'Arranca la inicializacion de i en 1.'}</div>
 					<div class="for-track"><div class="for-fill" id="for-fill"></div></div>
 					<div class="for-controls">
-						<button id="for-prev" class="for-btn" type="button">⬅ Retroceder</button>
-						<button id="for-next" class="for-btn" type="button">Avanzar ➡</button>
+						<button id="for-prev" class="for-btn" type="button">{lang === 'en' ? '⬅ Back' : '⬅ Retroceder'}</button>
+						<button id="for-next" class="for-btn" type="button">{lang === 'en' ? 'Next ➡' : 'Avanzar ➡'}</button>
 						<span class="for-badge" id="for-step">Paso 1 / 12</span>
 					</div>
 				</article>
 
 				<article class="for-card for-state">
-					<div class="for-head"><strong>2) Estado interno</strong></div>
+					<div class="for-head"><strong>{lang === 'en' ? '2) Internal state' : '2) Estado interno'}</strong></div>
 					<div class="for-state-item"><span>i actual</span><span id="for-i" class="for-value">1</span></div>
 					<div class="for-state-item"><span>Iteraciones ejecutadas</span><span id="for-iterations" class="for-value">0</span></div>
 					<div class="for-state-item"><span>Condicion i &lt;= 4</span><span id="for-condition" class="for-value">-</span></div>
@@ -108,7 +111,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				</article>
 
 				<article class="for-card for-console">
-					<div class="for-head"><strong>3) Consola simulada</strong></div>
+					<div class="for-head"><strong>{lang === 'en' ? '3) Simulated console' : '3) Consola simulada'}</strong></div>
 					<div class="for-console-win">
 						<div class="for-console-head"><span>./for-demo</span><span>stdout</span></div>
 						<div class="for-console-body" id="for-console"></div>
@@ -116,14 +119,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				</article>
 			</section>
 
-			<a class="for-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+			<a class="for-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
 		</main>
 	</div>
 
 	<script>
 		type Step = {
 			line: number;
-			message: string;
+			message: { es: string; en: string };
 			iValue: number;
 			iterations: number;
 			condition: 'true' | 'false' | '-';
@@ -132,18 +135,18 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		};
 
 		const steps: Step[] = [
-			{ line: 1, message: 'Inicializa i = 1.', iValue: 1, iterations: 0, condition: '-', phase: 'init', consoleLines: [] },
-			{ line: 1, message: 'Evalua condicion i <= 4. Da true.', iValue: 1, iterations: 0, condition: 'true', phase: 'condicion', consoleLines: [] },
-			{ line: 2, message: 'Ejecuta bloque: imprime Paso 1.', iValue: 1, iterations: 1, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1'] },
-			{ line: 1, message: 'Incrementa i (i++). Ahora i = 2.', iValue: 2, iterations: 1, condition: 'true', phase: 'incremento', consoleLines: ['Paso 1'] },
-			{ line: 1, message: 'Condicion de nuevo: 2 <= 4 da true.', iValue: 2, iterations: 1, condition: 'true', phase: 'condicion', consoleLines: ['Paso 1'] },
-			{ line: 2, message: 'Segunda iteracion: imprime Paso 2.', iValue: 2, iterations: 2, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1', 'Paso 2'] },
-			{ line: 1, message: 'Incrementa i a 3.', iValue: 3, iterations: 2, condition: 'true', phase: 'incremento', consoleLines: ['Paso 1', 'Paso 2'] },
-			{ line: 2, message: 'Tercera iteracion: imprime Paso 3.', iValue: 3, iterations: 3, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3'] },
-			{ line: 1, message: 'Incrementa i a 4 y vuelve a evaluar.', iValue: 4, iterations: 3, condition: 'true', phase: 'condicion', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3'] },
-			{ line: 2, message: 'Cuarta iteracion: imprime Paso 4.', iValue: 4, iterations: 4, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4'] },
-			{ line: 1, message: 'Incrementa a 5. 5 <= 4 da false y el for termina.', iValue: 5, iterations: 4, condition: 'false', phase: 'fin', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4'] },
-			{ line: 4, message: 'Ejecuta lo que sigue despues del for.', iValue: 5, iterations: 4, condition: 'false', phase: 'fin', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4', 'Fin for'] },
+			{ line: 1, message: { es: 'Inicializa i = 1.', en: 'Initializes i = 1.' }, iValue: 1, iterations: 0, condition: '-', phase: 'init', consoleLines: [] },
+			{ line: 1, message: { es: 'Evalua condicion i <= 4. Da true.', en: 'Evaluates condition i <= 4. Result: true.' }, iValue: 1, iterations: 0, condition: 'true', phase: 'condicion', consoleLines: [] },
+			{ line: 2, message: { es: 'Ejecuta bloque: imprime Paso 1.', en: 'Executes block: prints Step 1.' }, iValue: 1, iterations: 1, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1'] },
+			{ line: 1, message: { es: 'Incrementa i (i++). Ahora i = 2.', en: 'Increments i (i++). Now i = 2.' }, iValue: 2, iterations: 1, condition: 'true', phase: 'incremento', consoleLines: ['Paso 1'] },
+			{ line: 1, message: { es: 'Condicion de nuevo: 2 <= 4 da true.', en: 'Checks condition again: 2 <= 4 is true.' }, iValue: 2, iterations: 1, condition: 'true', phase: 'condicion', consoleLines: ['Paso 1'] },
+			{ line: 2, message: { es: 'Segunda iteracion: imprime Paso 2.', en: 'Second iteration: prints Step 2.' }, iValue: 2, iterations: 2, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1', 'Paso 2'] },
+			{ line: 1, message: { es: 'Incrementa i a 3.', en: 'Increments i to 3.' }, iValue: 3, iterations: 2, condition: 'true', phase: 'incremento', consoleLines: ['Paso 1', 'Paso 2'] },
+			{ line: 2, message: { es: 'Tercera iteracion: imprime Paso 3.', en: 'Third iteration: prints Step 3.' }, iValue: 3, iterations: 3, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3'] },
+			{ line: 1, message: { es: 'Incrementa i a 4 y vuelve a evaluar.', en: 'Increments i to 4 and checks again.' }, iValue: 4, iterations: 3, condition: 'true', phase: 'condicion', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3'] },
+			{ line: 2, message: { es: 'Cuarta iteracion: imprime Paso 4.', en: 'Fourth iteration: prints Step 4.' }, iValue: 4, iterations: 4, condition: 'true', phase: 'bloque', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4'] },
+			{ line: 1, message: { es: 'Incrementa a 5. 5 <= 4 da false y el for termina.', en: 'Increments to 5. 5 <= 4 is false, for loop ends.' }, iValue: 5, iterations: 4, condition: 'false', phase: 'fin', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4'] },
+			{ line: 4, message: { es: 'Ejecuta lo que sigue despues del for.', en: 'Executes what comes after the for loop.' }, iValue: 5, iterations: 4, condition: 'false', phase: 'fin', consoleLines: ['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4', 'Fin for'] },
 		];
 
 		let currentStep = 0;
@@ -160,6 +163,8 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		const consoleEl = document.getElementById('for-console') as HTMLElement;
 		const fillEl = document.getElementById('for-fill') as HTMLElement;
 
+		const isEnglish = document.documentElement.lang === 'en';
+
 		function renderStep(): void {
 			const step = steps[currentStep];
 
@@ -167,9 +172,9 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				row.classList.toggle('active', Number(row.dataset.line) === step.line);
 			});
 
-			lineBadge.textContent = `Linea activa: ${step.line}`;
-			stepBadge.textContent = `Paso ${currentStep + 1} / ${steps.length}`;
-			copyEl.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${step.message}`;
+			lineBadge.textContent = isEnglish ? `Active line: ${step.line}` : `Linea activa: ${step.line}`;
+			stepBadge.textContent = isEnglish ? `Step ${currentStep + 1} / ${steps.length}` : `Paso ${currentStep + 1} / ${steps.length}`;
+			copyEl.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${step.message[isEnglish ? 'en' : 'es']}`;
 			iEl.textContent = String(step.iValue);
 			iterEl.textContent = String(step.iterations);
 			condEl.textContent = step.condition;

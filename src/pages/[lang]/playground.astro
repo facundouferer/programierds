@@ -195,10 +195,6 @@ const t = useTranslations(lang);
 			terminal.appendChild(div);
 			terminal.scrollTop = terminal.scrollHeight;
 		}
-		function extractJavaClassName(code: string): string {
-			const m = code.match(/public\s+class\s+(\w+)/);
-			return m ? m[1] : 'Main';
-		}
 		function prepareJavaCode(code: string): string {
 			return code.replace(/^\s*package\s+[\w.]+\s*;\s*\n?/m, '').replace(/public\s+class\s+(\w+)/, 'public class Main');
 		}

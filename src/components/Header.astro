@@ -1,8 +1,6 @@
 ---
 import { getLocalizedRelativePath } from '../utils/paths';
 import {
-	DEFAULT_LOCALE,
-	getAlternateLocale,
 	getLocaleFromPathname,
 	isLocale,
 	removeLocaleFromPathname,
@@ -17,7 +15,6 @@ const rawLocale = Astro.currentLocale ?? Astro.params?.lang;
 const locale: Locale = isLocale(String(rawLocale))
 	? (rawLocale as Locale)
 	: getLocaleFromPathname(currentPath, base);
-const alternate = getAlternateLocale(locale);
 const t = useTranslations(locale);
 
 const pathWithoutLocale = removeLocaleFromPathname(currentPath, base);
@@ -34,8 +31,6 @@ const isLinkActive = (href: string) => {
 	return pathWithoutLocale === href || pathWithoutLocale.startsWith(href + '/');
 };
 
-const alternateHref = getLocalizedRelativePath(alternate, pathWithoutLocale);
-const switchLabel = alternate === 'en' ? t('nav.switchToEnglish') : t('nav.switchToSpanish');
 const flagEs = '🇦🇷';
 const flagEn = '🇺🇸';
 

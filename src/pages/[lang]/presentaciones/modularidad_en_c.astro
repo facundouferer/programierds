@@ -1,10 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
 ---
 
-<Layout title="Modularización en C - Programierds Retro View">
+<Layout title={`${lang === 'en' ? 'Modularization in C' : 'Modularización en C'} - Programierds Retro View`}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap');
 
@@ -558,21 +560,21 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 					<div class="anim-item" style="--delay: 200ms">
 						<h1 class="intro-title uppercase tracking-tight mb-2">
-							Modularizaci&oacute;n
+							{lang === 'en' ? 'Modularization' : 'Modularización'}
 						</h1>
 						<h1 class="intro-title uppercase tracking-tight mb-8" style="color: rgba(13,242,89,0.6)">
-							en C
+							{lang === 'en' ? 'in C' : 'en C'}
 						</h1>
 					</div>
 
 					<div class="anim-item flex justify-center" style="--delay: 400ms">
 						<p class="intro-subtitle" id="intro-subtitle">
-							Subprogramas, Funciones, Procedimientos y el arte de dividir para conquistar.
+							{lang === 'en' ? 'Subprograms, Functions, Procedures and the art of dividing to conquer.' : 'Subprogramas, Funciones, Procedimientos y el arte de dividir para conquistar.'}
 						</p>
 					</div>
 
 					<div class="anim-item mt-12 opacity-50" style="--delay: 600ms">
-						<p class="text-sm" style="animation: float 2s ease-in-out infinite">&#8595; scroll para continuar</p>
+						<p class="text-sm" style="animation: float 2s ease-in-out infinite">&#8595; {lang === 'en' ? 'scroll to continue' : 'scroll para continuar'}</p>
 					</div>
 				</div>
 			</section>
@@ -584,35 +586,35 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">
-							&iquest;Qu&eacute; es Modularizar?
+							{lang === 'en' ? 'What is Modularization?' : '¿Qué es Modularizar?'}
 						</h2>
-						<p class="text-sm opacity-50 mt-2">Dividir un problema grande en partes peque&ntilde;as y manejables</p>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'Breaking a large problem into small, manageable parts' : 'Dividir un problema grande en partes pequeñas y manejables'}</p>
 					</div>
 
 					<div class="flex gap-8 split-grid" style="align-items: stretch">
 						<!-- Monolito -->
 						<div class="flex-1 anim-item" style="--delay: 150ms">
-							<h3 class="font-retro text-2xl text-center mb-4" style="color: #ef4444">&#x2718; El Monolito</h3>
+							<h3 class="font-retro text-2xl text-center mb-4" style="color: #ef4444">{lang === 'en' ? '✗ The Monolith' : '✗ El Monolito'}</h3>
 							<div class="monolith-block">
-								<span style="opacity:0.6"><span class="code-comment">// main.c — 500 líneas de terror</span></span>
+								<span style="opacity:0.6"><span class="code-comment">// main.c — 500 lines of terror</span></span>
 								<span><span class="code-keyword">int</span> main() &lbrace;</span>
-								<span style="padding-left:16px; color:#ef4444">// leer datos...</span>
-								<span style="padding-left:16px; color:#ef4444">// validar entrada...</span>
-								<span style="padding-left:16px; color:#ef4444">// calcular resultado...</span>
-								<span style="padding-left:16px; color:#ef4444">// formatear salida...</span>
-								<span style="padding-left:16px; color:#ef4444">// guardar en archivo...</span>
-								<span style="padding-left:16px; color:#ef4444">// imprimir por pantalla...</span>
-								<span style="padding-left:16px; color:#ef4444">// ... 490 líneas más</span>
+								<span style="padding-left:16px; color:#ef4444">// read data...</span>
+								<span style="padding-left:16px; color:#ef4444">// validate input...</span>
+								<span style="padding-left:16px; color:#ef4444">// calculate result...</span>
+								<span style="padding-left:16px; color:#ef4444">// format output...</span>
+								<span style="padding-left:16px; color:#ef4444">// save to file...</span>
+								<span style="padding-left:16px; color:#ef4444">// print to screen...</span>
+								<span style="padding-left:16px; color:#ef4444">// ... 490 more lines</span>
 								<span>&rbrace;</span>
 								<div style="margin-top: 8px; font-family:'VT323',monospace; font-size:0.85rem; color: rgba(239,68,68,0.6)">
-									Un solo bloque gigante. Si algo falla, todo explota.
+									{lang === 'en' ? 'One giant block. If something fails, everything explodes.' : 'Un solo bloque gigante. Si algo falla, todo explota.'}
 								</div>
 							</div>
 						</div>
 
 						<!-- Modular -->
 						<div class="flex-1 anim-item" style="--delay: 300ms">
-							<h3 class="font-retro text-2xl text-center mb-4" style="color: #0df259">&#x2714; Modularizado</h3>
+							<h3 class="font-retro text-2xl text-center mb-4" style="color: #0df259">{lang === 'en' ? '✓ Modularized' : '✓ Modularizado'}</h3>
 							<div class="split-col" style="height: calc(100% - 44px)">
 								<div class="flex flex-col gap-3">
 									<div class="module-piece mod-green anim-item" style="--delay: 400ms">leerDatos()</div>
@@ -622,15 +624,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 									<div class="module-piece mod-pink anim-item" style="--delay: 800ms">guardarArchivo()</div>
 								</div>
 								<div style="margin-top: 12px; font-family:'VT323',monospace; font-size:0.85rem; color: rgba(13,242,89,0.6)">
-									Piezas peque&ntilde;as, independientes, reutilizables. Como LEGO.
+									{lang === 'en' ? 'Small, independent, reusable pieces. Like LEGO.' : 'Piezas pequeñas, independientes, reutilizables. Como LEGO.'}
 								</div>
 							</div>
 						</div>
 					</div>
 
 					<div class="anim-item mt-6 type-card" style="--delay: 900ms">
-						<p class="text-xs opacity-50 mb-1">ANALOG&Iacute;A</p>
-						<p class="text-sm">No esculp&iacute;s desde una roca entera &mdash; construy&eacute;s con LEGO. Cada pieza tiene forma definida, encaja con otras, y la pod&eacute;s reusar en cualquier construcci&oacute;n.</p>
+						<p class="text-xs opacity-50 mb-1">{lang === 'en' ? 'ANALOGY' : 'ANALOGÍA'}</p>
+						<p class="text-sm">{lang === 'en' ? "You don't sculpt from a whole rock — you build with LEGO. Each piece has a defined shape, fits with others, and can be reused in any construction." : 'No esculpís desde una roca entera — construyés con LEGO. Cada pieza tiene forma definida, encaja con otras, y la podés reusar en cualquier construcción.'}</p>
 					</div>
 				</div>
 			</section>
@@ -641,31 +643,31 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-subprogramas">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Subprogramas</h2>
-						<p class="text-sm opacity-50 mt-2">En C, todo subprograma es una <strong>funci&oacute;n</strong>. No hay otra cosa.</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Subprograms' : 'Subprogramas'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'In C, every subprogram is a' : 'En C, todo subprograma es una'} <strong>{lang === 'en' ? 'function' : 'función'}</strong>. {lang === 'en' ? 'There is nothing else.' : 'No hay otra cosa.'}</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 						<!-- Anatomía -->
 						<div class="anim-item" style="--delay: 150ms">
-							<h3 class="font-retro text-2xl mb-6 text-center">Anatom&iacute;a de una Funci&oacute;n</h3>
+							<h3 class="font-retro text-2xl mb-6 text-center">{lang === 'en' ? ' Anatomy of a Function' : ' Anatomía de una Función'}</h3>
 
 							<div class="mb-6 space-y-2">
 								<div style="display:flex; align-items:center; gap:8px">
 									<span style="width:10px; height:10px; border-radius:50%; background:#c678dd; flex-shrink:0; display:inline-block"></span>
-									<span class="font-retro text-sm" style="color:#c678dd">TIPO_DE_RETORNO &mdash; qu&eacute; devuelve</span>
+									<span class="font-retro text-sm" style="color:#c678dd">{lang === 'en' ? 'RETURN_TYPE — what it returns' : 'TIPO_DE_RETORNO — qué devuelve'}</span>
 								</div>
 								<div style="display:flex; align-items:center; gap:8px">
 									<span style="width:10px; height:10px; border-radius:50%; background:#98c379; flex-shrink:0; display:inline-block"></span>
-									<span class="font-retro text-sm" style="color:#98c379">NOMBRE &mdash; identificador de la funci&oacute;n</span>
+									<span class="font-retro text-sm" style="color:#98c379">{lang === 'en' ? 'NAME — function identifier' : 'NOMBRE — identificador de la función'}</span>
 								</div>
 								<div style="display:flex; align-items:center; gap:8px">
 									<span style="width:10px; height:10px; border-radius:50%; background:#f59e0b; flex-shrink:0; display:inline-block"></span>
-									<span class="font-retro text-sm" style="color:#fcd34d">PAR&Aacute;METROS &mdash; datos de entrada</span>
+									<span class="font-retro text-sm" style="color:#fcd34d">{lang === 'en' ? 'PARAMETERS — input data' : 'PARÁMETROS — datos de entrada'}</span>
 								</div>
 								<div style="display:flex; align-items:center; gap:8px">
 									<span style="width:10px; height:10px; border-radius:50%; background:#61afef; flex-shrink:0; display:inline-block"></span>
-									<span class="font-retro text-sm" style="color:#61afef">CUERPO &mdash; l&oacute;gica e instrucciones</span>
+									<span class="font-retro text-sm" style="color:#61afef">{lang === 'en' ? 'BODY — logic and instructions' : 'CUERPO — lógica e instrucciones'}</span>
 								</div>
 							</div>
 
@@ -680,13 +682,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<!-- Conceptos -->
 						<div>
 							<div class="anim-item type-card mb-4" style="--delay: 250ms">
-								<p class="text-xs opacity-50 mb-1">REUTILIZACI&Oacute;N</p>
-								<p class="text-sm">Una vez definida, la funci&oacute;n puede llamarse <strong>infinitas veces</strong> desde cualquier parte del programa.</p>
+								<p class="text-xs opacity-50 mb-1">{lang === 'en' ? 'REUSABILITY' : 'REUTILIZACIÓN'}</p>
+								<p class="text-sm">{lang === 'en' ? 'Once defined, the function can be called' : 'Una vez definida, la función puede llamarse'} <strong>{lang === 'en' ? 'infinitely many times' : 'infinitas veces'}</strong> {lang === 'en' ? 'from any part of the program.' : 'desde cualquier parte del programa.'}</p>
 							</div>
 
 							<div class="anim-item type-card mb-4" style="--delay: 350ms">
-								<p class="text-xs opacity-50 mb-1">ABSTRACCI&Oacute;N</p>
-								<p class="text-sm">No necesit&aacute;s saber <em>c&oacute;mo</em> funciona para usarla. Solo qu&eacute; recibe y qu&eacute; devuelve.</p>
+								<p class="text-xs opacity-50 mb-1">{lang === 'en' ? 'ABSTRACTION' : 'ABSTRACCIÓN'}</p>
+								<p class="text-sm">{lang === 'en' ? "You don't need to know" : 'No necesitás saber'} <em>{lang === 'en' ? 'how' : 'cómo'}</em> {lang === 'en' ? 'it works to use it. Only what it receives and what it returns.' : 'funciona para usarla. Solo qué recibe y qué devuelve.'}</p>
 							</div>
 
 							<div class="anim-item code-block text-xs" style="--delay: 450ms">
@@ -706,27 +708,27 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">
-							Funciones <span class="opacity-30">vs</span> Procedimientos
+							{lang === 'en' ? 'Functions' : 'Funciones'} <span class="opacity-30">vs</span> {lang === 'en' ? 'Procedures' : 'Procedimientos'}
 						</h2>
-						<p class="text-sm opacity-50 mt-2">La diferencia est&aacute; en si devuelven algo o no</p>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'The difference is whether they return something or not' : 'La diferencia está en si devuelven algo o no'}</p>
 					</div>
 
 					<div class="flex gap-8 split-grid">
 						<!-- Procedimiento -->
 						<div class="flex-1 anim-item split-col-blue" style="--delay: 150ms">
-							<h3 class="font-retro text-3xl mb-1 text-center" style="color:#93c5fd">PROCEDIMIENTO</h3>
-							<p class="text-xs text-center mb-4 opacity-60" style="color:#93c5fd">void &mdash; ejecuta una acci&oacute;n, no retorna nada</p>
+							<h3 class="font-retro text-3xl mb-1 text-center" style="color:#93c5fd">{lang === 'en' ? 'PROCEDURE' : 'PROCEDIMIENTO'}</h3>
+							<p class="text-xs text-center mb-4 opacity-60" style="color:#93c5fd">{lang === 'en' ? 'void — executes an action, returns nothing' : 'void — ejecuta una acción, no retorna nada'}</p>
 
 							<div class="text-center py-4">
 								<div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:8px">
-									<span style="color:#93c5fd; font-size:0.8rem">datos IN</span>
+									<span style="color:#93c5fd; font-size:0.8rem">{lang === 'en' ? 'data IN' : 'datos IN'}</span>
 									<span style="color:#93c5fd; animation: arrow-flow 1.2s ease-in-out infinite; display:inline-block">&#x279C;</span>
 									<div style="border:2px solid #93c5fd; border-radius:6px; padding:8px 16px; background:rgba(59,130,246,0.1); font-family:'VT323',monospace; font-size:1.3rem; color:#93c5fd">
 										imprimirMenu()
 									</div>
-									<span style="color:rgba(59,130,246,0.25); font-size:0.75rem">&#x274C; sin retorno</span>
+									<span style="color:rgba(59,130,246,0.25); font-size:0.75rem">{lang === 'en' ? '✗ no return' : '✗ sin retorno'}</span>
 								</div>
-								<p class="text-xs opacity-50 mt-2">Como un trabajador que hace la tarea y ya</p>
+								<p class="text-xs opacity-50 mt-2">{lang === 'en' ? 'Like a worker who does the task and thats it' : 'Como un trabajador que hace la tarea y ya'}</p>
 							</div>
 
 							<div class="code-block text-xs mt-2">
@@ -740,8 +742,8 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 						<!-- Función -->
 						<div class="flex-1 anim-item split-col" style="--delay: 300ms">
-							<h3 class="font-retro text-3xl mb-1 text-center">FUNCI&Oacute;N</h3>
-							<p class="text-xs text-center mb-4 opacity-60">con tipo de retorno &mdash; calcula y devuelve un valor</p>
+							<h3 class="font-retro text-3xl mb-1 text-center">{lang === 'en' ? 'FUNCTION' : 'FUNCIÓN'}</h3>
+							<p class="text-xs text-center mb-4 opacity-60">{lang === 'en' ? 'with return type — calculates and returns a value' : 'con tipo de retorno — calcula y devuelve un valor'}</p>
 
 							<div class="text-center py-4">
 								<div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:8px">
@@ -751,9 +753,9 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 										sumar(a, b)
 									</div>
 									<span style="color:var(--primary); animation: arrow-flow 1.2s ease-in-out 0.3s infinite; display:inline-block">&#x279C;</span>
-									<span style="color:var(--primary); font-size:0.8rem">resultado OUT</span>
+									<span style="color:var(--primary); font-size:0.8rem">{lang === 'en' ? 'result OUT' : 'resultado OUT'}</span>
 								</div>
-								<p class="text-xs opacity-50 mt-2">Como un trabajador que trae de vuelta el resultado</p>
+								<p class="text-xs opacity-50 mt-2">{lang === 'en' ? 'Like a worker who brings back the result' : 'Como un trabajador que trae de vuelta el resultado'}</p>
 							</div>
 
 							<div class="code-block text-xs mt-2">
@@ -773,14 +775,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-locales">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Variables Locales</h2>
-						<p class="text-sm opacity-50 mt-2">Viven dentro de la funci&oacute;n. Cuando termina, desaparecen.</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Local Variables' : 'Variables Locales'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'They live inside the function. When it ends, they disappear.' : 'Viven dentro de la función. Cuando termina, desaparecen.'}</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 						<!-- Stack frames visual -->
 						<div class="anim-item" style="--delay: 150ms">
-							<h3 class="font-retro text-xl mb-4 text-center opacity-60">STACK DE EJECUCI&Oacute;N</h3>
+							<h3 class="font-retro text-xl mb-4 text-center opacity-60">{lang === 'en' ? 'EXECUTION STACK' : 'STACK DE EJECUCIÓN'}</h3>
 
 							<div style="border: 1px solid rgba(13,242,89,0.15); border-radius: 8px; padding: 16px; min-height: 260px; display:flex; flex-direction:column-reverse; gap: 6px; position:relative">
 								<div class="stack-frame" id="frame-main">
@@ -793,13 +795,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 									<span class="stack-var">altura = 5</span>
 									<span class="stack-var">area = 50</span>
 									<div style="font-size:0.65rem; color:rgba(6,182,212,0.5); margin-top:6px; font-family:'VT323',monospace">
-										&#x2191; solo existen ac&aacute; dentro
+										&#x2191; {lang === 'en' ? 'only exist here inside' : 'solo existen acá dentro'}
 									</div>
 								</div>
 								<div style="position:absolute; top:10px; right:12px; font-family:'VT323',monospace; font-size:0.75rem; color:rgba(13,242,89,0.3)">STACK</div>
 							</div>
 
-							<p class="text-xs opacity-40 text-center mt-3 font-retro text-base">Cada llamada apila un nuevo "caj&oacute;n" con sus vars locales</p>
+							<p class="text-xs opacity-40 text-center mt-3 font-retro text-base">{lang === 'en' ? 'Each call stacks a new "drawer" with its local vars' : 'Cada llamada apila un nuevo "cajón" con sus vars locales'}</p>
 						</div>
 
 						<!-- Code + explanation -->
@@ -811,14 +813,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 &rbrace;<br><br>
 <span class="code-type">int</span> <span class="code-func">main</span>() &lbrace;<br>
 <span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var">r</span> = <span class="code-func">calcular</span>(<span class="code-number">10</span>, <span class="code-number">5</span>);</span><br>
-<span style="padding-left:16px"><span class="code-comment">// 'area' NO existe acá</span></span><br>
+<span style="padding-left:16px"><span class="code-comment">// 'area' DOES NOT exist here</span></span><br>
 <span style="padding-left:16px"><span class="code-comment">// printf("%d", area); → ERROR</span></span><br>
 &rbrace;
 							</div>
 
 							<div class="anim-item warning-box" style="--delay: 400ms">
-								<p class="font-retro text-lg mb-1">&#x26A0; Error de compilaci&oacute;n</p>
-								<p class="text-xs">Intentar usar <code style="color:#f0abfc">area</code> fuera de <code style="color:#98c379">calcular()</code> falla. La variable local no existe fuera de su scope. El compilador te lo dice en la cara.</p>
+								<p class="font-retro text-lg mb-1">&#x26A0; {lang === 'en' ? 'Compilation Error' : 'Error de compilación'}</p>
+								<p class="text-xs">{lang === 'en' ? 'Trying to use' : 'Intentar usar'} <code style="color:#f0abfc">area</code> {lang === 'en' ? 'outside of' : 'fuera de'} <code style="color:#98c379">calcular()</code> {lang === 'en' ? 'fails. The local variable does not exist outside its scope. The compiler tells you right to your face.' : 'falla. La variable local no existe fuera de su scope. El compilador te lo dice en la cara.'}</p>
 							</div>
 						</div>
 					</div>
@@ -831,15 +833,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-globales">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Variables Globales</h2>
-						<p class="text-sm opacity-50 mt-2">Declaradas fuera de toda funci&oacute;n. Todos pueden verlas... y modificarlas.</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Global Variables' : 'Variables Globales'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'Declared outside any function. Everyone can see them... and modify them.' : 'Declaradas fuera de toda función. Todos pueden verlas... y modificarlas.'}</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 						<!-- Visual -->
 						<div class="anim-item" style="--delay: 150ms">
 							<div class="global-box mb-6">
-								<p class="font-retro text-xl mb-2" style="color:#fcd34d">VARIABLE GLOBAL</p>
+								<p class="font-retro text-xl mb-2" style="color:#fcd34d">{lang === 'en' ? 'GLOBAL VARIABLE' : 'VARIABLE GLOBAL'}</p>
 								<div class="code-block text-sm" style="text-align:left">
 									<span class="code-type">int</span> <span class="code-var" style="color:#fcd34d">contador</span> = <span class="code-number">0</span>;
 								</div>
@@ -849,19 +851,19 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<div style="display:flex; align-items:center; gap:12px">
 									<span class="global-arrow">&#x279C;</span>
 									<div style="border:1px solid rgba(245,158,11,0.3); border-radius:4px; padding:6px 12px; font-family:'Space Mono',monospace; font-size:0.75rem; color:#fcd34d; flex:1">
-										<span class="code-func">funcionA</span>() puede leer y escribir <span style="color:#fcd34d">contador</span>
+										<span class="code-func">funcionA</span>() {lang === 'en' ? 'can read and write' : 'puede leer y escribir'} <span style="color:#fcd34d">contador</span>
 									</div>
 								</div>
 								<div style="display:flex; align-items:center; gap:12px">
 									<span class="global-arrow" style="animation-delay:0.4s">&#x279C;</span>
 									<div style="border:1px solid rgba(245,158,11,0.3); border-radius:4px; padding:6px 12px; font-family:'Space Mono',monospace; font-size:0.75rem; color:#fcd34d; flex:1">
-										<span class="code-func">funcionB</span>() puede leer y escribir <span style="color:#fcd34d">contador</span>
+										<span class="code-func">funcionB</span>() {lang === 'en' ? 'can read and write' : 'puede leer y escribir'} <span style="color:#fcd34d">contador</span>
 									</div>
 								</div>
 								<div style="display:flex; align-items:center; gap:12px">
 									<span class="global-arrow" style="animation-delay:0.8s">&#x279C;</span>
 									<div style="border:1px solid rgba(245,158,11,0.3); border-radius:4px; padding:6px 12px; font-family:'Space Mono',monospace; font-size:0.75rem; color:#fcd34d; flex:1">
-										<span class="code-func">main</span>() puede leer y escribir <span style="color:#fcd34d">contador</span>
+										<span class="code-func">main</span>() {lang === 'en' ? 'can read and write' : 'puede leer y escribir'} <span style="color:#fcd34d">contador</span>
 									</div>
 								</div>
 							</div>
@@ -880,14 +882,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 <span class="code-type">int</span> <span class="code-func">main</span>() &lbrace;<br>
 <span style="padding-left:16px"><span class="code-func">incrementar</span>();</span><br>
 <span style="padding-left:16px"><span class="code-func">incrementar</span>();</span><br>
-<span style="padding-left:16px"><span class="code-func">resetear</span>();   <span class="code-comment">// sorpresa!</span></span><br>
+<span style="padding-left:16px"><span class="code-func">resetear</span>();   <span class="code-comment">// surprise!</span></span><br>
 &rbrace;
 							</div>
 
 							<div class="anim-item warning-box" style="--delay: 400ms">
-								<p class="font-retro text-lg mb-2">&#x26A0; PELIGRO: Efecto Fantasma</p>
-								<p class="text-xs mb-2"><code class="code-func" style="color:#98c379">resetear()</code> modifica <span style="color:#fcd34d">contador</span> sin que nadie lo espere. Este tipo de bug es una <strong>pesadilla</strong> para debuggear.</p>
-								<p class="text-xs opacity-70">Usá globales solo cuando sea estrictamente necesario.</p>
+								<p class="font-retro text-lg mb-2">&#x26A0; {lang === 'en' ? 'DANGER: Ghost Effect' : 'PELIGRO: Efecto Fantasma'}</p>
+								<p class="text-xs mb-2"><code class="code-func" style="color:#98c379">resetear()</code> {lang === 'en' ? 'modifies' : 'modifica'} <span style="color:#fcd34d">contador</span> {lang === 'en' ? 'without anyone expecting it. This kind of bug is a' : 'sin que nadie lo espere. Este tipo de bug es una'} <strong>{lang === 'en' ? 'nightmare to debug' : 'pesadilla para debuggear'}</strong>.</p>
+								<p class="text-xs opacity-70">{lang === 'en' ? 'Use globals only when strictly necessary.' : 'Usá globales solo cuando sea estrictamente necesario.'}</p>
 							</div>
 						</div>
 					</div>
@@ -901,32 +903,32 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">
-							Locales <span class="opacity-30">vs</span> Globales
+							{lang === 'en' ? 'Local' : 'Locales'} <span class="opacity-30">vs</span> {lang === 'en' ? 'Global' : 'Globales'}
 						</h2>
-						<p class="text-sm opacity-50 mt-2">Y el misterio del <strong>shadowing</strong>: cu&aacute;ndo una variable oculta a otra</p>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'And the mystery of' : 'Y el misterio del'} <strong>{lang === 'en' ? 'shadowing' : 'shadowing'}</strong>: {lang === 'en' ? 'when a variable hides another' : 'cuándo una variable oculta a otra'}</p>
 					</div>
 
 					<div class="anim-item code-block text-xs mb-6" style="--delay: 150ms">
 <span class="code-type">int</span> <span class="code-var" style="color:#fcd34d">x</span> = <span class="code-number">100</span>; <span class="code-comment">// GLOBAL x</span><br><br>
 <span class="code-keyword">void</span> <span class="code-func">miFuncion</span>() &lbrace;<br>
-<span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var" style="color:#a5f3fc">x</span> = <span class="code-number">5</span>; <span class="code-comment">// LOCAL x — OCULTA a la global</span></span><br>
-<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var" style="color:#a5f3fc">x</span>); <span class="code-comment">// imprime 5, no 100</span></span><br>
-&rbrace; <span class="code-comment">// la local x desaparece acá</span><br><br>
+<span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var" style="color:#a5f3fc">x</span> = <span class="code-number">5</span>; <span class="code-comment">// LOCAL x — HIDES the global</span></span><br>
+<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var" style="color:#a5f3fc">x</span>); <span class="code-comment">// prints 5, not 100</span></span><br>
+&rbrace; <span class="code-comment">// the local x disappears here</span><br><br>
 <span class="code-type">int</span> <span class="code-func">main</span>() &lbrace;<br>
-<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var" style="color:#fcd34d">x</span>); <span class="code-comment">// imprime 100 (la global)</span></span><br>
-<span style="padding-left:16px"><span class="code-func">miFuncion</span>();              <span class="code-comment">// imprime 5</span></span><br>
-<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var" style="color:#fcd34d">x</span>); <span class="code-comment">// sigue siendo 100</span></span><br>
+<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var" style="color:#fcd34d">x</span>); <span class="code-comment">// prints 100 (the global)</span></span><br>
+<span style="padding-left:16px"><span class="code-func">miFuncion</span>();              <span class="code-comment">// prints 5</span></span><br>
+<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var" style="color:#fcd34d">x</span>); <span class="code-comment">// still 100</span></span><br>
 &rbrace;
 					</div>
 
 					<div class="flex gap-6 split-grid">
 						<div class="flex-1 anim-item type-card" style="--delay: 300ms">
-							<p class="text-xs opacity-50 mb-1" style="color:#a5f3fc">LOCAL (cyan)</p>
-							<p class="text-sm">Existe solo dentro de su bloque. Tiene prioridad sobre la global del mismo nombre dentro de ese scope. Cuando el bloque termina, desaparece del stack.</p>
+							<p class="text-xs opacity-50 mb-1" style="color:#a5f3fc">{lang === 'en' ? 'LOCAL (cyan)' : 'LOCAL (cyan)'}</p>
+							<p class="text-sm">{lang === 'en' ? 'Exists only inside its block. It has priority over the global of the same name within that scope. When the block ends, it disappears from the stack.' : 'Existe solo dentro de su bloque. Tiene prioridad sobre la global del mismo nombre dentro de ese scope. Cuando el bloque termina, desaparece del stack.'}</p>
 						</div>
 						<div class="flex-1 anim-item type-card" style="--delay: 400ms; border-color: rgba(251,191,36,0.25)">
-							<p class="text-xs opacity-50 mb-1" style="color:#fcd34d">GLOBAL (amber)</p>
-							<p class="text-sm">Visible desde cualquier funci&oacute;n. Si una funci&oacute;n tiene una local del mismo nombre, la global queda <strong>oculta (shadowed)</strong> dentro de esa funci&oacute;n.</p>
+							<p class="text-xs opacity-50 mb-1" style="color:#fcd34d">{lang === 'en' ? 'GLOBAL (amber)' : 'GLOBAL (amber)'}</p>
+							<p class="text-sm">{lang === 'en' ? 'Visible from any function. If a function has a local with the same name, the global becomes' : 'Visible desde cualquier función. Si una función tiene una local del mismo nombre, la global queda'} <strong>{lang === 'en' ? 'hidden (shadowed)' : 'oculta (shadowed)'}</strong> {lang === 'en' ? 'inside that function.' : 'dentro de esa función.'}</p>
 						</div>
 					</div>
 				</div>
@@ -938,14 +940,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-por-valor">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Pasaje Por Valor</h2>
-						<p class="text-sm opacity-50 mt-2">Se copia el valor. El original queda intacto.</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Pass by Value' : 'Pasaje Por Valor'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'The value is copied. The original remains intact.' : 'Se copia el valor. El original queda intacto.'}</p>
 					</div>
 
 					<!-- Memory boxes -->
 					<div class="flex items-center justify-center gap-4 mb-8 flex-wrap">
 						<div style="border:1px solid rgba(13,242,89,0.2); border-radius:8px; padding:16px; text-align:center; min-width:180px">
-							<div class="font-retro text-sm opacity-50 mb-3">FRAME: main()</div>
+							<div class="font-retro text-sm opacity-50 mb-3">{lang === 'en' ? 'FRAME: main()' : 'FRAME: main()'}</div>
 							<div class="mem-box mem-box-local mx-auto" id="box-main-x" style="min-width:100px">
 								<div class="mem-address">0xFF01</div>
 								<div class="mem-label">x</div>
@@ -956,10 +958,10 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="flow-arrow">&#x279C;</div>
 
 						<div style="border:1px solid rgba(13,242,89,0.2); border-radius:8px; padding:16px; text-align:center; min-width:180px" id="inc-frame">
-							<div class="font-retro text-sm opacity-50 mb-3">FRAME: inc()</div>
+							<div class="font-retro text-sm opacity-50 mb-3">{lang === 'en' ? 'FRAME: inc()' : 'FRAME: inc()'}</div>
 							<div class="mem-box mem-box-local mx-auto" id="box-inc-n" style="min-width:100px">
 								<div class="mem-address">0xFF10</div>
-								<div class="mem-label">n (copia)</div>
+								<div class="mem-label">{lang === 'en' ? 'n (copy)' : 'n (copia)'}</div>
 								<div class="mem-value" id="val-inc-n">5</div>
 							</div>
 						</div>
@@ -969,34 +971,34 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					<div class="space-y-3 max-w-xl mx-auto mb-8">
 						<div class="flex items-start gap-3 step-hidden" id="valor-step-0">
 							<span class="step-indicator">1</span>
-							<span class="text-sm pt-1"><code class="code-var">x</code> vale <strong>5</strong> en el frame de main</span>
+							<span class="text-sm pt-1"><code class="code-var">x</code> {lang === 'en' ? 'is' : 'vale'} <strong>5</strong> {lang === 'en' ? 'in the main frame' : 'en el frame de main'}</span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="valor-step-1">
 							<span class="step-indicator">2</span>
-							<span class="text-sm pt-1">Se llama <code class="code-func">inc(x)</code> &mdash; el valor 5 se <strong>copia</strong> en <code class="code-var">n</code></span>
+							<span class="text-sm pt-1"><span class="code-func">inc(x)</span> {lang === 'en' ? 'is called — the value 5 is' : 'se llama — el valor 5 se'} <strong>{lang === 'en' ? 'copied' : 'copia'}</strong> {lang === 'en' ? 'into' : 'en'} <code class="code-var">n</code></span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="valor-step-2">
 							<span class="step-indicator">3</span>
-							<span class="text-sm pt-1">Dentro de <code class="code-func">inc()</code>, <code class="code-var">n</code> pasa a valer <strong>6</strong> (n++)</span>
+							<span class="text-sm pt-1">{lang === 'en' ? 'Inside' : 'Dentro de'} <code class="code-func">inc()</code>, <code class="code-var">n</code> {lang === 'en' ? 'becomes' : 'pasa a valer'} <strong>6</strong> (n++)</span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="valor-step-3">
 							<span class="step-indicator">4</span>
-							<span class="text-sm pt-1">La funci&oacute;n termina, el frame de inc() se destruye. <code class="code-var">n</code> desaparece.</span>
+							<span class="text-sm pt-1">{lang === 'en' ? 'The function ends, the inc() frame is destroyed. ' : 'La función termina, el frame de inc() se destruye. '} <code class="code-var">n</code> {lang === 'en' ? 'disappears.' : 'desaparece.'}</span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="valor-step-4">
 							<span class="step-indicator">5</span>
-							<span class="text-sm pt-1"><code class="code-var">x</code> sigue valiendo <strong>5</strong>. El original no fue tocado.</span>
+							<span class="text-sm pt-1"><code class="code-var">x</code> {lang === 'en' ? 'still equals' : 'sigue valiendo'} <strong>5</strong>. {lang === 'en' ? 'The original was not touched.' : 'El original no fue tocado.'}</span>
 						</div>
 					</div>
 
 					<div class="anim-item code-block text-xs" style="--delay: 200ms">
 <span class="code-keyword">void</span> <span class="code-func">inc</span>(<span class="code-type">int</span> <span class="code-var">n</span>) &lbrace;<br>
-<span style="padding-left:16px"><span class="code-var">n</span>++; <span class="code-comment">// modifica la copia, no el original</span></span><br>
+<span style="padding-left:16px"><span class="code-var">n</span>++; <span class="code-comment">// modifies the copy, not the original</span></span><br>
 &rbrace;<br><br>
 <span class="code-type">int</span> <span class="code-func">main</span>() &lbrace;<br>
 <span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var">x</span> = <span class="code-number">5</span>;</span><br>
-<span style="padding-left:16px"><span class="code-func">inc</span>(<span class="code-var">x</span>);              <span class="code-comment">// pasa una COPIA de x</span></span><br>
-<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var">x</span>); <span class="code-comment">// imprime 5 — sin cambios</span></span><br>
+<span style="padding-left:16px"><span class="code-func">inc</span>(<span class="code-var">x</span>);              <span class="code-comment">// passes a COPY of x</span></span><br>
+<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var">x</span>); <span class="code-comment">// prints 5 — unchanged</span></span><br>
 &rbrace;
 					</div>
 				</div>
@@ -1008,14 +1010,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-por-ref">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Pasaje Por Referencia</h2>
-						<p class="text-sm opacity-50 mt-2">Se pasa la <strong>direcci&oacute;n</strong> de memoria. El original S&Iacute; se modifica.</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Pass by Reference' : 'Pasaje Por Referencia'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'The' : 'Se pasa la'} <strong>{lang === 'en' ? 'memory address' : 'dirección'}</strong> {lang === 'en' ? 'is passed. The original IS modified.' : 'de memoria. El original SÍ se modifica.'}</p>
 					</div>
 
 					<!-- Memory boxes -->
 					<div class="flex items-center justify-center gap-4 mb-8 flex-wrap">
 						<div style="border:1px solid rgba(13,242,89,0.2); border-radius:8px; padding:16px; text-align:center; min-width:180px">
-							<div class="font-retro text-sm opacity-50 mb-3">FRAME: main()</div>
+							<div class="font-retro text-sm opacity-50 mb-3">{lang === 'en' ? 'FRAME: main()' : 'FRAME: main()'}</div>
 							<div class="mem-box mem-box-local mx-auto" id="box-ref-x" style="min-width:110px">
 								<div class="mem-address">0xFF01</div>
 								<div class="mem-label">x</div>
@@ -1026,10 +1028,10 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="flow-arrow">&#x279C;</div>
 
 						<div style="border:1px solid rgba(217,70,239,0.3); border-radius:8px; padding:16px; text-align:center; min-width:180px" id="ref-frame">
-							<div class="font-retro text-sm opacity-50 mb-3">FRAME: cambiar()</div>
+							<div class="font-retro text-sm opacity-50 mb-3">{lang === 'en' ? 'FRAME: cambiar()' : 'FRAME: cambiar()'}</div>
 							<div class="mem-box mem-box-pointer mx-auto" id="box-ref-p" style="min-width:110px">
 								<div class="mem-address">0xFF20</div>
-								<div class="mem-label">p (puntero)</div>
+								<div class="mem-label">{lang === 'en' ? 'p (pointer)' : 'p (puntero)'}</div>
 								<div class="mem-value" id="val-ref-p" style="font-size:1rem">0xFF01</div>
 							</div>
 						</div>
@@ -1039,34 +1041,34 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					<div class="space-y-3 max-w-xl mx-auto mb-8">
 						<div class="flex items-start gap-3 step-hidden" id="ref-step-0">
 							<span class="step-indicator">1</span>
-							<span class="text-sm pt-1"><code class="code-var">x</code> vale <strong>5</strong> en direcci&oacute;n <code style="color:#fb923c">0xFF01</code></span>
+							<span class="text-sm pt-1"><code class="code-var">x</code> {lang === 'en' ? 'is' : 'vale'} <strong>5</strong> {lang === 'en' ? 'at address' : 'en dirección'} <code style="color:#fb923c">0xFF01</code></span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="ref-step-1">
 							<span class="step-indicator">2</span>
-							<span class="text-sm pt-1">Se pasa <code style="color:#fb923c">&amp;x</code> (la direcci&oacute;n). El puntero <code style="color:#f0abfc">p</code> recibe <code style="color:#fb923c">0xFF01</code></span>
+							<span class="text-sm pt-1"><code style="color:#fb923c">&amp;x</code> ({lang === 'en' ? 'the address' : 'la dirección'}) {lang === 'en' ? 'is passed. The pointer' : 'se pasa. El puntero'} <code style="color:#f0abfc">p</code> {lang === 'en' ? 'receives' : 'recibe'} <code style="color:#fb923c">0xFF01</code></span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="ref-step-2">
 							<span class="step-indicator">3</span>
-							<span class="text-sm pt-1"><code style="color:#f0abfc">*p = 10</code> sigue la direcci&oacute;n y modifica la memoria en <code style="color:#fb923c">0xFF01</code></span>
+							<span class="text-sm pt-1"><code style="color:#f0abfc">*p = 10</code> {lang === 'en' ? 'follows the address and modifies the memory at' : 'sigue la dirección y modifica la memoria en'} <code style="color:#fb923c">0xFF01</code></span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="ref-step-3">
 							<span class="step-indicator">4</span>
-							<span class="text-sm pt-1">La funci&oacute;n termina. <code style="color:#f0abfc">p</code> desaparece, pero el da&ntilde;o est&aacute; hecho.</span>
+							<span class="text-sm pt-1">{lang === 'en' ? 'The function ends.' : 'La función termina.'} <code style="color:#f0abfc">p</code> {lang === 'en' ? 'disappears, but the damage is done.' : 'desaparece, pero el daño está hecho.'}</span>
 						</div>
 						<div class="flex items-start gap-3 step-hidden" id="ref-step-4">
 							<span class="step-indicator">5</span>
-							<span class="text-sm pt-1"><code class="code-var">x</code> ahora vale <strong>10</strong>. El original fue modificado.</span>
+							<span class="text-sm pt-1"><code class="code-var">x</code> {lang === 'en' ? 'now equals' : 'ahora vale'} <strong>10</strong>. {lang === 'en' ? 'The original was modified.' : 'El original fue modificado.'}</span>
 						</div>
 					</div>
 
 					<div class="anim-item code-block text-xs" style="--delay: 200ms">
 <span class="code-keyword">void</span> <span class="code-func">cambiar</span>(<span class="code-type">int</span> *<span class="code-var" style="color:#f0abfc">p</span>) &lbrace;<br>
-<span style="padding-left:16px">*<span class="code-var" style="color:#f0abfc">p</span> = <span class="code-number">10</span>; <span class="code-comment">// desreferencia: modifica lo que apunta</span></span><br>
+<span style="padding-left:16px">*<span class="code-var" style="color:#f0abfc">p</span> = <span class="code-number">10</span>; <span class="code-comment">// dereference: modifies what it points to</span></span><br>
 &rbrace;<br><br>
 <span class="code-type">int</span> <span class="code-func">main</span>() &lbrace;<br>
 <span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var">x</span> = <span class="code-number">5</span>;</span><br>
-<span style="padding-left:16px"><span class="code-func">cambiar</span>(&amp;<span class="code-var">x</span>);        <span class="code-comment">// pasa la DIRECCIÓN de x</span></span><br>
-<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var">x</span>); <span class="code-comment">// imprime 10 — fue modificado</span></span><br>
+<span style="padding-left:16px"><span class="code-func">cambiar</span>(&amp;<span class="code-var">x</span>);        <span class="code-comment">// passes the ADDRESS of x</span></span><br>
+<span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"%d"</span>, <span class="code-var">x</span>); <span class="code-comment">// prints 10 — was modified</span></span><br>
 &rbrace;
 					</div>
 				</div>
@@ -1079,47 +1081,47 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">
-							Valor <span class="opacity-30">vs</span> Referencia
+							{lang === 'en' ? 'Value' : 'Valor'} <span class="opacity-30">vs</span> {lang === 'en' ? 'Reference' : 'Referencia'}
 						</h2>
-						<p class="text-sm opacity-50 mt-2">Mismo punto de partida, resultado completamente distinto</p>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'Same starting point, completely different result' : 'Mismo punto de partida, resultado completamente distinto'}</p>
 					</div>
 
 					<div class="flex gap-8 split-grid mb-8">
 						<!-- Por valor -->
 						<div class="flex-1 anim-item split-col" style="--delay: 150ms">
-							<h3 class="font-retro text-2xl text-center mb-6">POR VALOR</h3>
+							<h3 class="font-retro text-2xl text-center mb-6">{lang === 'en' ? 'BY VALUE' : 'POR VALOR'}</h3>
 							<div style="display:flex; flex-direction:column; align-items:center; gap:12px">
 								<div class="mem-box mem-box-local" style="width:100%; max-width:160px">
 									<div class="mem-address">main: 0xFF01</div>
 									<div class="mem-label">x</div>
 									<div class="mem-value">5</div>
 								</div>
-								<span style="font-size:0.9rem; opacity:0.5">se copia el valor &#x2193;</span>
+								<span style="font-size:0.9rem; opacity:0.5">{lang === 'en' ? 'value is copied' : 'se copia el valor'} &#x2193;</span>
 								<div class="mem-box mem-box-local" style="width:100%; max-width:160px">
 									<div class="mem-address">func: 0xFF10</div>
-									<div class="mem-label">n (copia)</div>
+									<div class="mem-label">{lang === 'en' ? 'n (copy)' : 'n (copia)'}</div>
 									<div class="mem-value" style="color:#e06c75">6</div>
 								</div>
-								<span style="color:var(--primary); font-family:'VT323',monospace; font-size:1.2rem; margin-top:8px">x sigue = 5 &#x2714;</span>
+								<span style="color:var(--primary); font-family:'VT323',monospace; font-size:1.2rem; margin-top:8px">x still = 5 &#x2714;</span>
 							</div>
 						</div>
 
 						<!-- Por referencia -->
 						<div class="flex-1 anim-item split-col-red" style="--delay: 300ms">
-							<h3 class="font-retro text-2xl text-center mb-6" style="color:#fca5a5">POR REFERENCIA</h3>
+							<h3 class="font-retro text-2xl text-center mb-6" style="color:#fca5a5">{lang === 'en' ? 'BY REFERENCE' : 'POR REFERENCIA'}</h3>
 							<div style="display:flex; flex-direction:column; align-items:center; gap:12px">
 								<div class="mem-box" style="width:100%; max-width:160px; border:2px solid #06b6d4; background:rgba(6,182,212,0.08); color:#a5f3fc">
 									<div class="mem-address">main: 0xFF01</div>
 									<div class="mem-label">x</div>
 									<div class="mem-value" style="color:#fca5a5">10 &#x26A0;</div>
 								</div>
-								<span style="font-size:0.9rem; opacity:0.5">se pasa la direcci&oacute;n &#x2193;</span>
+								<span style="font-size:0.9rem; opacity:0.5">{lang === 'en' ? 'address is passed' : 'se pasa la dirección'} &#x2193;</span>
 								<div class="mem-box mem-box-pointer" style="width:100%; max-width:160px">
 									<div class="mem-address">func: 0xFF20</div>
-									<div class="mem-label">p (ptr)</div>
+									<div class="mem-label">{lang === 'en' ? 'p (ptr)' : 'p (ptr)'}</div>
 									<div class="mem-value" style="font-size:0.9rem">&#x279C; 0xFF01</div>
 								</div>
-								<span style="color:#fca5a5; font-family:'VT323',monospace; font-size:1.2rem; margin-top:8px">x ahora = 10 &#x26A0;</span>
+								<span style="color:#fca5a5; font-family:'VT323',monospace; font-size:1.2rem; margin-top:8px">x now = 10 &#x26A0;</span>
 							</div>
 						</div>
 					</div>
@@ -1129,36 +1131,36 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<table class="cmp-table">
 							<thead>
 								<tr>
-									<th>Aspecto</th>
-									<th>Por Valor</th>
-									<th>Por Referencia (puntero)</th>
+									<th>{lang === 'en' ? 'Aspect' : 'Aspecto'}</th>
+									<th>{lang === 'en' ? 'By Value' : 'Por Valor'}</th>
+									<th>{lang === 'en' ? 'By Reference (pointer)' : 'Por Referencia (puntero)'}</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td class="opacity-70">Qu&eacute; se pasa</td>
-									<td style="color:var(--primary)">Copia del valor</td>
-									<td style="color:#f0abfc">Direcci&oacute;n de memoria</td>
+									<td class="opacity-70">{lang === 'en' ? 'What is passed' : 'Qué se pasa'}</td>
+									<td style="color:var(--primary)">{lang === 'en' ? 'Copy of the value' : 'Copia del valor'}</td>
+									<td style="color:#f0abfc">{lang === 'en' ? 'Memory address' : 'Dirección de memoria'}</td>
 								</tr>
 								<tr>
-									<td class="opacity-70">Modifica original</td>
-									<td style="color:var(--primary)">NO &#x2714;</td>
-									<td style="color:#fca5a5">S&Iacute; &#x26A0;</td>
+									<td class="opacity-70">{lang === 'en' ? 'Modifies original' : 'Modifica original'}</td>
+									<td style="color:var(--primary)">{lang === 'en' ? 'NO' : 'NO'} &#x2714;</td>
+									<td style="color:#fca5a5">{lang === 'en' ? 'YES' : 'SÍ'} &#x26A0;</td>
 								</tr>
 								<tr>
-									<td class="opacity-70">Sintaxis en llamada</td>
+									<td class="opacity-70">{lang === 'en' ? 'Syntax at call' : 'Sintaxis en llamada'}</td>
 									<td><code class="code-block px-2 py-0.5 text-xs">func(x)</code></td>
 									<td><code class="code-block px-2 py-0.5 text-xs">func(&amp;x)</code></td>
 								</tr>
 								<tr>
-									<td class="opacity-70">Sintaxis en par&aacute;metro</td>
+									<td class="opacity-70">{lang === 'en' ? 'Syntax at parameter' : 'Sintaxis en parámetro'}</td>
 									<td><code class="code-block px-2 py-0.5 text-xs">int n</code></td>
 									<td><code class="code-block px-2 py-0.5 text-xs">int *p</code></td>
 								</tr>
 								<tr>
-									<td class="opacity-70">Cu&aacute;ndo usar</td>
-									<td>Leer datos, calcular</td>
-									<td>Modificar el original</td>
+									<td class="opacity-70">{lang === 'en' ? 'When to use' : 'Cuándo usar'}</td>
+									<td>{lang === 'en' ? 'Read data, calculate' : 'Leer datos, calcular'}</td>
+									<td>{lang === 'en' ? 'Modify the original' : 'Modificar el original'}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -1173,16 +1175,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
 						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">
-							Par&aacute;metros Nominales y Efectivos
+							{lang === 'en' ? 'Formal and Actual Parameters' : 'Parámetros Nominales y Efectivos'}
 						</h2>
-						<p class="text-sm opacity-50 mt-2">Definici&oacute;n vs llamada. Placeholder vs valor real.</p>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'Definition vs call. Placeholder vs real value.' : 'Definición vs llamada. Placeholder vs valor real.'}</p>
 					</div>
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 						<!-- Nominales -->
 						<div class="anim-item split-col" style="--delay: 150ms">
-							<h3 class="font-retro text-2xl mb-1">PAR&Aacute;METROS NOMINALES</h3>
-							<p class="text-xs opacity-60 mb-4">Los de la DEFINICI&Oacute;N &mdash; son placeholders, variables locales</p>
+							<h3 class="font-retro text-2xl mb-1">{lang === 'en' ? 'FORMAL PARAMETERS' : 'PARÁMETROS NOMINALES'}</h3>
+							<p class="text-xs opacity-60 mb-4">{lang === 'en' ? 'Those in the DEFINITION — are placeholders, local variables' : 'Los de la DEFINICIÓN — son placeholders, variables locales'}</p>
 
 							<div class="code-block text-sm mb-4">
 <span class="code-type">int</span> <span class="code-func">calcular</span>(<span class="code-type">int</span> <span style="border-bottom:2px solid var(--primary); color:var(--primary)">base</span>, <span class="code-type">int</span> <span style="border-bottom:2px solid var(--primary); color:var(--primary)">altura</span>) &lbrace;<br>
@@ -1194,13 +1196,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<span class="param-badge-nominal">base</span>
 								<span class="param-badge-nominal">altura</span>
 							</div>
-							<p class="text-xs opacity-50 mt-3">Son como variables normales dentro de la funci&oacute;n. Se les asigna valor en la llamada.</p>
+							<p class="text-xs opacity-50 mt-3">{lang === 'en' ? 'They are like normal variables inside the function. They get assigned a value at the call.' : 'Son como variables normales dentro de la función. Se les asigna valor en la llamada.'}</p>
 						</div>
 
 						<!-- Efectivos -->
 						<div class="anim-item split-col-amber" style="--delay: 300ms">
-							<h3 class="font-retro text-2xl mb-1" style="color:#fcd34d">PAR&Aacute;METROS EFECTIVOS</h3>
-							<p class="text-xs opacity-60 mb-4">Los de la LLAMADA &mdash; los valores reales que se pasan</p>
+							<h3 class="font-retro text-2xl mb-1" style="color:#fcd34d">{lang === 'en' ? 'ACTUAL PARAMETERS' : 'PARÁMETROS EFECTIVOS'}</h3>
+							<p class="text-xs opacity-60 mb-4">{lang === 'en' ? 'Those in the CALL — the real values being passed' : 'Los de la LLAMADA — los valores reales que se pasan'}</p>
 
 							<div class="code-block text-sm mb-4">
 <span class="code-func">calcular</span>(<span style="border-bottom:2px solid #f59e0b; color:#fcd34d">10</span>, <span style="border-bottom:2px solid #f59e0b; color:#fcd34d">20</span>);
@@ -1210,18 +1212,18 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 								<span class="param-badge-effective">10</span>
 								<span class="param-badge-effective">20</span>
 							</div>
-							<p class="text-xs opacity-50 mt-3">Son los valores concretos (literales, variables o expresiones) que se env&iacute;an en la llamada.</p>
+							<p class="text-xs opacity-50 mt-3">{lang === 'en' ? 'These are the concrete values (literals, variables or expressions) sent in the call.' : 'Son los valores concretos (literales, variables o expresiones) que se envían en la llamada.'}</p>
 						</div>
 					</div>
 
 					<div class="anim-item mt-8 type-card" style="--delay: 450ms">
-						<p class="text-xs opacity-50 mb-3">CORRESPONDENCIA POSICIONAL &mdash; el orden importa</p>
+						<p class="text-xs opacity-50 mb-3">{lang === 'en' ? 'POSITIONAL CORRESPONDENCE — order matters' : 'CORRESPONDENCIA POSICIONAL — el orden importa'}</p>
 						<div class="code-block text-xs">
 <span class="code-func">calcular</span>(<span style="color:#fcd34d">10</span>, <span style="color:#fcd34d">20</span>);<br>
-<span class="code-comment">// base=10, altura=20 → resultado = 200</span><br><br>
-<span class="code-comment">// El orden SÍ importa en muchos casos:</span><br>
+<span class="code-comment">// base=10, altura=20 → result = 200</span><br><br>
+<span class="code-comment">// Order DOES matter in many cases:</span><br>
 <span class="code-func">dividir</span>(<span class="code-number">10</span>, <span class="code-number">2</span>);  <span class="code-comment">// 10 / 2 = 5</span><br>
-<span class="code-func">dividir</span>(<span class="code-number">2</span>, <span class="code-number">10</span>);  <span class="code-comment">// 2 / 10 = 0  (resultado MUY diferente)</span>
+<span class="code-func">dividir</span>(<span class="code-number">2</span>, <span class="code-number">10</span>);  <span class="code-comment">// 2 / 10 = 0  (VERY different result)</span>
 						</div>
 					</div>
 				</div>
@@ -1233,33 +1235,33 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-ejemplo">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Ejemplo Completo</h2>
-						<p class="text-sm opacity-50 mt-2">Un programa que usa TODO lo que vimos</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Complete Example' : 'Ejemplo Completo'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'A program that uses EVERYTHING we saw' : 'Un programa que usa TODO lo que vimos'}</p>
 					</div>
 
 					<div class="anim-item code-block text-xs" style="--delay: 150ms; line-height: 1.8">
 <span class="code-keyword">#include</span> <span class="code-string">&lt;stdio.h&gt;</span><br><br>
-<span class="code-comment">// GLOBAL: visible en todas las funciones</span><br>
+<span class="code-comment">// GLOBAL: visible in all functions</span><br>
 <span class="code-type">int</span> <span class="code-var" style="color:#fcd34d">llamadas</span> = <span class="code-number">0</span>;<br><br>
-<span class="code-comment">// FUNCIÓN: retorna el área (por valor)</span><br>
+<span class="code-comment">// FUNCTION: returns the area (by value)</span><br>
 <span class="code-type">int</span> <span class="code-func">areaRectangulo</span>(<span class="code-type">int</span> <span class="code-var">base</span>, <span class="code-type">int</span> <span class="code-var">altura</span>) &lbrace;<br>
-<span style="padding-left:16px"><span class="code-var" style="color:#fcd34d">llamadas</span>++;                          <span class="code-comment">// modifica global</span></span><br>
+<span style="padding-left:16px"><span class="code-var" style="color:#fcd34d">llamadas</span>++;                          <span class="code-comment">// modifies global</span></span><br>
 <span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var">area</span> = <span class="code-var">base</span> * <span class="code-var">altura</span>; <span class="code-comment">// LOCAL</span></span><br>
 <span style="padding-left:16px"><span class="code-keyword">return</span> <span class="code-var">area</span>;</span><br>
 &rbrace;<br><br>
-<span class="code-comment">// PROCEDIMIENTO: imprime (void, sin retorno)</span><br>
+<span class="code-comment">// PROCEDURE: prints (void, no return)</span><br>
 <span class="code-keyword">void</span> <span class="code-func">imprimirResultado</span>(<span class="code-type">int</span> <span class="code-var">valor</span>) &lbrace;<br>
 <span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"Resultado: %d\n"</span>, <span class="code-var">valor</span>);</span><br>
 &rbrace;<br><br>
-<span class="code-comment">// POR REFERENCIA: duplica el original</span><br>
+<span class="code-comment">// BY REFERENCE: duplicates the original</span><br>
 <span class="code-keyword">void</span> <span class="code-func">duplicar</span>(<span class="code-type">int</span> *<span class="code-var" style="color:#f0abfc">p</span>) &lbrace;<br>
 <span style="padding-left:16px">*<span class="code-var" style="color:#f0abfc">p</span> *= <span class="code-number">2</span>;</span><br>
 &rbrace;<br><br>
 <span class="code-type">int</span> <span class="code-func">main</span>() &lbrace;<br>
-<span style="padding-left:16px"><span class="code-comment">// nominales: base, altura — efectivos: 5, 10</span></span><br>
+<span style="padding-left:16px"><span class="code-comment">// formals: base, altura — actuals: 5, 10</span></span><br>
 <span style="padding-left:16px"><span class="code-type">int</span> <span class="code-var">area</span> = <span class="code-func">areaRectangulo</span>(<span class="code-number">5</span>, <span class="code-number">10</span>);</span><br>
 <span style="padding-left:16px"><span class="code-func">imprimirResultado</span>(<span class="code-var">area</span>); <span class="code-comment">// 50</span></span><br><br>
-<span style="padding-left:16px"><span class="code-func">duplicar</span>(&amp;<span class="code-var">area</span>);          <span class="code-comment">// pasa dirección — por referencia</span></span><br>
+<span style="padding-left:16px"><span class="code-func">duplicar</span>(&amp;<span class="code-var">area</span>);          <span class="code-comment">// passes address — by reference</span></span><br>
 <span style="padding-left:16px"><span class="code-func">imprimirResultado</span>(<span class="code-var">area</span>); <span class="code-comment">// 100</span></span><br><br>
 <span style="padding-left:16px"><span class="code-func">printf</span>(<span class="code-string">"Llamadas: %d\n"</span>, <span class="code-var" style="color:#fcd34d">llamadas</span>); <span class="code-comment">// 1</span></span><br>
 <span style="padding-left:16px"><span class="code-keyword">return</span> <span class="code-number">0</span>;</span><br>
@@ -1268,16 +1270,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 					<div class="flex gap-4 mt-6 flex-wrap">
 						<div class="anim-item type-card flex-1" style="--delay: 300ms; min-width:200px">
-							<p class="text-xs opacity-50 mb-1" style="color:#fcd34d">GLOBAL</p>
-							<p class="text-xs"><code style="color:#fcd34d">llamadas</code> &mdash; visible en todas las funciones</p>
+							<p class="text-xs opacity-50 mb-1" style="color:#fcd34d">{lang === 'en' ? 'GLOBAL' : 'GLOBAL'}</p>
+							<p class="text-xs"><code style="color:#fcd34d">llamadas</code> &mdash; {lang === 'en' ? 'visible in all functions' : 'visible en todas las funciones'}</p>
 						</div>
 						<div class="anim-item type-card flex-1" style="--delay: 380ms; min-width:200px">
-							<p class="text-xs opacity-50 mb-1" style="color:#a5f3fc">LOCAL</p>
-							<p class="text-xs"><code>area</code> dentro de <code style="color:#98c379">areaRectangulo</code> &mdash; solo ah&iacute;</p>
+							<p class="text-xs opacity-50 mb-1" style="color:#a5f3fc">{lang === 'en' ? 'LOCAL' : 'LOCAL'}</p>
+							<p class="text-xs"><code>area</code> {lang === 'en' ? 'inside' : 'dentro de'} <code style="color:#98c379">areaRectangulo</code> &mdash; {lang === 'en' ? 'only there' : 'solo ahí'}</p>
 						</div>
 						<div class="anim-item type-card flex-1" style="--delay: 460ms; min-width:200px">
-							<p class="text-xs opacity-50 mb-1" style="color:#f0abfc">PUNTERO</p>
-							<p class="text-xs"><code style="color:#f0abfc">*p</code> en <code style="color:#98c379">duplicar</code> &mdash; modifica el original</p>
+							<p class="text-xs opacity-50 mb-1" style="color:#f0abfc">{lang === 'en' ? 'POINTER' : 'PUNTERO'}</p>
+							<p class="text-xs"><code style="color:#f0abfc">*p</code> {lang === 'en' ? 'in' : 'en'} <code style="color:#98c379">duplicar</code> &mdash; {lang === 'en' ? 'modifies the original' : 'modifica el original'}</p>
 						</div>
 					</div>
 				</div>
@@ -1289,56 +1291,56 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			<section class="section section-hidden" id="sec-reglas">
 				<div class="section-inner">
 					<div class="anim-item text-center mb-10" style="--delay: 0ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">Reglas de Oro</h2>
-						<p class="text-sm opacity-50 mt-2">Grab&aacute;telas. Para siempre.</p>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'Golden Rules' : 'Reglas de Oro'}</h2>
+						<p class="text-sm opacity-50 mt-2">{lang === 'en' ? 'Burn them into memory. Forever.' : 'Grabátelas. Para siempre.'}</p>
 					</div>
 
 					<div class="space-y-4">
 						<div class="rule-card anim-item" style="--delay: 100ms">
 							<span class="rule-num">01</span>
 							<div>
-								<p class="font-retro text-xl">Modulariz&aacute;: funciones cortas que hacen UNA cosa</p>
-								<p class="text-xs opacity-50 mt-1">Si tu funci&oacute;n necesita un comentario explicando qu&eacute; hace, es demasiado larga.</p>
+								<p class="font-retro text-xl">{lang === 'en' ? 'Modularize: short functions that do ONE thing' : 'Modularizá: funciones cortas que hacen UNA cosa'}</p>
+								<p class="text-xs opacity-50 mt-1">{lang === 'en' ? 'If your function needs a comment explaining what it does, its too long.' : 'Si tu función necesita un comentario explicando qué hace, es demasiado larga.'}</p>
 							</div>
 						</div>
 
 						<div class="rule-card anim-item" style="--delay: 200ms">
 							<span class="rule-num">02</span>
 							<div>
-								<p class="font-retro text-xl">Prefer&iacute; variables locales sobre globales</p>
-								<p class="text-xs opacity-50 mt-1">Las globales crean dependencias ocultas y bugs imposibles de rastrear.</p>
+								<p class="font-retro text-xl">{lang === 'en' ? 'Prefer local variables over globals' : 'Preferí variables locales sobre globales'}</p>
+								<p class="text-xs opacity-50 mt-1">{lang === 'en' ? 'Globals create hidden dependencies and impossible-to-track bugs.' : 'Las globales crean dependencias ocultas y bugs imposibles de rastrear.'}</p>
 							</div>
 						</div>
 
 						<div class="rule-card anim-item" style="--delay: 300ms">
 							<span class="rule-num">03</span>
 							<div>
-								<p class="font-retro text-xl">Paso por valor: seguro, el original no cambia</p>
-								<p class="text-xs opacity-50 mt-1">Us&aacute;lo cuando solo necesit&aacute;s leer o calcular algo a partir del dato.</p>
+								<p class="font-retro text-xl">{lang === 'en' ? 'Pass by value: safe, the original does not change' : 'Paso por valor: seguro, el original no cambia'}</p>
+								<p class="text-xs opacity-50 mt-1">{lang === 'en' ? 'Use it when you only need to read or calculate something from the data.' : 'Usálo cuando solo necesitás leer o calcular algo a partir del dato.'}</p>
 							</div>
 						</div>
 
 						<div class="rule-card anim-item" style="--delay: 400ms">
 							<span class="rule-num">04</span>
 							<div>
-								<p class="font-retro text-xl">Paso por referencia (*punteros): cuando NECESIT&Aacute;S modificar el original</p>
-								<p class="text-xs opacity-50 mt-1">S&eacute; expl&iacute;cito. Quien lee el c&oacute;digo necesita saber que la funci&oacute;n tiene efectos secundarios.</p>
+								<p class="font-retro text-xl">{lang === 'en' ? 'Pass by reference (*pointers): when you NEED to modify the original' : 'Paso por referencia (*punteros): cuando NECESITÁS modificar el original'}</p>
+								<p class="text-xs opacity-50 mt-1">{lang === 'en' ? 'Be explicit. Whoever reads the code needs to know the function has side effects.' : 'Sé explícito. Quien lee el código necesita saber que la función tiene efectos secundarios.'}</p>
 							</div>
 						</div>
 
 						<div class="rule-card anim-item" style="--delay: 500ms">
 							<span class="rule-num">05</span>
 							<div>
-								<p class="font-retro text-xl">Par&aacute;metros nominales = definici&oacute;n, efectivos = llamada</p>
-								<p class="text-xs opacity-50 mt-1">El orden de los efectivos tiene que coincidir con el de los nominales. Siempre.</p>
+								<p class="font-retro text-xl">{lang === 'en' ? 'Formal parameters = definition, actuals = call' : 'Parámetros nominales = definición, efectivos = llamada'}</p>
+								<p class="text-xs opacity-50 mt-1">{lang === 'en' ? 'The order of actuals must match the order of formals. Always.' : 'El orden de los efectivos tiene que coincidir con el de los nominales. Siempre.'}</p>
 							</div>
 						</div>
 
 						<div class="rule-card anim-item" style="--delay: 600ms">
 							<span class="rule-num">06</span>
 							<div>
-								<p class="font-retro text-xl">Cada funci&oacute;n = una responsabilidad</p>
-								<p class="text-xs opacity-50 mt-1">Single Responsibility Principle. Vale en C, vale en cualquier lenguaje, vale en cualquier paradigma.</p>
+								<p class="font-retro text-xl">{lang === 'en' ? 'Each function = one responsibility' : 'Cada función = una responsabilidad'}</p>
+								<p class="text-xs opacity-50 mt-1">{lang === 'en' ? 'Single Responsibility Principle. It applies in C, in any language, in any paradigm.' : 'Single Responsibility Principle. Vale en C, vale en cualquier lenguaje, vale en cualquier paradigma.'}</p>
 							</div>
 						</div>
 					</div>
@@ -1361,16 +1363,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					</div>
 
 					<div class="anim-item mt-4" style="--delay: 300ms">
-						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">SESI&Oacute;N FINALIZADA</h2>
+						<h2 class="font-retro text-4xl md:text-6xl uppercase tracking-tight">{lang === 'en' ? 'SESSION ENDED' : 'SESIÓN FINALIZADA'}</h2>
 					</div>
 
 					<div class="anim-item mt-4 mb-10" style="--delay: 450ms">
-						<p class="text-sm opacity-50">Ahora sab&eacute;s modularizar en C. Ahora pens&aacute; en m&oacute;dulos.</p>
+						<p class="text-sm opacity-50">{lang === 'en' ? 'Now you know how to modularize in C. Now think in modules.' : 'Ahora sabés modularizar en C. Ahora pensá en módulos.'}</p>
 					</div>
 
 					<div class="anim-item" style="--delay: 600ms">
 						<a href={getRelativePath('/presentaciones')} class="terminal-btn">
-							&#x2190; Volver a Presentaciones
+							&#x2190; {lang === 'en' ? 'Back to Presentations' : 'Volver a Presentaciones'}
 						</a>
 					</div>
 

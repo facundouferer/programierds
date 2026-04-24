@@ -1,6 +1,6 @@
 ---
 import { getRelativePath } from '../utils/paths';
 import { DEFAULT_LOCALE } from '../i18n';
-const target = getRelativePath(`/${DEFAULT_LOCALE}/`);
-return Astro.redirect(target);
+const redirectTo = getRelativePath(`/${DEFAULT_LOCALE}/`);
+return Astro.redirect(redirectTo);
 ---

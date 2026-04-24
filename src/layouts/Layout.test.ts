@@ -4,19 +4,19 @@ import { describe, expect, it } from 'vitest';
 
 const pagesWithLayout = [
   '../pages/404.astro',
-  '../pages/cursos.astro',
-  '../pages/cursos/[course]/[lesson].astro',
-  '../pages/cursos/[course]/index.astro',
-  '../pages/index.astro',
-  '../pages/playground.astro',
-  '../pages/presentaciones/funciones_y_procedimientos_java.astro',
-  '../pages/presentaciones/index.astro',
-  '../pages/presentaciones/modularidad_en_c.astro',
-  '../pages/presentaciones/paso_por_valor_y_referencia.astro',
-  '../pages/presentaciones/tipos_de_datos_en_javascript.astro',
-  '../pages/presentaciones/variables_y_constantes.astro',
-  '../pages/test/[slug].astro',
-  '../pages/test/index.astro',
+  '../pages/[lang]/index.astro',
+  '../pages/[lang]/cursos/index.astro',
+  '../pages/[lang]/cursos/[course]/index.astro',
+  '../pages/[lang]/cursos/[course]/[lesson].astro',
+  '../pages/[lang]/playground.astro',
+  '../pages/[lang]/presentaciones/index.astro',
+  '../pages/[lang]/presentaciones/funciones_y_procedimientos_java.astro',
+  '../pages/[lang]/presentaciones/modularidad_en_c.astro',
+  '../pages/[lang]/presentaciones/paso_por_valor_y_referencia.astro',
+  '../pages/[lang]/presentaciones/tipos_de_datos_en_javascript.astro',
+  '../pages/[lang]/presentaciones/variables_y_constantes.astro',
+  '../pages/[lang]/test/index.astro',
+  '../pages/[lang]/test/[slug].astro',
 ];
 
 describe('Layout header integration', () => {
