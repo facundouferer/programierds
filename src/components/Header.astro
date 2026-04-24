@@ -1,28 +1,51 @@
 ---
-import { getRelativePath } from '../utils/paths';
+import { getLocalizedRelativePath } from '../utils/paths';
+import {
+	DEFAULT_LOCALE,
+	getAlternateLocale,
+	getLocaleFromPathname,
+	isLocale,
+	removeLocaleFromPathname,
+	useTranslations,
+	type Locale,
+} from '../i18n';
 
 const base = import.meta.env.BASE_URL;
 const currentPath = Astro.url.pathname;
-// Path relativo al base (ej: '/programierds/presentaciones' → 'presentaciones')
-const relativePath = currentPath.replace(base, '').replace(/^\//, '') || '/';
+
+const rawLocale = Astro.currentLocale ?? Astro.params?.lang;
+const locale: Locale = isLocale(String(rawLocale))
+	? (rawLocale as Locale)
+	: getLocaleFromPathname(currentPath, base);
+const alternate = getAlternateLocale(locale);
+const t = useTranslations(locale);
+
+const pathWithoutLocale = removeLocaleFromPathname(currentPath, base);
 
 const navLinks = [
-	{ label: 'Inicio', href: '/' },
-	{ label: 'Cursos', href: '/cursos' },
-	{ label: 'Tests', href: '/test' },
-	{ label: 'Presentaciones', href: '/presentaciones' },
-	{ label: 'Playground', href: '/playground' },
+	{ label: t('nav.home'), href: '/' },
+	{ label: t('nav.courses'), href: '/cursos' },
+	{ label: t('nav.tests'), href: '/test' },
+	{ label: t('nav.presentations'), href: '/presentaciones' },
 ];
 
 const isLinkActive = (href: string) => {
-	const isHome = href === '/';
-	return isHome ? relativePath === '/' : relativePath.startsWith(href.replace(/^\//, ''));
+	if (href === '/') return pathWithoutLocale === '/' || pathWithoutLocale === '';
+	return pathWithoutLocale === href || pathWithoutLocale.startsWith(href + '/');
 };
+
+const alternateHref = getLocalizedRelativePath(alternate, pathWithoutLocale);
+const switchLabel = alternate === 'en' ? t('nav.switchToEnglish') : t('nav.switchToSpanish');
+const flagEs = '🇦🇷';
+const flagEn = '🇺🇸';
+
+const esHref = getLocalizedRelativePath('es', pathWithoutLocale);
+const enHref = getLocalizedRelativePath('en', pathWithoutLocale);
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 lg:px-20 py-4">
 	<div class="mx-auto flex max-w-7xl items-center justify-between">
-		<a class="flex items-center gap-2" href={getRelativePath('/')}>
+		<a class="flex items-center gap-2" href={getLocalizedRelativePath(locale, '/')}>
 			<span class="text-3xl">💩</span>
 			<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold tracking-tight">programierds</h2>
 		</a>
@@ -32,28 +55,54 @@ const isLinkActive = (href: string) => {
 					class={isLinkActive(href)
 						? 'text-primary transition-colors text-sm font-bold border-b-2 border-primary'
 						: 'hover:text-primary transition-colors text-sm font-medium'}
-					href={getRelativePath(href)}
+					href={getLocalizedRelativePath(locale, href)}
 				>
 					{label}
 				</a>
 			))}
 		</nav>
-		<button
-			type="button"
-			class="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 text-primary transition-colors hover:bg-primary/10 md:hidden"
-			aria-label="Abrir menú principal"
-			aria-expanded="false"
-			aria-controls="mobile-menu"
-			data-mobile-menu-toggle
-		>
-			<span class="sr-only">Menú principal</span>
-			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
-			</svg>
-		</button>
-		<a href={getRelativePath('/playground')} class="hidden md:flex items-center justify-center rounded-xl bg-primary px-6 py-2 text-sm font-bold text-background-dark hover:brightness-110 transition-all">
-			Playground
-		</a>
+		<div class="flex items-center gap-2">
+			<div class="hidden md:flex items-center gap-1 rounded-lg border border-primary/20 bg-primary/5 p-1" role="group" aria-label={t('nav.languageLabel')}>
+				<a
+					href={esHref}
+					aria-label={t('nav.switchToSpanish')}
+					aria-current={locale === 'es' ? 'true' : 'false'}
+					class={locale === 'es'
+						? 'flex h-8 w-8 items-center justify-center rounded-md bg-primary/20 text-base'
+						: 'flex h-8 w-8 items-center justify-center rounded-md text-base opacity-70 hover:opacity-100 transition-opacity'}
+				>
+					<span aria-hidden="true">{flagEs}</span>
+				</a>
+				<a
+					href={enHref}
+					aria-label={t('nav.switchToEnglish')}
+					aria-current={locale === 'en' ? 'true' : 'false'}
+					class={locale === 'en'
+						? 'flex h-8 w-8 items-center justify-center rounded-md bg-primary/20 text-base'
+						: 'flex h-8 w-8 items-center justify-center rounded-md text-base opacity-70 hover:opacity-100 transition-opacity'}
+				>
+					<span aria-hidden="true">{flagEn}</span>
+				</a>
+			</div>
+			<a href={getLocalizedRelativePath(locale, '/playground')} class="hidden md:flex items-center justify-center rounded-xl bg-primary px-6 py-2 text-sm font-bold text-background-dark hover:brightness-110 transition-all" aria-label={t('nav.playground')}>
+				🚀
+			</a>
+			<button
+				type="button"
+				class="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 text-primary transition-colors hover:bg-primary/10 md:hidden"
+				aria-label={t('nav.openMenu')}
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+				data-mobile-menu-toggle
+				data-label-open={t('nav.openMenu')}
+				data-label-close={t('nav.closeMenu')}
+			>
+				<span class="sr-only">{t('nav.mainMenu')}</span>
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+				</svg>
+			</button>
+		</div>
 	</div>
 	<nav
 		id="mobile-menu"
@@ -66,11 +115,28 @@ const isLinkActive = (href: string) => {
 					class={isLinkActive(href)
 						? 'rounded-lg bg-primary/10 px-3 py-2 text-sm font-bold text-primary'
 						: 'rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/5 hover:text-primary'}
-					href={getRelativePath(href)}
+					href={getLocalizedRelativePath(locale, href)}
 				>
 					{label}
 				</a>
 			))}
+			<a
+				href={getLocalizedRelativePath(locale, '/playground')}
+				class="rounded-lg px-3 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary/5"
+			>
+				🚀 {t('nav.playground')}
+			</a>
+			<div class="flex items-center gap-2 rounded-lg border border-primary/10 bg-primary/5 px-3 py-2 mt-2">
+				<span class="text-xs uppercase tracking-widest text-slate-500">{t('nav.languageLabel')}</span>
+				<div class="ml-auto flex items-center gap-1">
+					<a href={esHref} aria-label={t('nav.switchToSpanish')} aria-current={locale === 'es' ? 'true' : 'false'} class={locale === 'es' ? 'flex h-8 w-8 items-center justify-center rounded-md bg-primary/20 text-base' : 'flex h-8 w-8 items-center justify-center rounded-md text-base opacity-70'}>
+						<span aria-hidden="true">{flagEs}</span>
+					</a>
+					<a href={enHref} aria-label={t('nav.switchToEnglish')} aria-current={locale === 'en' ? 'true' : 'false'} class={locale === 'en' ? 'flex h-8 w-8 items-center justify-center rounded-md bg-primary/20 text-base' : 'flex h-8 w-8 items-center justify-center rounded-md text-base opacity-70'}>
+						<span aria-hidden="true">{flagEn}</span>
+					</a>
+				</div>
+			</div>
 		</div>
 	</nav>
 </header>
@@ -81,6 +147,9 @@ const isLinkActive = (href: string) => {
 	const transitionDurationMs = 200;
 
 	if (toggleButton && mobileMenu) {
+		const labelOpen = toggleButton.dataset.labelOpen ?? 'Open menu';
+		const labelClose = toggleButton.dataset.labelClose ?? 'Close menu';
+
 		let closeTimeoutId: number | undefined;
 
 		const clearCloseTimeout = () => {
@@ -92,7 +161,7 @@ const isLinkActive = (href: string) => {
 
 		const updateToggleA11y = (isExpanded: boolean) => {
 			toggleButton.setAttribute('aria-expanded', String(isExpanded));
-			toggleButton.setAttribute('aria-label', isExpanded ? 'Cerrar menú principal' : 'Abrir menú principal');
+			toggleButton.setAttribute('aria-label', isExpanded ? labelClose : labelOpen);
 		};
 
 		const closeMenu = (immediate = false) => {
@@ -100,7 +169,7 @@ const isLinkActive = (href: string) => {
 			mobileMenu.classList.remove('is-open');
 			mobileMenu.classList.add('is-closing', 'pointer-events-none');
 			toggleButton.setAttribute('aria-expanded', 'false');
-			toggleButton.setAttribute('aria-label', 'Abrir menú principal');
+			toggleButton.setAttribute('aria-label', labelOpen);
 
 			if (immediate) {
 				mobileMenu.classList.add('hidden');

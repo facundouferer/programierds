@@ -1,5 +1,6 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
+export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
 ---
 
 <Layout title="Subprogramas: Funciones y Procedimientos en C - Programierds">

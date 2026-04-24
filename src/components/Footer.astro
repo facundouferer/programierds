@@ -1,5 +1,19 @@
 ---
 import Icon from './Icon.astro';
+import {
+	DEFAULT_LOCALE,
+	getLocaleFromPathname,
+	isLocale,
+	useTranslations,
+	type Locale,
+} from '../i18n';
+
+const rawLocale = Astro.currentLocale ?? Astro.params?.lang;
+const locale: Locale = isLocale(String(rawLocale))
+	? (rawLocale as Locale)
+	: getLocaleFromPathname(Astro.url.pathname, import.meta.env.BASE_URL);
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-primary/10 bg-background-light dark:bg-background-dark px-4 py-16 lg:px-20">
@@ -11,24 +25,24 @@ import Icon from './Icon.astro';
 			</div>
 			<div class="flex flex-col items-center md:items-end gap-2">
 				<p class="text-sm text-slate-400">
-					Creado por <span class="text-white font-bold">Facundo Uferer</span>
+					{t('footer.createdBy')} <span class="text-white font-bold">Facundo Uferer</span>
 				</p>
-				<p class="text-xs text-slate-500">Senior Full Stack Engineer | AI-Driven Architect | Tech Lead</p>
+				<p class="text-xs text-slate-500">{t('footer.role')}</p>
 				<div class="flex items-center gap-5 mt-2">
-					<a class="text-slate-500 hover:text-primary transition-all" href="https://www.linkedin.com/in/facundouferer" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Facundo Uferer">
+					<a class="text-slate-500 hover:text-primary transition-all" href="https://www.linkedin.com/in/facundouferer" target="_blank" rel="noopener noreferrer" aria-label={t('footer.linkedin')}>
 						<Icon name="linkedin" class="w-5 h-5" />
 					</a>
-					<a class="text-slate-500 hover:text-primary transition-all" href="https://github.com/facundouferer" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Facundo Uferer">
+					<a class="text-slate-500 hover:text-primary transition-all" href="https://github.com/facundouferer" target="_blank" rel="noopener noreferrer" aria-label={t('footer.github')}>
 						<Icon name="github" class="w-5 h-5" />
 					</a>
-					<a class="text-slate-500 hover:text-primary transition-all" href="https://facundouferer.ar" target="_blank" rel="noopener noreferrer" aria-label="Sitio web de Facundo Uferer">
+					<a class="text-slate-500 hover:text-primary transition-all" href="https://facundouferer.ar" target="_blank" rel="noopener noreferrer" aria-label={t('footer.website')}>
 						<Icon name="language" class="w-5 h-5" />
 					</a>
 				</div>
 			</div>
 		</div>
 		<div class="text-center text-slate-500 text-sm">
-			<p>&copy; 2025 programierds. Todos los derechos reservados.</p>
+			<p>&copy; {year} programierds. {t('footer.rights')}</p>
 		</div>
 	</div>
 </footer>

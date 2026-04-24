@@ -7,16 +7,23 @@ import '@fontsource/space-grotesk/600.css';
 import '@fontsource/space-grotesk/700.css';
 import Header from '../components/Header.astro';
 import { getRelativePath } from '../utils/paths';
+import { DEFAULT_LOCALE, isLocale, useTranslations, type Locale } from '../i18n';
 
 interface Props {
 	title?: string;
+	lang?: Locale;
 }
 
-const { title = 'Programierds - Aprende a programar sin que sea una m...' } = Astro.props;
+const raw = Astro.currentLocale ?? Astro.params?.lang ?? DEFAULT_LOCALE;
+const locale: Locale = isLocale(String(raw)) ? (raw as Locale) : DEFAULT_LOCALE;
+const t = useTranslations(locale);
+
+const { title = t('site.title'), lang } = Astro.props;
+const activeLang: Locale = lang ?? locale;
 ---
 
 <!doctype html>
-<html lang="es" class="dark">
+<html lang={activeLang} class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />

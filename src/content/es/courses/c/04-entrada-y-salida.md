@@ -371,9 +371,120 @@ Fijate en este detalle:
 
 Hay un espacio antes de `%c`.
 
-En esta etapa, tomalo como una forma práctica habitual para leer un carácter con más seguridad en ejercicios básicos.
+Y no está puesto porque sí.
 
-No hace falta profundizar más por ahora.
+## Un problema muy común con `scanf` y `%c`
+
+Cuando leemos primero un número y después un carácter, muchas veces pasa esto:
+
+- el programa pide un número
+- escribimos el número y apretamos Enter
+- después el programa pide una letra
+- pero parece que “se saltea” la lectura del carácter
+
+Mirá este ejemplo:
+
+```c
+#include <stdio.h>
+
+int main() {
+    int ruedas;
+    char inicialMarca;
+
+    printf("Ingrese la cantidad de ruedas: ");
+    scanf("%d", &ruedas);
+
+    printf("Ingrese la inicial de la marca: ");
+    scanf("%c", &inicialMarca);
+
+    printf("Ruedas: %d\n", ruedas);
+    printf("Inicial: %c\n", inicialMarca);
+
+    return 0;
+}
+```
+
+A simple vista parece correcto. Pero puede fallar.
+
+## ¿Qué está pasando realmente?
+
+Cuando escribís un número como `4` y después apretás Enter, no solo se ingresa el `4`.
+
+También queda registrado el salto de línea que produce la tecla Enter.
+
+Entonces, después de esto:
+
+```c
+scanf("%d", &ruedas);
+```
+
+el número se guarda en `ruedas`, pero el `\n` del Enter puede quedar en el buffer de entrada.
+
+Luego, cuando hacés esto:
+
+```c
+scanf("%c", &inicialMarca);
+```
+
+`scanf` toma el siguiente carácter disponible.
+
+Y ese siguiente carácter puede ser justamente el salto de línea `\n` que quedó pendiente.
+
+Por eso parece que el programa “se saltea” el prompt, cuando en realidad sí leyó algo: leyó el Enter anterior como carácter válido.
+
+## Solución simple
+
+La solución práctica más común al empezar es escribir un espacio antes de `%c`.
+
+Así:
+
+```c
+scanf(" %c", &inicialMarca);
+```
+
+Ese espacio le dice a `scanf` que ignore cualquier whitespace anterior antes de leer el carácter real.
+
+### ¿Qué significa whitespace?
+
+Significa caracteres en blanco, por ejemplo:
+
+- espacios
+- tabulaciones
+- saltos de línea
+
+Entonces, si quedó un `\n` del Enter anterior, ese espacio hace que `scanf` lo descarte y siga esperando una letra real.
+
+## Ejemplo corregido
+
+```c
+#include <stdio.h>
+
+int main() {
+    int ruedas;
+    char inicialMarca;
+
+    printf("Ingrese la cantidad de ruedas: ");
+    scanf("%d", &ruedas);
+
+    printf("Ingrese la inicial de la marca: ");
+    scanf(" %c", &inicialMarca);
+
+    printf("Ruedas: %d\n", ruedas);
+    printf("Inicial: %c\n", inicialMarca);
+
+    return 0;
+}
+```
+
+## Idea práctica para principiantes
+
+Cuando uses `scanf` para leer un `char`, esta forma es una muy buena costumbre:
+
+```c
+scanf(" %c", &variableChar);
+```
+
+No porque siempre haya un problema, sino porque evita uno de los errores más comunes al empezar.
 
 ## Relación entre tipos y especificadores
 

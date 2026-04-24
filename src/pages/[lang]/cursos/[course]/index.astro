@@ -1,0 +1,84 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import Footer from '../../../../components/Footer.astro';
+import Icon from '../../../../components/Icon.astro';
+import { getCoursesForLocale, getChaptersForCourse } from '../../../../utils/content';
+import { getLocalizedRelativePath } from '../../../../utils/paths';
+import { LOCALES, useTranslations, type Locale } from '../../../../i18n';
+
+export async function getStaticPaths() {
+	const paths = [];
+	for (const lang of LOCALES) {
+		const courses = await getCoursesForLocale(lang);
+		for (const { entry } of courses) {
+			const courseSlug = entry.id.replace('/index', '');
+			const chapters = await getChaptersForCourse(courseSlug, lang);
+			paths.push({
+				params: { lang, course: courseSlug },
+				props: { course: entry, chapters, courseSlug, lang },
+			});
+		}
+	}
+	return paths;
+}
+
+const { course, chapters, courseSlug } = Astro.props;
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+const difficultyLabels: Record<string, string> = {
+	Beginner: t('course.detail.difficulty.beginner'),
+	Intermediate: t('course.detail.difficulty.intermediate'),
+	Advanced: t('course.detail.difficulty.advanced'),
+};
+---
+
+<Layout title={`${course.data.technology} - Programierds`}>
+	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+		<main class="flex-1 px-4 lg:px-20 py-12">
+			<div class="mx-auto max-w-4xl">
+				<a href={getLocalizedRelativePath(lang, '/cursos')} class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8">
+					<Icon name="arrow_back" class="w-4 h-4" />
+					<span class="text-sm font-medium">{t('course.detail.back')}</span>
+				</a>
+
+				<div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-12">
+					<div class="size-20 flex items-center justify-center rounded-2xl bg-primary/10 text-primary">
+						<Icon name={course.data.technology.toLowerCase()} class="w-12 h-12" />
+					</div>
+					<div>
+						<h1 class="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-2">{course.data.technology}</h1>
+						<p class="text-lg text-slate-600 dark:text-slate-400 mb-3">{course.data.description}</p>
+						<div class="flex items-center gap-4">
+							<span class="px-3 py-1 text-xs font-black uppercase tracking-widest bg-primary/10 text-primary rounded-full border border-primary/20">
+								{difficultyLabels[course.data.difficulty]}
+							</span>
+							<span class="text-sm text-slate-500">{chapters.length} {t('courses.card.lessons')}</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex flex-col gap-3">
+					{chapters.map(({ entry: chapter }, index) => {
+						const lessonSlug = chapter.id.replace(courseSlug + '/', '');
+						return (
+							<a
+								href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}/${lessonSlug}`)}
+								class="group flex items-center gap-4 rounded-xl border border-primary/10 bg-background-light dark:bg-background-dark p-5 hover:border-primary/50 transition-all hover:shadow-[0_0_20px_-5px_rgba(13,242,89,0.1)]"
+							>
+								<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-sm">
+									{String(index + 1).padStart(2, '0')}
+								</div>
+								<span class="text-lg font-medium text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+									{chapter.data.title}
+								</span>
+								<Icon name="arrow_forward" class="w-5 h-5 text-slate-500 group-hover:text-primary transition-colors ml-auto" />
+							</a>
+						);
+					})}
+				</div>
+			</div>
+		</main>
+		<Footer />
+	</div>
+</Layout>

@@ -1,0 +1,101 @@
+---
+import { render } from 'astro:content';
+
+import Footer from '../../../components/Footer.astro';
+import CodeOrderingRunner from '../../../components/test/CodeOrderingRunner.astro';
+import TestRunner from '../../../components/test/TestRunner.astro';
+import Layout from '../../../layouts/Layout.astro';
+import { getTestsForLocale } from '../../../utils/content';
+import { getLocalizedRelativePath } from '../../../utils/paths';
+import { assertUniqueTestSlugs, formatDifficultyLabel } from '../../../utils/tests';
+import { LOCALES, useTranslations, type Locale } from '../../../i18n';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const lang of LOCALES) {
+    const localized = await getTestsForLocale(lang);
+    const entries = localized.map(({ entry }) => entry);
+    assertUniqueTestSlugs(entries);
+    for (const { entry, fallbackUsed } of localized) {
+      paths.push({
+        params: { lang, slug: entry.data.slug },
+        props: { testEntry: entry, fallbackUsed },
+      });
+    }
+  }
+  return paths;
+}
+
+const { testEntry, fallbackUsed } = Astro.props;
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+const { Content } = await render(testEntry);
+const difficultyLabel = formatDifficultyLabel(testEntry.data.difficulty);
+const isCodeOrdering = testEntry.data.kind === 'code-ordering';
+const countValue = isCodeOrdering
+  ? testEntry.data.algorithm?.lines.length ?? 0
+  : testEntry.data.questions?.length ?? 0;
+const countLabel = isCodeOrdering ? t('tests.card.lines') : t('tests.card.questions');
+---
+
+<Layout title={`${testEntry.data.title} - Programierds`}>
+  <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <main class="flex-1 px-4 py-12 lg:px-20 lg:py-16">
+      <div class="mx-auto flex max-w-6xl flex-col gap-8">
+        <a
+          class="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+          href={getLocalizedRelativePath(lang, '/test')}
+        >
+          <span aria-hidden="true">←</span>
+          {t('tests.index.title')}
+        </a>
+
+        {fallbackUsed && lang === 'en' && (
+          <div class="rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-200">
+            {t('lesson.untranslatedBanner')}
+          </div>
+        )}
+
+        <section class="overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary/10 via-transparent to-accent-blue/10 p-6 lg:p-10">
+          <div class="flex flex-wrap gap-3 text-xs font-black uppercase tracking-[0.22em]">
+            <span class="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">{testEntry.data.category}</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-500 dark:text-slate-300">{difficultyLabel}</span>
+            {testEntry.data.timeEstimate && (
+              <span class="rounded-full border border-accent-blue/20 bg-accent-blue/10 px-4 py-2 text-accent-blue">
+                {testEntry.data.timeEstimate} {t('tests.card.minutes')}
+              </span>
+            )}
+          </div>
+
+          <div class="mt-6 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+            <div>
+              <h1 class="text-4xl font-black tracking-tight text-slate-900 dark:text-white lg:text-6xl">{testEntry.data.title}</h1>
+              <p class="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">{testEntry.data.description}</p>
+            </div>
+
+            <div class="grid gap-3 rounded-[1.5rem] border border-primary/10 bg-background-light/80 p-5 dark:bg-background-dark/70">
+              <div>
+                <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{countLabel}</p>
+                <p class="mt-2 text-3xl font-black text-slate-900 dark:text-white">{countValue}</p>
+              </div>
+            </div>
+          </div>
+
+          {testEntry.body && (
+            <div class="test-intro prose prose-slate mt-8 max-w-none rounded-[1.5rem] border border-primary/10 bg-background-light/60 p-6 dark:prose-invert dark:bg-background-dark/70">
+              <Content />
+            </div>
+          )}
+        </section>
+
+        {isCodeOrdering ? (
+          <CodeOrderingRunner test={testEntry.data} />
+        ) : (
+          <TestRunner test={testEntry.data} />
+        )}
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
