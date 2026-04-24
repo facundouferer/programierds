@@ -1,10 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
 ---
 
-<Layout title="Arreglos en C - Programierds">
+<Layout title={lang === 'en' ? 'Arrays in C' : 'Arreglos en C'}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 
@@ -236,18 +238,18 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		<main class="arr-shell">
 			<section class="arr-hero">
 				<div class="arr-hero-copy">
-					<span class="arr-badge">c / arreglos / matrices</span>
-					<h1 class="arr-title">Arreglos unidimensionales y multidimensionales en C</h1>
-					<p class="arr-sub mt-4">Esta presentación está pensada para alguien que recién empieza. Vamos desde el problema de tener muchas variables sueltas hasta entender por qué un arreglo organiza mejor los datos y cómo una matriz agrega filas y columnas.</p>
+					<span class="arr-badge">{lang === 'en' ? 'c / arrays / matrices' : 'c / arreglos / matrices'}</span>
+					<h1 class="arr-title">{lang === 'en' ? 'One-dimensional and multidimensional arrays in C' : 'Arreglos unidimensionales y multidimensionales en C'}</h1>
+					<p class="arr-sub mt-4">{lang === 'en' ? 'This presentation is designed for someone just starting out. We go from the problem of having many separate variables to understanding why an array organizes data better and how a matrix adds rows and columns.' : 'Esta presentación está pensada para alguien que recién empieza. Vamos desde el problema de tener muchas variables sueltas hasta entender por qué un arreglo organiza mejor los datos y cómo una matriz agrega filas y columnas.'}</p>
 					<div class="arr-kpis">
-						<div class="arr-kpi"><strong>1 nombre</strong><span>muchos datos del mismo tipo</span></div>
-						<div class="arr-kpi"><strong>índice 0</strong><span>siempre se arranca desde cero</span></div>
-						<div class="arr-kpi"><strong>2 índices</strong><span>fila y columna en matrices</span></div>
+						<div class="arr-kpi"><strong>{lang === 'en' ? '1 name' : '1 nombre'}</strong><span>{lang === 'en' ? 'many data of the same type' : 'muchos datos del mismo tipo'}</span></div>
+						<div class="arr-kpi"><strong>{lang === 'en' ? 'index 0' : 'índice 0'}</strong><span>{lang === 'en' ? 'always starts from zero' : 'siempre se arranca desde cero'}</span></div>
+						<div class="arr-kpi"><strong>{lang === 'en' ? '2 indices' : '2 índices'}</strong><span>{lang === 'en' ? 'row and column in matrices' : 'fila y columna en matrices'}</span></div>
 					</div>
 				</div>
 				<div class="arr-hero-visual">
 					<div class="arr-visual-box">
-						<div class="arr-memory-title">Memoria conceptual de un arreglo: <code>int notas[5] = &#123;8, 9, 6, 10, 7&#125;;</code></div>
+						<div class="arr-memory-title">{lang === 'en' ? 'Memory concept of an array:' : 'Memoria conceptual de un arreglo:'} <code>int notas[5] = &#123;8, 9, 6, 10, 7&#125;;</code></div>
 						<div class="arr-cells" id="hero-array">
 							<div class="arr-cell active"><span class="arr-index">notas[0]</span><div class="arr-value">8</div></div>
 							<div class="arr-cell"><span class="arr-index">notas[1]</span><div class="arr-value">9</div></div>
@@ -260,29 +262,29 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">1. ¿Por qué existen los arreglos?</h2>
-				<p class="arr-section-sub">Porque tener muchas variables separadas es un caos. Un arreglo te permite guardar varios valores del mismo tipo bajo un mismo nombre y acceder a cada uno usando su posición.</p>
+				<h2 class="arr-section-title">1. {lang === 'en' ? 'Why do arrays exist?' : '¿Por qué existen los arreglos?'}</h2>
+				<p class="arr-section-sub">{lang === 'en' ? 'Because having many separate variables is chaos. An array lets you store several values of the same type under a single name and access each one using its position.' : 'Porque tener muchas variables separadas es un caos. Un arreglo te permite guardar varios valores del mismo tipo bajo un mismo nombre y acceder a cada uno usando su posición.'}</p>
 				<div class="arr-grid">
 					<article class="arr-card span-6">
-						<h3>Mal enfoque cuando hay muchos datos</h3>
+						<h3>{lang === 'en' ? 'Bad approach with lots of data' : 'Mal enfoque cuando hay muchos datos'}</h3>
 						<div class="arr-code"><span class="tp">int</span> nota1;<br /><span class="tp">int</span> nota2;<br /><span class="tp">int</span> nota3;<br /><span class="tp">int</span> nota4;<br /><span class="tp">int</span> nota5;</div>
-						<p class="mt-3">Esto se vuelve repetitivo, difícil de mantener y después cuesta muchísimo recorrer o procesar la información.</p>
+						<p class="mt-3">{lang === 'en' ? 'This becomes repetitive, hard to maintain, and later it is very difficult to traverse or process the information.' : 'Esto se vuelve repetitivo, difícil de mantener y después cuesta muchísimo recorrer o procesar la información.'}</p>
 					</article>
 					<article class="arr-card span-6">
-						<h3>Mejor enfoque con arreglo</h3>
+						<h3>{lang === 'en' ? 'Better approach with array' : 'Mejor enfoque con arreglo'}</h3>
 						<div class="arr-code"><span class="tp">int</span> notas[<span class="nu">5</span>];</div>
 						<ul class="mt-3">
-							<li>Un solo nombre: <code>notas</code>.</li>
-							<li>Todos los elementos son del mismo tipo.</li>
-							<li>Cada valor vive en una posición: <code>notas[0]</code>, <code>notas[1]</code>, etc.</li>
+							<li>{lang === 'en' ? 'Single name:' : 'Un solo nombre:'} <code>notas</code>.</li>
+							<li>{lang === 'en' ? 'All elements are the same type.' : 'Todos los elementos son del mismo tipo.'}</li>
+							<li>{lang === 'en' ? 'Each value lives at a position:' : 'Cada valor vive en una posición:'} <code>notas[0]</code>, <code>notas[1]</code>, {lang === 'en' ? 'etc.' : 'etc.'}</li>
 						</ul>
 					</article>
 				</div>
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">2. Arreglo unidimensional: una fila de casilleros</h2>
-				<p class="arr-section-sub">Un arreglo unidimensional se puede pensar como una sola fila. Tiene varias posiciones, pero una sola dimensión. Lo importante es entender que el índice arranca en <strong>0</strong>.</p>
+				<h2 class="arr-section-title">2. {lang === 'en' ? 'One-dimensional array: a row of lockers' : 'Arreglo unidimensional: una fila de casilleros'}</h2>
+				<p class="arr-section-sub">{lang === 'en' ? 'A one-dimensional array can be thought of as a single row. It has several positions but only one dimension. The important thing is to understand that the index starts at <strong>0</strong>.' : 'Un arreglo unidimensional se puede pensar como una sola fila. Tiene varias posiciones, pero una sola dimensión. Lo importante es entender que el índice arranca en <strong>0</strong>.'}</p>
 				<div class="arr-grid">
 					<article class="arr-card span-7">
 						<div class="arr-code">
@@ -292,13 +294,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 <br /><span class="tp">printf</span>(<span class="st">"%d\n"</span>, numeros[<span class="nu">2</span>]);
 						</div>
 						<ul class="mt-3">
-							<li><code>numeros[0]</code> vale 10.</li>
-							<li><code>numeros[2]</code> vale 30.</li>
-							<li>Si el arreglo tiene 5 elementos, el último índice válido es 4.</li>
+							<li><code>numeros[0]</code> {lang === 'en' ? 'is' : 'vale'} 10.</li>
+							<li><code>numeros[2]</code> {lang === 'en' ? 'is' : 'vale'} 30.</li>
+							<li>{lang === 'en' ? 'If the array has 5 elements, the last valid index is 4.' : 'Si el arreglo tiene 5 elementos, el último índice válido es 4.'}</li>
 						</ul>
 					</article>
 					<article class="arr-card span-5">
-						<h3>Idea mental correcta</h3>
+						<h3>{lang === 'en' ? 'Correct mental model' : 'Idea mental correcta'}</h3>
 						<div class="arr-cells">
 							<div class="arr-cell active"><span class="arr-index">0</span><div class="arr-value">10</div></div>
 							<div class="arr-cell"><span class="arr-index">1</span><div class="arr-value">20</div></div>
@@ -306,20 +308,20 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<div class="arr-cell"><span class="arr-index">3</span><div class="arr-value">40</div></div>
 							<div class="arr-cell"><span class="arr-index">4</span><div class="arr-value">50</div></div>
 						</div>
-						<p class="mt-3">No pienses “5 valores → último índice 5”. Eso es un error clásico. Pensá así: <strong>cantidad = 5</strong>, <strong>último índice = 4</strong>.</p>
+						<p class="mt-3">{lang === 'en' ? 'Don\'t think "5 values → last index 5". That\'s a classic mistake. Think like this: <strong>count = 5</strong>, <strong>last index = 4</strong>.' : 'No pienses "5 valores → último índice 5". Eso es un error clásico. Pensá así: <strong>cantidad = 5</strong>, <strong>último índice = 4</strong>.'}</p>
 					</article>
 				</div>
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">3. Paso a paso: cargar y leer un arreglo</h2>
-				<p class="arr-section-sub">Acá podés ver cómo se llena un arreglo con un ciclo. Fijate que no escribimos una línea por cada posición: dejamos que el índice haga el trabajo repetitivo.</p>
+				<h2 class="arr-section-title">3. {lang === 'en' ? 'Step by step: load and read an array' : 'Paso a paso: cargar y leer un arreglo'}</h2>
+				<p class="arr-section-sub">{lang === 'en' ? 'Here you can see how an array is filled with a loop. Notice that we don\'t write one line per position: we let the index do the repetitive work.' : 'Acá podés ver cómo se llena un arreglo con un ciclo. Fijate que no escribimos una línea por cada posición: dejamos que el índice haga el trabajo repetitivo.'}</p>
 				<div class="arr-grid">
 					<article class="arr-card span-7">
 						<div class="arr-stepper">
 							<div class="arr-stepper-head">
-								<strong>Código guiado</strong>
-								<span class="arr-badge" id="arr-line-badge">Línea activa: 1</span>
+								<strong>{lang === 'en' ? 'Guided code' : 'Código guiado'}</strong>
+								<span class="arr-badge" id="arr-line-badge">{lang === 'en' ? 'Active line: 1' : 'Línea activa: 1'}</span>
 							</div>
 							<div class="arr-code">
 <div data-line="1"><span class="tp">int</span> numeros[<span class="nu">3</span>];</div>
@@ -329,18 +331,18 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 <div data-line="5">&#125;</div>
 <div data-line="6"><span class="tp">printf</span>(<span class="st">"%d %d %d\n"</span>, numeros[<span class="nu">0</span>], numeros[<span class="nu">1</span>], numeros[<span class="nu">2</span>]);</div>
 							</div>
-							<div class="arr-stepper-copy" id="arr-step-copy"><strong>Paso 1:</strong> Se reserva espacio para 3 enteros.</div>
+							<div class="arr-stepper-copy" id="arr-step-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'Space is reserved for 3 integers.' : 'Se reserva espacio para 3 enteros.'}</div>
 							<div class="arr-track"><div class="arr-fill" id="arr-step-fill"></div></div>
 							<div class="arr-controls">
-								<button class="arr-btn" id="arr-prev" type="button">⬅ Retroceder</button>
-								<button class="arr-btn" id="arr-next" type="button">Avanzar ➡</button>
-								<button class="arr-btn" id="arr-auto" type="button">Auto-play ▶</button>
-								<span class="arr-badge" id="arr-step-badge">Paso 1 / 6</span>
+								<button class="arr-btn" id="arr-prev" type="button">⬅ {lang === 'en' ? 'Back' : 'Retroceder'}</button>
+								<button class="arr-btn" id="arr-next" type="button">{lang === 'en' ? 'Forward' : 'Avanzar'} ➡</button>
+								<button class="arr-btn" id="arr-auto" type="button">{lang === 'en' ? 'Auto-play ▶' : 'Auto-play ▶'}</button>
+								<span class="arr-badge" id="arr-step-badge">{lang === 'en' ? 'Step 1 / 6' : 'Paso 1 / 6'}</span>
 							</div>
 						</div>
 					</article>
 					<article class="arr-card span-5">
-						<h3>Estado del arreglo</h3>
+						<h3>{lang === 'en' ? 'Array state' : 'Estado del arreglo'}</h3>
 						<div class="arr-cells" id="arr-dynamic-cells">
 							<div class="arr-cell"><span class="arr-index">numeros[0]</span><div class="arr-value" data-value="0">-</div></div>
 							<div class="arr-cell"><span class="arr-index">numeros[1]</span><div class="arr-value" data-value="1">-</div></div>
@@ -355,15 +357,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">4. Arreglo bidimensional: una tabla con filas y columnas</h2>
-				<p class="arr-section-sub">Cuando ya no alcanza con una sola fila, aparece la matriz. Una matriz es un arreglo con dos dimensiones. Para acceder a sus datos necesitás dos índices: uno para la fila y otro para la columna.</p>
+				<h2 class="arr-section-title">4. {lang === 'en' ? 'Two-dimensional array: a table with rows and columns' : 'Arreglo bidimensional: una tabla con filas y columnas'}</h2>
+				<p class="arr-section-sub">{lang === 'en' ? 'When one row is not enough, the matrix appears. A matrix is an array with two dimensions. To access its data you need two indices: one for the row and one for the column.' : 'Cuando ya no alcanza con una sola fila, aparece la matriz. Una matriz es un arreglo con dos dimensiones. Para acceder a sus datos necesitás dos índices: uno para la fila y otro para la columna.'}</p>
 				<div class="arr-grid">
 					<article class="arr-card span-6">
 						<div class="arr-code"><span class="tp">int</span> matriz[<span class="nu">2</span>][<span class="nu">3</span>] = &#123;<br />&nbsp;&nbsp;&#123;<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>&#125;,<br />&nbsp;&nbsp;&#123;<span class="nu">4</span>, <span class="nu">5</span>, <span class="nu">6</span>&#125;<br />&#125;;<br /><br /><span class="tp">printf</span>(<span class="st">"%d\n"</span>, matriz[<span class="nu">1</span>][<span class="nu">2</span>]);</div>
-						<p class="mt-3">Ese acceso devuelve <strong>6</strong>, porque fila 1 es la segunda fila y columna 2 es la tercera columna.</p>
+						<p class="mt-3">{lang === 'en' ? 'That access returns <strong>6</strong>, because row 1 is the second row and column 2 is the third column.' : 'Ese acceso devuelve <strong>6</strong>, porque fila 1 es la segunda fila y columna 2 es la tercera columna.'}</p>
 					</article>
 					<article class="arr-card span-6">
-						<h3>Visualización de la matriz</h3>
+						<h3>{lang === 'en' ? 'Matrix visualization' : 'Visualización de la matriz'}</h3>
 						<div class="arr-matrix" id="arr-matrix-grid">
 							<div class="arr-matrix-cell"><span class="arr-mini-label">[0][0]</span><span class="arr-mini-value">1</span></div>
 							<div class="arr-matrix-cell"><span class="arr-mini-label">[0][1]</span><span class="arr-mini-value">2</span></div>
@@ -372,77 +374,77 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 							<div class="arr-matrix-cell"><span class="arr-mini-label">[1][1]</span><span class="arr-mini-value">5</span></div>
 							<div class="arr-matrix-cell active"><span class="arr-mini-label">[1][2]</span><span class="arr-mini-value">6</span></div>
 						</div>
-						<p class="mt-3">Pensala como una tabla: primero elegís la fila, después la columna. Si mezclás ese orden, te perdés.</p>
+						<p class="mt-3">{lang === 'en' ? 'Think of it as a table: first you choose the row, then the column. If you mix up that order, you get lost.' : 'Pensala como una tabla: primero elegís la fila, después la columna. Si mezclás ese orden, te perdés.'}</p>
 					</article>
 				</div>
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">5. ¿Cuándo usar un arreglo y cuándo una matriz?</h2>
+				<h2 class="arr-section-title">5. {lang === 'en' ? 'When to use an array and when a matrix?' : '¿Cuándo usar un arreglo y cuándo una matriz?'}</h2>
 				<div class="arr-grid">
 					<article class="arr-card span-4">
-						<h3>Arreglo simple</h3>
+						<h3>{lang === 'en' ? 'Simple array' : 'Arreglo simple'}</h3>
 						<ul>
-							<li>Lista de edades.</li>
-							<li>Notas de un alumno.</li>
-							<li>Temperaturas de una semana.</li>
+							<li>{lang === 'en' ? 'List of ages.' : 'Lista de edades.'}</li>
+							<li>{lang === 'en' ? 'Student grades.' : 'Notas de un alumno.'}</li>
+							<li>{lang === 'en' ? 'Week temperatures.' : 'Temperaturas de una semana.'}</li>
 						</ul>
 					</article>
 					<article class="arr-card span-4">
-						<h3>Matriz</h3>
+						<h3>{lang === 'en' ? 'Matrix' : 'Matriz'}</h3>
 						<ul>
-							<li>Notas de varios alumnos en varias materias.</li>
-							<li>Tablero de juego.</li>
-							<li>Asientos en filas y columnas.</li>
+							<li>{lang === 'en' ? 'Grades of several students in several subjects.' : 'Notas de varios alumnos en varias materias.'}</li>
+							<li>{lang === 'en' ? 'Game board.' : 'Tablero de juego.'}</li>
+							<li>{lang === 'en' ? 'Seats in rows and columns.' : 'Asientos en filas y columnas.'}</li>
 						</ul>
 					</article>
 					<article class="arr-card span-4">
-						<h3>Regla simple</h3>
-						<p>Si los datos se pueden imaginar como una sola lista, usás un arreglo unidimensional. Si los datos se organizan como una tabla, usás una matriz.</p>
+						<h3>{lang === 'en' ? 'Simple rule' : 'Regla simple'}</h3>
+						<p>{lang === 'en' ? 'If the data can be imagined as a single list, use a one-dimensional array. If the data is organized like a table, use a matrix.' : 'Si los datos se pueden imaginar como una sola lista, usás un arreglo unidimensional. Si los datos se organizan como una tabla, usás una matriz.'}</p>
 					</article>
 				</div>
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">6. Errores típicos de principiante</h2>
+				<h2 class="arr-section-title">6. {lang === 'en' ? 'Typical beginner mistakes' : 'Errores típicos de principiante'}</h2>
 				<div class="arr-grid">
 					<article class="arr-card span-6">
 						<div class="arr-warning">
-							<strong>Error 1:</strong> pensar que si un arreglo tiene 5 elementos, el último índice es 5. NO. El último índice es 4.
+							<strong>{lang === 'en' ? 'Error 1:' : 'Error 1:'}</strong> {lang === 'en' ? 'thinking that if an array has 5 elements, the last index is 5. NO. The last index is 4.' : 'pensar que si un arreglo tiene 5 elementos, el último índice es 5. NO. El último índice es 4.'}
 						</div>
 						<div class="arr-warning mt-4">
-							<strong>Error 2:</strong> usar una posición que no existe, por ejemplo <code>numeros[5]</code> en un arreglo de 5 elementos.
+							<strong>{lang === 'en' ? 'Error 2:' : 'Error 2:'}</strong> {lang === 'en' ? 'using a position that does not exist, for example' : 'usar una posición que no existe, por ejemplo'} <code>numeros[5]</code> {lang === 'en' ? 'in an array of 5 elements.' : 'en un arreglo de 5 elementos.'}
 						</div>
 					</article>
 					<article class="arr-card span-6">
 						<div class="arr-warning">
-							<strong>Error 3:</strong> creer que una matriz se accede con un solo índice. Necesitás dos: fila y columna.
+							<strong>{lang === 'en' ? 'Error 3:' : 'Error 3:'}</strong> {lang === 'en' ? 'believing that a matrix is accessed with a single index. You need two: row and column.' : 'creer que una matriz se accede con un solo índice. Necesitás dos: fila y columna.'}
 						</div>
 						<div class="arr-warning mt-4">
-							<strong>Error 4:</strong> no entender que todos los elementos del arreglo deben ser del mismo tipo.
+							<strong>{lang === 'en' ? 'Error 4:' : 'Error 4:'}</strong> {lang === 'en' ? 'not understanding that all array elements must be of the same type.' : 'no entender que todos los elementos del arreglo deben ser del mismo tipo.'}
 						</div>
 					</article>
 				</div>
 			</section>
 
 			<section class="arr-section" data-reveal>
-				<h2 class="arr-section-title">7. Idea final</h2>
+				<h2 class="arr-section-title">7. {lang === 'en' ? 'Final idea' : 'Idea final'}</h2>
 				<div class="arr-grid">
 					<article class="arr-card span-8">
-						<p>Un arreglo en C no es solo “muchos datos juntos”. Es una forma ordenada de representar información relacionada. Cuando entendés que cada dato tiene una posición y que esa posición se accede por índice, empezás a pensar mejor los problemas.</p>
-						<p class="mt-4">Y cuando aparece una segunda dimensión, la idea no cambia: simplemente pasás de una lista a una tabla. Nada de magia. Solo organización de datos.</p>
+						<p>{lang === 'en' ? 'An array in C is not just "many data together". It is an orderly way of representing related information. When you understand that each data has a position and that position is accessed by index, you start thinking about problems better.' : 'Un arreglo en C no es solo "muchos datos juntos". Es una forma ordenada de representar información relacionada. Cuando entendés que cada dato tiene una posición y que esa posición se accede por índice, empezás a pensar mejor los problemas.'}</p>
+						<p class="mt-4">{lang === 'en' ? 'And when a second dimension appears, the idea does not change: you simply go from a list to a table. No magic. Just data organization.' : 'Y cuando aparece una segunda dimensión, la idea no cambia: simplemente pasás de una lista a una tabla. Nada de magia. Solo organización de datos.'}</p>
 					</article>
 					<article class="arr-card span-4">
-						<h3>Qué deberías llevarte</h3>
+						<h3>{lang === 'en' ? 'What you should take away' : 'Qué deberías llevarte'}</h3>
 						<ul>
-							<li>Un arreglo guarda varios datos del mismo tipo.</li>
-							<li>El índice arranca en 0.</li>
-							<li>Una matriz usa fila y columna.</li>
-							<li>Sin entender índices, después todo se complica.</li>
+							<li>{lang === 'en' ? 'An array stores several data of the same type.' : 'Un arreglo guarda varios datos del mismo tipo.'}</li>
+							<li>{lang === 'en' ? 'The index starts at 0.' : 'El índice arranca en 0.'}</li>
+							<li>{lang === 'en' ? 'A matrix uses row and column.' : 'Una matriz usa fila y columna.'}</li>
+							<li>{lang === 'en' ? 'Without understanding indexes, everything later becomes complicated.' : 'Sin entender índices, después todo se complica.'}</li>
 						</ul>
 					</article>
 				</div>
-				<a class="arr-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+				<a class="arr-back" href={getRelativePath('/presentaciones')}>← {lang === 'en' ? 'Back to presentations' : 'Volver a presentaciones'}</a>
 			</section>
 		</main>
 	</div>
@@ -450,7 +452,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<script>
 		type ArrayStep = {
 			line: number;
-			message: string;
+			message: { es: string; en: string };
 			values: string[];
 			logs: string[];
 		};
@@ -481,13 +483,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		updateProgress();
 
 		const steps: ArrayStep[] = [
-			{ line: 1, message: 'Se reserva espacio para 3 enteros. Todavía no mostramos valores cargados.', values: ['-', '-', '-'], logs: [] },
-			{ line: 2, message: 'Se declara la variable i, que nos va a servir como índice del arreglo.', values: ['-', '-', '-'], logs: [] },
-			{ line: 3, message: 'El ciclo empieza con i = 0. Vamos a llenar la primera posición.', values: ['-', '-', '-'], logs: [] },
-			{ line: 4, message: 'Se guarda i + 1 en numeros[i]. Como i vale 0, se guarda 1 en numeros[0].', values: ['1', '-', '-'], logs: [] },
-			{ line: 4, message: 'Siguiente vuelta: ahora i vale 1, entonces se guarda 2 en numeros[1].', values: ['1', '2', '-'], logs: [] },
-			{ line: 4, message: 'Tercera vuelta: ahora i vale 2, entonces se guarda 3 en numeros[2].', values: ['1', '2', '3'], logs: [] },
-			{ line: 6, message: 'El arreglo ya quedó cargado y ahora se imprime completo.', values: ['1', '2', '3'], logs: ['1 2 3'] },
+			{ line: 1, message: { es: 'Se reserva espacio para 3 enteros. Todavía no mostramos valores cargados.', en: 'Space is reserved for 3 integers. We haven\'t shown loaded values yet.' }, values: ['-', '-', '-'], logs: [] },
+			{ line: 2, message: { es: 'Se declara la variable i, que nos va a servir como índice del arreglo.', en: 'The variable i is declared, which will serve as the array index.' }, values: ['-', '-', '-'], logs: [] },
+			{ line: 3, message: { es: 'El ciclo empieza con i = 0. Vamos a llenar la primera posición.', en: 'The loop starts with i = 0. We are going to fill the first position.' }, values: ['-', '-', '-'], logs: [] },
+			{ line: 4, message: { es: 'Se guarda i + 1 en numeros[i]. Como i vale 0, se guarda 1 en numeros[0].', en: 'i + 1 is saved in numeros[i]. Since i is 0, 1 is saved in numeros[0].' }, values: ['1', '-', '-'], logs: [] },
+			{ line: 4, message: { es: 'Siguiente vuelta: ahora i vale 1, entonces se guarda 2 en numeros[1].', en: 'Next iteration: now i is 1, so 2 is saved in numeros[1].' }, values: ['1', '2', '-'], logs: [] },
+			{ line: 4, message: { es: 'Tercera vuelta: ahora i vale 2, entonces se guarda 3 en numeros[2].', en: 'Third iteration: now i is 2, so 3 is saved in numeros[2].' }, values: ['1', '2', '3'], logs: [] },
+			{ line: 6, message: { es: 'El arreglo ya quedó cargado y ahora se imprime completo.', en: 'The array is now loaded and is printed in full.' }, values: ['1', '2', '3'], logs: ['1 2 3'] },
 		];
 
 		let currentStep = 0;
@@ -528,10 +530,11 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		}
 
 		function renderStep(): void {
+			const isEnglish = document.documentElement.lang === 'en';
 			const state = steps[currentStep];
-			lineBadge.textContent = `Línea activa: ${state.line}`;
-			stepBadge.textContent = `Paso ${currentStep + 1} / ${steps.length}`;
-			copy.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${state.message}`;
+			lineBadge.textContent = `${isEnglish ? 'Active line' : 'Línea activa'}: ${state.line}`;
+			stepBadge.textContent = `${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1} / ${steps.length}`;
+			copy.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${state.message[isEnglish ? 'en' : 'es']}`;
 			fill.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
 			valueNodes.forEach((node, index) => {
 				node.textContent = state.values[index];

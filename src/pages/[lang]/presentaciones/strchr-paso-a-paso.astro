@@ -1,10 +1,13 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
 ---
 
-<Layout title="strchr en C paso a paso - Programierds">
+<Layout title={lang === 'en' ? "strchr in C step by step - Programierds" : "strchr en C paso a paso - Programierds"}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 		.sc-screen {
@@ -68,14 +71,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<div class="sc-screen">
 		<main class="sc-shell">
 			<header class="mb-6">
-				<p class="sc-badge">strings / punteros / strchr</p>
-				<h1 class="sc-title mt-3"><code>strchr</code> en C, paso a paso</h1>
-				<p class="sc-sub mt-3">Esta presentación muestra cómo <code>strchr()</code> recorre <code>palabra</code>, devuelve un puntero al caracter encontrado y cómo se calcula la posición con <code>ptr - palabra</code>.</p>
+				<p class="sc-badge">{lang === 'en' ? 'strings / pointers / strchr' : 'strings / punteros / strchr'}</p>
+				<h1 class="sc-title mt-3"><code>strchr</code> {lang === 'en' ? 'in C, step by step' : 'en C, paso a paso'}</h1>
+				<p class="sc-sub mt-3">{lang === 'en' ? 'This presentation shows how strchr() traverses palabra, returns a pointer to the found character, and how the position is calculated with ptr - palabra.' : 'Esta presentacion muestra como strchr() recorre palabra, devuelve un puntero al caracter encontrado y como se calcula la posicion con ptr - palabra.'}</p>
 			</header>
 
 			<section class="sc-grid" aria-live="polite">
 				<article class="sc-card sc-code">
-					<div class="sc-head"><strong>1) Código</strong><span class="sc-badge" id="sc-line">Línea activa: 1</span></div>
+					<div class="sc-head"><strong>1) {lang === 'en' ? 'Code' : 'Codigo'}</strong><span class="sc-badge" id="sc-line">{lang === 'en' ? 'Active line: 1' : 'Linea activa: 1'}</span></div>
 					<div class="sc-panel">
 						<div class="sc-row" data-line="1"><span class="sc-ln">1</span><span>char palabra[] = "computadora";</span></div>
 						<div class="sc-row" data-line="2"><span class="sc-ln">2</span><span>char *ptr = strchr(palabra, 'u');</span></div>
@@ -86,43 +89,43 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="sc-row" data-line="7"><span class="sc-ln">7</span><span>&#125;</span></div>
 						<div class="sc-row" data-line="8"><span class="sc-ln">8</span><span>return 0;</span></div>
 					</div>
-					<div class="sc-copy" id="sc-copy"><strong>Paso 1:</strong> Se crea el arreglo <code>palabra</code> con el texto <code>"computadora"</code>.</div>
+					<div class="sc-copy" id="sc-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'The array palabra is created with the text' : 'Se crea el arreglo palabra con el texto'} <code>"computadora"</code>.</div>
 					<div class="sc-track"><div class="sc-fill" id="sc-fill"></div></div>
 					<div class="sc-controls">
-						<button class="sc-btn" id="sc-prev" type="button">⬅ Retroceder</button>
-						<button class="sc-btn" id="sc-next" type="button">Avanzar ➡</button>
-						<button class="sc-btn" id="sc-auto" type="button">Auto-play ▶</button>
-						<select class="sc-select" id="sc-level" aria-label="Nivel de detalle">
-							<option value="basico" selected>Basico</option>
-							<option value="intermedio">Intermedio</option>
+						<button class="sc-btn" id="sc-prev" type="button">{lang === 'en' ? '← Back' : '⬅ Retroceder'}</button>
+						<button class="sc-btn" id="sc-next" type="button">{lang === 'en' ? 'Next →' : 'Avanzar ➡'}</button>
+						<button class="sc-btn" id="sc-auto" type="button">{lang === 'en' ? 'Auto-play ▶' : 'Auto-play ▶'}</button>
+						<select class="sc-select" id="sc-level" aria-label={lang === 'en' ? 'Detail level' : 'Nivel de detalle'}>
+							<option value="basico" selected>{lang === 'en' ? 'Basic' : 'Basico'}</option>
+							<option value="intermedio">{lang === 'en' ? 'Intermediate' : 'Intermedio'}</option>
 						</select>
-						<span class="sc-badge" id="sc-step">Paso 1 / 9</span>
+						<span class="sc-badge" id="sc-step">{lang === 'en' ? 'Step 1 / 9' : 'Paso 1 / 9'}</span>
 					</div>
 				</article>
 
 				<article class="sc-card sc-state">
-					<div class="sc-head"><strong>2) Estado</strong></div>
+					<div class="sc-head"><strong>2) {lang === 'en' ? 'State' : 'Estado'}</strong></div>
 					<div class="sc-state-item"><span>palabra</span><span class="sc-value" id="sc-palabra">computadora</span></div>
 					<div class="sc-state-item"><span>buscado</span><span class="sc-value" id="sc-char">'u'</span></div>
 					<div class="sc-state-item"><span>ptr</span><span class="sc-value" id="sc-ptr">NULL</span></div>
 					<div class="sc-state-item"><span>*ptr</span><span class="sc-value" id="sc-deref">-</span></div>
 					<div class="sc-state-item"><span>ptr - palabra</span><span class="sc-value" id="sc-pos">-</span></div>
-					<div class="sc-state-item"><span>condición</span><span class="sc-value" id="sc-cond">-</span></div>
+					<div class="sc-state-item"><span>condicion</span><span class="sc-value" id="sc-cond">-</span></div>
 				</article>
 
 				<article class="sc-card sc-memory">
-					<div class="sc-head"><strong>3) Memoria</strong></div>
+					<div class="sc-head"><strong>3) {lang === 'en' ? 'Memory' : 'Memoria'}</strong></div>
 					<div class="sc-memory-wrap">
 						<div class="sc-word" id="sc-word"></div>
 						<div class="sc-pointer">
-							<div class="sc-pointer-line"><span>ptr apunta a</span><strong id="sc-pointer-target">nada todavía</strong></div>
+							<div class="sc-pointer-line"><span>{lang === 'en' ? 'ptr points to' : 'ptr apunta a'}</span><strong id="sc-pointer-target">{lang === 'en' ? 'nothing yet' : 'nada todavia'}</strong></div>
 							<div class="sc-pointer-line"><span>offset</span><strong id="sc-pointer-offset">-</strong></div>
 						</div>
 					</div>
 				</article>
 
 				<article class="sc-card sc-console">
-					<div class="sc-head"><strong>4) Consola simulada</strong></div>
+					<div class="sc-head"><strong>4) {lang === 'en' ? 'Simulated Console' : 'Consola simulada'}</strong></div>
 					<div class="sc-console-win">
 						<div class="sc-console-head"><span>./strchr-demo</span><span>stdout</span></div>
 						<div class="sc-console-body" id="sc-console"></div>
@@ -130,14 +133,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				</article>
 			</section>
 
-			<a class="sc-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+			<a class="sc-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
 		</main>
 	</div>
 
 	<script>
 		type Step = {
 			line: number;
-			message: string;
+			message: { es: string; en: string };
 			ptr: string;
 			deref: string;
 			position: string;
@@ -150,15 +153,15 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 
 		const letters = ['c', 'o', 'm', 'p', 'u', 't', 'a', 'd', 'o', 'r', 'a'];
 		const baseSteps: Step[] = [
-			{ line: 1, message: 'Se declara el arreglo palabra con el texto "computadora".', ptr: 'NULL', deref: '-', position: '-', condition: '-', activeIndex: null, pointerTarget: 'buffer completo en memoria', pointerOffset: '-', logs: [] },
-			{ line: 2, message: 'strchr empieza a buscar el caracter u dentro de palabra.', ptr: 'buscando...', deref: '-', position: '-', condition: '-', activeIndex: 0, pointerTarget: 'revisando desde palabra[0]', pointerOffset: '0', logs: [] },
-			{ line: 2, message: 'Avanza por c, o, m y p hasta encontrar la primera u.', ptr: 'buscando...', deref: '-', position: '-', condition: '-', activeIndex: 4, pointerTarget: 'comparando con palabra[4]', pointerOffset: '4', logs: [] },
-			{ line: 2, message: 'Como encuentra u en el índice 4, strchr devuelve la dirección de esa celda.', ptr: '&palabra[4]', deref: 'u', position: '4', condition: '-', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
-			{ line: 3, message: 'Se evalúa ptr != NULL. Da true porque ptr sí apunta a una dirección válida.', ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
-			{ line: 4, message: 'El operador *ptr lee el contenido donde apunta el puntero: el caracter u.', ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
-			{ line: 4, message: 'La resta ptr - palabra calcula cuántas posiciones separan ambos punteros.', ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
-			{ line: 4, message: 'printf muestra el caracter encontrado y su posición dentro del arreglo.', ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: ['Encontrado: u en la posición 4'] },
-			{ line: 8, message: 'El programa termina normalmente con return 0.', ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: ['Encontrado: u en la posición 4'] },
+			{ line: 1, message: { es: 'Se declara el arreglo palabra con el texto "computadora".', en: 'The palabra array is declared with the text "computadora".' }, ptr: 'NULL', deref: '-', position: '-', condition: '-', activeIndex: null, pointerTarget: 'buffer completo en memoria', pointerOffset: '-', logs: [] },
+			{ line: 2, message: { es: 'strchr empieza a buscar el caracter u dentro de palabra.', en: 'strchr starts searching for character u inside palabra.' }, ptr: 'buscando...', deref: '-', position: '-', condition: '-', activeIndex: 0, pointerTarget: 'revisando desde palabra[0]', pointerOffset: '0', logs: [] },
+			{ line: 2, message: { es: 'Avanza por c, o, m y p hasta encontrar la primera u.', en: 'Advances through c, o, m and p until finding the first u.' }, ptr: 'buscando...', deref: '-', position: '-', condition: '-', activeIndex: 4, pointerTarget: 'comparando con palabra[4]', pointerOffset: '4', logs: [] },
+			{ line: 2, message: { es: 'Como encuentra u en el indice 4, strchr devuelve la direccion de esa celda.', en: 'Since it finds u at index 4, strchr returns the address of that cell.' }, ptr: '&palabra[4]', deref: 'u', position: '4', condition: '-', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
+			{ line: 3, message: { es: 'Se evalua ptr != NULL. Da true porque ptr si apunta a una direccion valida.', en: 'ptr != NULL evaluates to true because ptr does point to a valid address.' }, ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
+			{ line: 4, message: { es: 'El operador *ptr lee el contenido donde apunta el puntero: el caracter u.', en: 'The *ptr operator reads the content where the pointer points: the character u.' }, ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
+			{ line: 4, message: { es: 'La resta ptr - palabra calcula cuantas posiciones separan ambos punteros.', en: 'The subtraction ptr - palabra calculates how many positions separate both pointers.' }, ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: [] },
+			{ line: 4, message: { es: 'printf muestra el caracter encontrado y su posicion dentro del arreglo.', en: 'printf displays the character found and its position within the array.' }, ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: ['Encontrado: u en la posicion 4'] },
+			{ line: 8, message: { es: 'El programa termina normalmente con return 0.', en: 'The program ends normally with return 0.' }, ptr: '&palabra[4]', deref: 'u', position: '4', condition: 'true', activeIndex: 4, pointerTarget: 'palabra[4]', pointerOffset: '4', logs: ['Encontrado: u en la posicion 4'] },
 		];
 
 		const buildIntermediateSteps = (steps: Step[]): Step[] => {
@@ -166,7 +169,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			steps.forEach((stepState, index) => {
 				enriched.push(stepState);
 				if (index < steps.length - 1) {
-					enriched.push({ ...stepState, message: `Detalle intermedio: ${stepState.message}` });
+					enriched.push({ ...stepState, message: { es: `Detalle intermedio: ${stepState.message.es}`, en: `Intermediate detail: ${stepState.message.en}` } });
 				}
 			});
 			return enriched;
@@ -233,12 +236,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		}
 
 		function render(): void {
+			const isEnglish = document.documentElement.lang === 'en';
 			const state = activeSteps[currentStep];
 			document.querySelectorAll<HTMLElement>('.sc-row').forEach((row) => row.classList.toggle('active', Number(row.dataset.line) === state.line));
 			document.querySelectorAll<HTMLElement>('.sc-cell').forEach((cell) => cell.classList.toggle('active', Number(cell.dataset.index) === state.activeIndex));
-			line.textContent = `Línea activa: ${state.line}`;
-			step.textContent = `Paso ${currentStep + 1} / ${activeSteps.length}`;
-			copy.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${state.message}`;
+			line.textContent = isEnglish ? `Active line: ${state.line}` : `Linea activa: ${state.line}`;
+			step.textContent = isEnglish ? `Step ${currentStep + 1} / ${activeSteps.length}` : `Paso ${currentStep + 1} / ${activeSteps.length}`;
+			copy.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${state.message[isEnglish ? 'en' : 'es']}`;
 			ptr.textContent = state.ptr;
 			deref.textContent = state.deref;
 			pos.textContent = state.position;

@@ -1,10 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
 ---
 
-<Layout title="For anidado tabla de multiplicar - Programierds">
+<Layout title={lang === 'en' ? 'Nested for: multiplication table' : 'For anidado tabla de multiplicar'}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 
@@ -78,16 +80,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<div class="fn-screen">
 		<main class="fn-shell">
 			<header class="mb-6">
-				<p class="fn-badge">for anidado / tabla de multiplicar</p>
-				<h1 class="fn-title mt-3"><code>for</code> anidado + tabla de multiplicar</h1>
-				<p class="fn-sub mt-3">Aca ves dos bucles trabajando en equipo: <strong>fila</strong> maneja la tabla (1, 2, 3) y <strong>col</strong> recorre del 1 al 10. Con Avanzar/Retroceder controlas como se llena la tabla.</p>
+				<p class="fn-badge">{lang === 'en' ? 'nested for / multiplication table' : 'for anidado / tabla de multiplicar'}</p>
+				<h1 class="fn-title mt-3"><code>for</code> {lang === 'en' ? 'nested + multiplication table' : 'anidado + tabla de multiplicar'}</h1>
+				<p class="fn-sub mt-3">{lang === 'en' ? 'Here you see two loops working together: <strong>row</strong> handles the table (1, 2, 3) and <strong>col</strong> goes from 1 to 10. Use Forward/Back to control how the table fills.' : 'Acá ves dos bucles trabajando en equipo: <strong>fila</strong> maneja la tabla (1, 2, 3) y <strong>col</strong> recorre del 1 al 10. Con Avanzar/Retroceder controlas como se llena la tabla.'}</p>
 			</header>
 
 			<section class="fn-grid" aria-live="polite">
 				<article class="fn-card fn-code">
 					<div class="fn-head">
-						<strong>1) Codigo y linea activa</strong>
-						<span class="fn-badge" id="fn-line">Linea activa: 1</span>
+						<strong>{lang === 'en' ? '1) Code and active line' : '1) Código y línea activa'}</strong>
+						<span class="fn-badge" id="fn-line">{lang === 'en' ? 'Active line: 1' : 'Línea activa: 1'}</span>
 					</div>
 					<div class="fn-code-panel">
 						<div class="fn-row" data-line="1"><span class="fn-ln">1</span><span>for (int fila = 1; fila &lt;= 3; fila++) &#123;</span></div>
@@ -98,12 +100,12 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="fn-row" data-line="6"><span class="fn-ln">6</span><span>&#125;</span></div>
 					</div>
 
-					<div class="fn-copy" id="fn-copy"><strong>Paso 1:</strong> Arranca el for externo con fila = 1.</div>
+					<div class="fn-copy" id="fn-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'The outer for starts with row = 1.' : 'Arranca el for externo con fila = 1.'}</div>
 					<div class="fn-track"><div class="fn-fill" id="fn-fill"></div></div>
 					<div class="fn-controls">
-						<button id="fn-prev" class="fn-btn" type="button">⬅ Retroceder</button>
-						<button id="fn-next" class="fn-btn" type="button">Avanzar ➡</button>
-						<span class="fn-badge" id="fn-step">Paso 1 / 13</span>
+						<button id="fn-prev" class="fn-btn" type="button">⬅ {lang === 'en' ? 'Back' : 'Retroceder'}</button>
+						<button id="fn-next" class="fn-btn" type="button">{lang === 'en' ? 'Forward' : 'Avanzar'} ➡</button>
+						<span class="fn-badge" id="fn-step">{lang === 'en' ? 'Step 1 / 13' : 'Paso 1 / 13'}</span>
 					</div>
 
 					<div class="fn-console">
@@ -113,16 +115,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				</article>
 
 				<article class="fn-card fn-state">
-					<div class="fn-head"><strong>2) Estado interno</strong></div>
+					<div class="fn-head"><strong>{lang === 'en' ? '2) Internal state' : '2) Estado interno'}</strong></div>
 					<div class="fn-state-item"><span>fila</span><span id="fn-fila" class="fn-value">1</span></div>
 					<div class="fn-state-item"><span>col</span><span id="fn-col" class="fn-value">1</span></div>
 					<div class="fn-state-item"><span>valor (fila * col)</span><span id="fn-valor" class="fn-value">1</span></div>
-					<div class="fn-state-item"><span>Condicion externa</span><span id="fn-outer" class="fn-value">true</span></div>
-					<div class="fn-state-item"><span>Condicion interna</span><span id="fn-inner" class="fn-value">true</span></div>
+					<div class="fn-state-item"><span>{lang === 'en' ? 'Outer condition' : 'Condición externa'}</span><span id="fn-outer" class="fn-value">true</span></div>
+					<div class="fn-state-item"><span>{lang === 'en' ? 'Inner condition' : 'Condición interna'}</span><span id="fn-inner" class="fn-value">true</span></div>
 				</article>
 
 				<article class="fn-card fn-table">
-					<div class="fn-head"><strong>3) Tabla de multiplicar en vivo</strong></div>
+					<div class="fn-head"><strong>{lang === 'en' ? '3) Live multiplication table' : '3) Tabla de multiplicar en vivo'}</strong></div>
 					<div class="mult-table-wrap">
 						<table class="mult-table" id="mult-table">
 							<thead>
@@ -141,14 +143,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 				</article>
 			</section>
 
-			<a class="fn-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+			<a class="fn-back" href={getRelativePath('/presentaciones')}>← {lang === 'en' ? 'Back to presentations' : 'Volver a presentaciones'}</a>
 		</main>
 	</div>
 
 	<script>
 		type Step = {
 			line: number;
-			message: string;
+			message: { es: string; en: string };
 			fila: number;
 			col: number;
 			valor: number;
@@ -180,19 +182,19 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		const logsRow3 = Array.from({ length: 10 }, (_, i) => `3 x ${i + 1} = ${(i + 1) * 3}`);
 
 		const steps: Step[] = [
-			{ line: 1, message: 'Inicia el for externo con fila = 1.', fila: 1, col: 1, valor: 1, outer: 'true', inner: 'true', consoleLines: [], table: createTable(), activeCell: { row: 1, col: 1 } },
-			{ line: 2, message: 'Entra al for interno para la fila 1 con col = 1.', fila: 1, col: 1, valor: 1, outer: 'true', inner: 'true', consoleLines: [], table: createTable(), activeCell: { row: 1, col: 1 } },
-			{ line: 4, message: 'Calcula y muestra 1 x 1 = 1.', fila: 1, col: 1, valor: 1, outer: 'true', inner: 'true', consoleLines: ['1 x 1 = 1'], table: tableUntil(1, 1), activeCell: { row: 1, col: 1 } },
-			{ line: 4, message: 'Siguiente columna: 1 x 2 = 2.', fila: 1, col: 2, valor: 2, outer: 'true', inner: 'true', consoleLines: ['1 x 1 = 1', '1 x 2 = 2'], table: tableUntil(1, 2), activeCell: { row: 1, col: 2 } },
-			{ line: 4, message: 'Siguiente columna: 1 x 3 = 3.', fila: 1, col: 3, valor: 3, outer: 'true', inner: 'true', consoleLines: ['1 x 1 = 1', '1 x 2 = 2', '1 x 3 = 3'], table: tableUntil(1, 3), activeCell: { row: 1, col: 3 } },
-			{ line: 5, message: 'Se repite el mismo patron hasta col = 10 y cierra la fila 1.', fila: 1, col: 10, valor: 10, outer: 'true', inner: 'false', consoleLines: logsRow1, table: tableUntil(1, 10), activeCell: { row: 1, col: 10 } },
-			{ line: 1, message: 'Incrementa fila a 2 y vuelve a entrar al for interno.', fila: 2, col: 1, valor: 2, outer: 'true', inner: 'true', consoleLines: logsRow1, table: tableUntil(1, 10), activeCell: { row: 2, col: 1 } },
-			{ line: 4, message: 'Primera multiplicacion de la fila 2: 2 x 1 = 2.', fila: 2, col: 1, valor: 2, outer: 'true', inner: 'true', consoleLines: [...logsRow1, '2 x 1 = 2'], table: tableUntil(2, 1), activeCell: { row: 2, col: 1 } },
-			{ line: 5, message: 'Se completa la fila 2 hasta 2 x 10 = 20.', fila: 2, col: 10, valor: 20, outer: 'true', inner: 'false', consoleLines: [...logsRow1, ...logsRow2], table: tableUntil(2, 10), activeCell: { row: 2, col: 10 } },
-			{ line: 1, message: 'Incrementa fila a 3 y arranca la ultima pasada.', fila: 3, col: 1, valor: 3, outer: 'true', inner: 'true', consoleLines: [...logsRow1, ...logsRow2], table: tableUntil(2, 10), activeCell: { row: 3, col: 1 } },
-			{ line: 4, message: 'Primera multiplicacion de fila 3: 3 x 1 = 3.', fila: 3, col: 1, valor: 3, outer: 'true', inner: 'true', consoleLines: [...logsRow1, ...logsRow2, '3 x 1 = 3'], table: tableUntil(3, 1), activeCell: { row: 3, col: 1 } },
-			{ line: 5, message: 'Se completa la fila 3 y se termina toda la tabla del 1 al 3 por 10.', fila: 3, col: 10, valor: 30, outer: 'true', inner: 'false', consoleLines: [...logsRow1, ...logsRow2, ...logsRow3], table: tableUntil(3, 10), activeCell: { row: 3, col: 10 } },
-			{ line: 1, message: 'fila se incrementa a 4 y la condicion externa 4 <= 3 da false. Fin del for anidado.', fila: 4, col: 10, valor: 30, outer: 'false', inner: 'false', consoleLines: [...logsRow1, ...logsRow2, ...logsRow3], table: tableUntil(3, 10) },
+			{ line: 1, message: { es: 'Inicia el for externo con fila = 1.', en: 'The outer for starts with row = 1.' }, fila: 1, col: 1, valor: 1, outer: 'true', inner: 'true', consoleLines: [], table: createTable(), activeCell: { row: 1, col: 1 } },
+			{ line: 2, message: { es: 'Entra al for interno para la fila 1 con col = 1.', en: 'Enters the inner for for row 1 with col = 1.' }, fila: 1, col: 1, valor: 1, outer: 'true', inner: 'true', consoleLines: [], table: createTable(), activeCell: { row: 1, col: 1 } },
+			{ line: 4, message: { es: 'Calcula y muestra 1 x 1 = 1.', en: 'Calculates and shows 1 x 1 = 1.' }, fila: 1, col: 1, valor: 1, outer: 'true', inner: 'true', consoleLines: ['1 x 1 = 1'], table: tableUntil(1, 1), activeCell: { row: 1, col: 1 } },
+			{ line: 4, message: { es: 'Siguiente columna: 1 x 2 = 2.', en: 'Next column: 1 x 2 = 2.' }, fila: 1, col: 2, valor: 2, outer: 'true', inner: 'true', consoleLines: ['1 x 1 = 1', '1 x 2 = 2'], table: tableUntil(1, 2), activeCell: { row: 1, col: 2 } },
+			{ line: 4, message: { es: 'Siguiente columna: 1 x 3 = 3.', en: 'Next column: 1 x 3 = 3.' }, fila: 1, col: 3, valor: 3, outer: 'true', inner: 'true', consoleLines: ['1 x 1 = 1', '1 x 2 = 2', '1 x 3 = 3'], table: tableUntil(1, 3), activeCell: { row: 1, col: 3 } },
+			{ line: 5, message: { es: 'Se repite el mismo patrón hasta col = 10 y cierra la fila 1.', en: 'Repeats the same pattern until col = 10 and closes row 1.' }, fila: 1, col: 10, valor: 10, outer: 'true', inner: 'false', consoleLines: logsRow1, table: tableUntil(1, 10), activeCell: { row: 1, col: 10 } },
+			{ line: 1, message: { es: 'Incrementa fila a 2 y vuelve a entrar al for interno.', en: 'Increments row to 2 and enters the inner for again.' }, fila: 2, col: 1, valor: 2, outer: 'true', inner: 'true', consoleLines: logsRow1, table: tableUntil(1, 10), activeCell: { row: 2, col: 1 } },
+			{ line: 4, message: { es: 'Primera multiplicación de la fila 2: 2 x 1 = 2.', en: 'First multiplication of row 2: 2 x 1 = 2.' }, fila: 2, col: 1, valor: 2, outer: 'true', inner: 'true', consoleLines: [...logsRow1, '2 x 1 = 2'], table: tableUntil(2, 1), activeCell: { row: 2, col: 1 } },
+			{ line: 5, message: { es: 'Se completa la fila 2 hasta 2 x 10 = 20.', en: 'Row 2 completes up to 2 x 10 = 20.' }, fila: 2, col: 10, valor: 20, outer: 'true', inner: 'false', consoleLines: [...logsRow1, ...logsRow2], table: tableUntil(2, 10), activeCell: { row: 2, col: 10 } },
+			{ line: 1, message: { es: 'Incrementa fila a 3 y arranca la última pasada.', en: 'Increments row to 3 and starts the last pass.' }, fila: 3, col: 1, valor: 3, outer: 'true', inner: 'true', consoleLines: [...logsRow1, ...logsRow2], table: tableUntil(2, 10), activeCell: { row: 3, col: 1 } },
+			{ line: 4, message: { es: 'Primera multiplicación de fila 3: 3 x 1 = 3.', en: 'First multiplication of row 3: 3 x 1 = 3.' }, fila: 3, col: 1, valor: 3, outer: 'true', inner: 'true', consoleLines: [...logsRow1, ...logsRow2, '3 x 1 = 3'], table: tableUntil(3, 1), activeCell: { row: 3, col: 1 } },
+			{ line: 5, message: { es: 'Se completa la fila 3 y se termina toda la tabla del 1 al 3 por 10.', en: 'Row 3 completes and the entire table from 1 to 3 by 10 is finished.' }, fila: 3, col: 10, valor: 30, outer: 'true', inner: 'false', consoleLines: [...logsRow1, ...logsRow2, ...logsRow3], table: tableUntil(3, 10), activeCell: { row: 3, col: 10 } },
+			{ line: 1, message: { es: 'fila se incrementa a 4 y la condición externa 4 <= 3 da false. Fin del for anidado.', en: 'row increments to 4 and the outer condition 4 <= 3 is false. End of nested for.' }, fila: 4, col: 10, valor: 30, outer: 'false', inner: 'false', consoleLines: [...logsRow1, ...logsRow2, ...logsRow3], table: tableUntil(3, 10) },
 		];
 
 		let currentStep = 0;
@@ -229,15 +231,16 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		}
 
 		function renderStep(): void {
+			const isEnglish = document.documentElement.lang === 'en';
 			const step = steps[currentStep];
 
 			document.querySelectorAll<HTMLElement>('.fn-row').forEach((row) => {
 				row.classList.toggle('active', Number(row.dataset.line) === step.line);
 			});
 
-			lineBadge.textContent = `Linea activa: ${step.line}`;
-			stepBadge.textContent = `Paso ${currentStep + 1} / ${steps.length}`;
-			copyEl.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${step.message}`;
+			lineBadge.textContent = `${isEnglish ? 'Active line' : 'Línea activa'}: ${step.line}`;
+			stepBadge.textContent = `${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1} / ${steps.length}`;
+			copyEl.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${step.message[isEnglish ? 'en' : 'es']}`;
 			filaEl.textContent = String(step.fila);
 			colEl.textContent = String(step.col);
 			valorEl.textContent = String(step.valor);

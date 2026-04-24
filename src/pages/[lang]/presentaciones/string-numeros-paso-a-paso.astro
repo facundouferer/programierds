@@ -1,10 +1,13 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getRelativePath } from '../../../utils/paths';
+import { useTranslations, type Locale } from '../../../i18n';
 export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
 ---
 
-<Layout title="Strings y numeros en C paso a paso - Programierds">
+<Layout title={lang === 'en' ? "Strings and numbers in C step by step - Programierds" : "Strings y numeros en C paso a paso - Programierds"}>
 	<style is:global>
 		@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Fira+Code:wght@400;500;700&display=swap');
 		.sn-screen {
@@ -50,13 +53,13 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 	<div class="sn-screen">
 		<main class="sn-shell">
 			<header class="mb-6">
-				<p class="sn-badge">string de numeros / paso a paso</p>
-				<h1 class="sn-title mt-3">Strings y numeros en C</h1>
-				<p class="sn-sub mt-3">Aca aprendés la diferencia entre concatenar strings y sumar numeros reales usando <code>sprintf()</code> y <code>atoi()</code>.</p>
+				<p class="sn-badge">{lang === 'en' ? 'string of numbers / step by step' : 'string de numeros / paso a paso'}</p>
+				<h1 class="sn-title mt-3">{lang === 'en' ? 'Strings and numbers in C' : 'Strings y numeros en C'}</h1>
+				<p class="sn-sub mt-3">{lang === 'en' ? 'Here you learn the difference between concatenating strings and adding real numbers using sprintf() and atoi().' : 'Aca aprendes la diferencia entre concatenar strings y sumar numeros reales usando sprintf() y atoi().'}</p>
 			</header>
 			<section class="sn-grid" aria-live="polite">
 				<article class="sn-card sn-code">
-					<div class="sn-head"><strong>1) Codigo</strong><span class="sn-badge" id="sn-line">Linea activa: 1</span></div>
+					<div class="sn-head"><strong>1) {lang === 'en' ? 'Code' : 'Codigo'}</strong><span class="sn-badge" id="sn-line">{lang === 'en' ? 'Active line: 1' : 'Linea activa: 1'}</span></div>
 					<div class="sn-panel">
 						<div class="sn-row" data-line="1"><span class="sn-ln">1</span><span>char a[] = "10";</span></div>
 						<div class="sn-row" data-line="2"><span class="sn-ln">2</span><span>char b[] = "5";</span></div>
@@ -67,21 +70,21 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 						<div class="sn-row" data-line="7"><span class="sn-ln">7</span><span>printf("%d\n", suma);</span></div>
 						<div class="sn-row" data-line="8"><span class="sn-ln">8</span><span>printf("%d\n", parcial);</span></div>
 					</div>
-					<div class="sn-copy" id="sn-copy"><strong>Paso 1:</strong> Se define a = '10'.</div>
+					<div class="sn-copy" id="sn-copy"><strong>{lang === 'en' ? 'Step 1:' : 'Paso 1:'}</strong> {lang === 'en' ? 'a is defined as a char array with a number.' : 'Se define a como arreglo de chars con un numero.'}</div>
 					<div class="sn-track"><div class="sn-fill" id="sn-fill"></div></div>
 					<div class="sn-controls">
-						<button class="sn-btn" id="sn-prev" type="button">⬅ Retroceder</button>
-						<button class="sn-btn" id="sn-next" type="button">Avanzar ➡</button>
-						<button class="sn-btn" id="sn-auto" type="button">Auto-play ▶</button>
-						<select class="sn-select" id="sn-level" aria-label="Nivel de detalle">
-							<option value="basico" selected>Basico</option>
-							<option value="intermedio">Intermedio</option>
+						<button class="sn-btn" id="sn-prev" type="button">{lang === 'en' ? '← Back' : '⬅ Retroceder'}</button>
+						<button class="sn-btn" id="sn-next" type="button">{lang === 'en' ? 'Next →' : 'Avanzar ➡'}</button>
+						<button class="sn-btn" id="sn-auto" type="button">{lang === 'en' ? 'Auto-play ▶' : 'Auto-play ▶'}</button>
+						<select class="sn-select" id="sn-level" aria-label={lang === 'en' ? 'Detail level' : 'Nivel de detalle'}>
+							<option value="basico" selected>{lang === 'en' ? 'Basic' : 'Basico'}</option>
+							<option value="intermedio">{lang === 'en' ? 'Intermediate' : 'Intermedio'}</option>
 						</select>
-						<span class="sn-badge" id="sn-step">Paso 1 / 8</span>
+						<span class="sn-badge" id="sn-step">{lang === 'en' ? 'Step 1 / 8' : 'Paso 1 / 8'}</span>
 					</div>
 				</article>
 				<article class="sn-card sn-state">
-					<div class="sn-head"><strong>2) Variables</strong></div>
+					<div class="sn-head"><strong>2) {lang === 'en' ? 'Variables' : 'Variables'}</strong></div>
 					<div class="sn-state-item"><span>a</span><span id="sn-a" class="sn-value">'10'</span></div>
 					<div class="sn-state-item"><span>b</span><span id="sn-b" class="sn-value">-</span></div>
 					<div class="sn-state-item"><span>concat</span><span id="sn-concat" class="sn-value">-</span></div>
@@ -89,21 +92,21 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 					<div class="sn-state-item"><span>parcial</span><span id="sn-parcial" class="sn-value">-</span></div>
 				</article>
 				<article class="sn-card sn-console">
-					<div class="sn-head"><strong>3) Consola simulada</strong></div>
+					<div class="sn-head"><strong>3) {lang === 'en' ? 'Simulated Console' : 'Consola simulada'}</strong></div>
 					<div class="sn-console-win">
 						<div class="sn-console-head"><span>./string-numeros-demo</span><span>stdout</span></div>
 						<div class="sn-console-body" id="sn-console"></div>
 					</div>
 				</article>
 			</section>
-			<a class="sn-back" href={getRelativePath('/presentaciones')}>← Volver a presentaciones</a>
+			<a class="sn-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
 		</main>
 	</div>
 
 	<script>
 		type Step = {
 			line: number;
-			message: string;
+			message: { es: string; en: string };
 			a: string;
 			b: string;
 			concat: string;
@@ -112,14 +115,14 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			logs: string[];
 		};
 		const baseSteps: Step[] = [
-			{ line: 1, message: 'Se define a como arreglo de chars con un numero.', a: "'10'", b: '-', concat: '-', suma: '-', parcial: '-', logs: [] },
-			{ line: 2, message: 'Se define b como otro arreglo de chars numerico.', a: "'10'", b: "'5'", concat: '-', suma: '-', parcial: '-', logs: [] },
-			{ line: 3, message: 'concat representa la concatenacion de ambos textos.', a: "'10'", b: "'5'", concat: "'105'", suma: '-', parcial: '-', logs: [] },
-			{ line: 4, message: 'atoi(a) y atoi(b) convierten a numero y ahora si suman.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '-', logs: [] },
-			{ line: 5, message: 'atoi(\"20px\") toma la parte numerica inicial hasta encontrar un caracter invalido.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: [] },
-			{ line: 6, message: 'Imprime concat.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105'] },
-			{ line: 7, message: 'Imprime suma numerica real.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15'] },
-			{ line: 8, message: 'Imprime resultado de atoi.', a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15', '20'] },
+			{ line: 1, message: { es: 'Se define a como arreglo de chars con un numero.', en: 'a is defined as a char array with a number.' }, a: "'10'", b: '-', concat: '-', suma: '-', parcial: '-', logs: [] },
+			{ line: 2, message: { es: 'Se define b como otro arreglo de chars numerico.', en: 'b is defined as another numeric char array.' }, a: "'10'", b: "'5'", concat: '-', suma: '-', parcial: '-', logs: [] },
+			{ line: 3, message: { es: 'concat representa la concatenacion de ambos textos.', en: 'concat represents the concatenation of both texts.' }, a: "'10'", b: "'5'", concat: "'105'", suma: '-', parcial: '-', logs: [] },
+			{ line: 4, message: { es: 'atoi(a) y atoi(b) convierten a numero y ahora si suman.', en: 'atoi(a) and atoi(b) convert to numbers and now actually add up.' }, a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '-', logs: [] },
+			{ line: 5, message: { es: 'atoi("20px") toma la parte numerica inicial hasta encontrar un caracter invalido.', en: 'atoi("20px") takes the initial numeric part until it finds an invalid character.' }, a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: [] },
+			{ line: 6, message: { es: 'Imprime concat.', en: 'Prints concat.' }, a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105'] },
+			{ line: 7, message: { es: 'Imprime suma numerica real.', en: 'Prints actual numeric sum.' }, a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15'] },
+			{ line: 8, message: { es: 'Imprime resultado de atoi.', en: 'Prints atoi result.' }, a: "'10'", b: "'5'", concat: "'105'", suma: '15', parcial: '20', logs: ['105', '15', '20'] },
 		];
 
 		const buildIntermediateSteps = (steps: Step[]): Step[] => {
@@ -127,7 +130,7 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 			steps.forEach((stepState, index) => {
 				enriched.push(stepState);
 				if (index < steps.length - 1) {
-					enriched.push({ ...stepState, message: `Detalle intermedio: ${stepState.message}` });
+					enriched.push({ ...stepState, message: { es: `Detalle intermedio: ${stepState.message.es}`, en: `Intermediate detail: ${stepState.message.en}` } });
 				}
 			});
 			return enriched;
@@ -184,11 +187,12 @@ export async function getStaticPaths() { return [{ params: { lang: "es" } }, { p
 		}
 
 		function render(): void {
+			const isEnglish = document.documentElement.lang === 'en';
 			const state = activeSteps[currentStep];
 			document.querySelectorAll<HTMLElement>('.sn-row').forEach((row) => row.classList.toggle('active', Number(row.dataset.line) === state.line));
-			line.textContent = `Linea activa: ${state.line}`;
-			step.textContent = `Paso ${currentStep + 1} / ${activeSteps.length}`;
-			copy.innerHTML = `<strong>Paso ${currentStep + 1}:</strong> ${state.message}`;
+			line.textContent = isEnglish ? `Active line: ${state.line}` : `Linea activa: ${state.line}`;
+			step.textContent = isEnglish ? `Step ${currentStep + 1} / ${activeSteps.length}` : `Paso ${currentStep + 1} / ${activeSteps.length}`;
+			copy.innerHTML = `<strong>${isEnglish ? 'Step' : 'Paso'} ${currentStep + 1}:</strong> ${state.message[isEnglish ? 'en' : 'es']}`;
 			a.textContent = state.a;
 			b.textContent = state.b;
 			concat.textContent = state.concat;

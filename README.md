@@ -58,47 +58,47 @@ programierds/
 │   │   └── test/
 │   │       └── TestRunner.astro  # Motor de quizzes interactivos
 │   ├── content/
-│   │   ├── courses/         # Fuente de verdad de cursos y lecciones
-│   │   │   ├── c/           # Curso de C
-│   │   │   ├── git/         # Curso de Git
-│   │   │   ├── java/        # Curso de Java
-│   │   │   └── javascript/  # Curso de JavaScript
-│   │   │       ├── index.md         # Metadata del curso
-│   │   │       ├── 01-introduccion.md
-│   │   │       └── logo.svg
-│   │   └── tests/           # Quizzes de evaluacion (Markdown + Zod)
-│   │       ├── fundamentos-javascript.md
-│   │       ├── tipos-de-datos.md
-│   │       └── ...
-│   ├── content.config.ts    # Schemas Zod de collections (courses, chapters, tests)
+│   │   ├── es/              # Contenido en espanol (fuente de verdad)
+│   │   │   ├── courses/     # Cursos (c, git, java, javascript)
+│   │   │   └── tests/       # Quizzes
+│   │   └── en/              # Contenido en ingles (traducciones, fallback a es)
+│   │       ├── courses/
+│   │       └── tests/
+│   ├── content.config.ts    # Schemas Zod (courses_es, courses_en, tests_es, tests_en...)
+│   ├── i18n/                # Sistema bilingue
+│   │   ├── es.ts            # Diccionario de strings en espanol
+│   │   ├── en.ts            # Diccionario de strings en ingles
+│   │   ├── types.ts         # Locale, DEFAULT_LOCALE, LOCALES
+│   │   ├── index.ts         # useTranslations, getLocaleFromPathname, withLocale
+│   │   └── i18n.test.ts     # Tests del helper
 │   ├── layouts/
-│   │   └── Layout.astro     # Layout base: fonts, meta tags, dark mode
+│   │   └── Layout.astro     # Layout base: fonts, meta, dark mode, <html lang>
 │   ├── pages/
-│   │   ├── index.astro      # Landing principal
-│   │   ├── cursos.astro     # Listado de cursos
-│   │   ├── 404.astro        # Pagina de error personalizada
-│   │   ├── playground.astro # Editor de codigo en el navegador (CodeMirror 6)
-│   │   ├── cursos/
-│   │   │   └── [course]/
-│   │   │       ├── index.astro    # Detalle del curso con lista de lecciones
-│   │   │       └── [lesson].astro # Leccion individual con Markdown renderizado
-│   │   ├── presentaciones/  # Slides interactivas para clases
-│   │   │   ├── index.astro
-│   │   │   ├── variables_y_constantes.astro
-│   │   │   ├── tipos_de_datos_en_javascript.astro
-│   │   │   ├── paso_por_valor_y_referencia.astro
-│   │   │   ├── modularidad_en_c.astro
-│   │   │   └── funciones_y_procedimientos_java.astro
-│   │   └── test/            # Seccion de quizzes/evaluaciones
-│   │       ├── index.astro  # Listado de tests disponibles
-│   │       └── [slug].astro # Quiz individual interactivo
+│   │   ├── index.astro      # Redirect a /es/
+│   │   ├── 404.astro        # Pagina de error (detecta locale desde URL)
+│   │   └── [lang]/          # Todo el sitio vive bajo /[lang]/
+│   │       ├── index.astro  # Home
+│   │       ├── playground.astro
+│   │       ├── cursos/
+│   │       │   ├── index.astro
+│   │       │   └── [course]/
+│   │       │       ├── index.astro
+│   │       │       └── [lesson].astro
+│   │       ├── presentaciones/
+│   │       │   ├── index.astro
+│   │       │   └── *.astro (22 slides)
+│   │       └── test/
+│   │           ├── index.astro
+│   │           └── [slug].astro
 │   ├── styles/
 │   │   └── global.css       # Tailwind directives + estilos globales
 │   ├── templates/           # Mockups HTML de referencia (no se buildean)
 │   └── utils/
-│       ├── paths.ts         # getRelativePath: obligatorio para GitHub Pages
-│       ├── tests.ts         # Logica pura de quizzes (tipado, calculo, formato)
-│       └── tests.test.ts    # Tests unitarios de tests.ts (Vitest)
+│       ├── paths.ts         # getRelativePath, getLocalizedRelativePath
+│       ├── paths.test.ts    # Tests unitarios de paths.ts
+│       ├── content.ts       # Helpers bilingues: getCoursesForLocale, etc.
+│       ├── tests.ts         # Logica pura de quizzes
+│       └── tests.test.ts    # Tests unitarios
 ├── public/                  # Assets estaticos (imagenes, favicons)
 ├── docs/                    # Documentacion del proyecto
 ├── astro.config.mjs         # Configuracion Astro (site, base path)
@@ -109,27 +109,140 @@ programierds/
 
 ## Rutas del sitio
 
+El sitio es **bilingue (es / en)** con prefijo de locale obligatorio. La raiz `/` hace redirect a `/es/`.
+
 | Ruta | Descripcion |
 |---|---|
-| `/` | Landing principal |
-| `/cursos` | Listado de todos los cursos |
-| `/cursos/[course]` | Detalle del curso y lista de lecciones |
-| `/cursos/[course]/[lesson]` | Leccion individual en Markdown |
-| `/playground` | Editor de codigo interactivo |
-| `/presentaciones` | Listado de presentaciones para clases |
-| `/presentaciones/[nombre]` | Slide interactiva individual |
-| `/test` | Listado de quizzes disponibles |
-| `/test/[slug]` | Quiz interactivo individual |
+| `/` | Redirect a `/es/` (locale default) |
+| `/[lang]/` | Landing principal (lang = `es` o `en`) |
+| `/[lang]/cursos` | Listado de cursos |
+| `/[lang]/cursos/[course]` | Detalle del curso |
+| `/[lang]/cursos/[course]/[lesson]` | Leccion individual en Markdown |
+| `/[lang]/playground` | Editor de codigo interactivo |
+| `/[lang]/presentaciones` | Listado de presentaciones |
+| `/[lang]/presentaciones/[nombre]` | Slide interactiva individual |
+| `/[lang]/test` | Listado de quizzes |
+| `/[lang]/test/[slug]` | Quiz interactivo individual |
+| `/404` | Pagina de error (detecta locale desde URL) |
+
+## Sistema bilingue (i18n)
+
+El sitio soporta **espanol (`es`, default) e ingles (`en`)**. El selector en el header son las banderas 🇦🇷 / 🇺🇸.
+
+### Arquitectura
+
+- **Config**: `astro.config.mjs` define `i18n` con `defaultLocale: 'es'`, `prefixDefaultLocale: true`, `fallback: { en: 'es' }`.
+- **Diccionarios UI**: `src/i18n/es.ts` y `src/i18n/en.ts` — objetos planos con todas las strings de interfaz.
+- **Helper**: `src/i18n/index.ts` expone `useTranslations(locale)`, `getLocaleFromPathname`, `withLocale`, etc.
+- **Paths**: `src/utils/paths.ts` expone `getLocalizedRelativePath(locale, path)` — usalo SIEMPRE para links internos, en lugar de `getRelativePath`.
+- **Content collections**: hay seis colecciones en total — `courses_es`, `courses_en`, `chapters_es`, `chapters_en`, `tests_es`, `tests_en`. Los helpers `getCoursesForLocale`, `getChaptersForLocale`, `getTestsForLocale` de `src/utils/content.ts` hacen merge con fallback a espanol cuando falta la traduccion en ingles.
+
+### Como agregar una string de UI nueva
+
+1. Agrega la clave y su valor en **`src/i18n/es.ts`** (fuente de verdad, define el tipo `TranslationKey`).
+2. Agrega la traduccion equivalente en **`src/i18n/en.ts`** (TypeScript te obliga a cubrirla).
+3. En el componente, leela con:
+
+```astro
+---
+import { useTranslations, type Locale } from '../i18n';
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+---
+<h1>{t('mi.nueva.clave')}</h1>
+```
+
+Si la clave falta en `en.ts` (traduccion parcial), `useTranslations` hace fallback automatico a espanol.
+
+### Como agregar una leccion/curso traducido
+
+La estructura es **espejada por idioma**. El curso de C en espanol vive en `src/content/es/courses/c/` y su version en ingles deberia vivir en `src/content/en/courses/c/`.
+
+Para traducir una leccion existente:
+
+1. Copiar `src/content/es/courses/c/03-variables-y-constantes.md` a `src/content/en/courses/c/03-variables-y-constantes.md` (mismo nombre de archivo).
+2. Traducir el `title` del frontmatter y el cuerpo en Markdown.
+3. Al buildear, la version en ingles aparece en `/en/cursos/c/03-variables-y-constantes`.
+
+Si una leccion NO existe en `en/`, la ruta `/en/cursos/c/...` renderiza la version en espanol con un banner "traduccion pendiente". Esto permite traducir de forma incremental sin romper el sitio.
+
+Para traducir un curso entero, tambien hay que crear su `index.md` en `src/content/en/courses/<curso>/index.md` con los campos `description`, `technology`, `difficulty`.
+
+### Workflow recomendado para una IA que continua traducciones
+
+Si una IA tiene que seguir traduciendo contenido faltante, este es el flujo correcto:
+
+1. **Elegir un bloque coherente**: terminar un curso o una tanda consecutiva de lecciones (`01-04`, `05-08`, etc.). Evitar traducir archivos sueltos al azar.
+2. **Verificar que realmente falte**: revisar si el archivo ya existe en `src/content/en/...` antes de crearlo.
+3. **Mantener la ruta espejada**: mismo nombre de archivo, misma carpeta, mismo slug.
+4. **Traducir solo contenido**: frontmatter + cuerpo Markdown. No cambiar nombres de archivo, slugs, estructura del curso ni schemas.
+5. **Conservar identificadores**:
+   - en cursos/lecciones: conservar filename y ruta relativa
+   - en tests: conservar `slug`, `id` de preguntas, `kind`, y estructura `questions` / `algorithm`
+6. **No usar `getCollection()` directo** para “probar” si aparece. La resolucion oficial siempre pasa por `src/utils/content.ts`.
+7. **Validar despues de cada tanda**:
+   - `npm run astro check`
+   - `npm run test`
+8. **Si una traduccion nueva no aparece en `localhost`** pero el archivo existe, sospechar de **dev server stale**. Reiniciar `astro dev` antes de asumir que la traduccion esta mal.
+
+### Reglas concretas para traducciones de contenido
+
+- **No inventar slugs nuevos** en tests traducidos.
+- **No renombrar archivos** al pasar de `es` a `en`.
+- **No mezclar varios cursos en una sola tanda** si todavia no cerraste el bloque actual.
+- **Preferir consistencia pedagogica** sobre literalidad absoluta: si el original usa tono didactico simple, la traduccion tambien.
+- **Mantener snippets de codigo intactos** salvo strings visibles al usuario cuando tenga sentido traducirlas.
+- **No tocar contenido fuente en `es/`** salvo que el trabajo sea explicitamente corregir errores del original.
+
+### Como detectar fallback vs traduccion real
+
+Cuando una ruta `/en/...` muestra espanol, no asumas automaticamente que “la pagina esta rota”.
+
+- Si **existe** el archivo en `src/content/en/...` y aun asi ves espanol, puede haber **cache/dev server stale**.
+- Si **no existe** el archivo en `src/content/en/...`, entonces el helper esta haciendo **fallback intencional** al contenido en espanol.
+- El comportamiento de fallback vive en `src/utils/content.ts`.
+
+### Gotcha conocido del repositorio
+
+Hay un problema de contenido preexistente en tests de C con id/slug repetido:
+
+- `src/content/es/tests/input-c-01.md`
+- `src/content/es/tests/ingreso-de-datos-en-c.md`
+
+Antes de traducir tests, verificar duplicados para no replicar el problema en `en/`.
+
+### Como agregar un test/quiz traducido
+
+Mismo patron: copiar `src/content/es/tests/mi-test.md` a `src/content/en/tests/mi-test.md` y traducir `title`, `description`, `prompt`, `options`, `explanation`. El `slug` se mantiene (es el identificador).
+
+### Como traducir una presentacion
+
+Las presentaciones viven en `src/pages/[lang]/presentaciones/*.astro`. Cada archivo tiene `getStaticPaths` que genera `/es/presentaciones/...` y `/en/presentaciones/...`. Hoy el contenido interno esta en espanol.
+
+Para soportar EN en una presentacion:
+
+1. Leer el locale desde `Astro.params.lang`.
+2. Envolver los textos con `useTranslations(lang)` o usar un condicional `{lang === 'en' ? '...' : '...'}` para los fragmentos.
+3. Cuando aun no este traducida, el Layout muestra el banner "untranslatedBanner" automaticamente al detectar `lang === 'en'` en el listing.
+
+### Fallback a espanol
+
+El fallback opera a dos niveles:
+
+1. **UI strings**: si `en.ts` no tiene una clave, `useTranslations('en')` devuelve el valor de `es.ts`.
+2. **Content**: si una leccion/test no existe en `src/content/en/...`, los helpers de `utils/content.ts` devuelven el entry en espanol y marcan `fallbackUsed: true`. Las paginas muestran un banner.
 
 ## Content Collections (Content Config)
 
-Definidas en `src/content.config.ts` con Zod:
+Definidas en `src/content.config.ts` con Zod. Hay **seis colecciones** (tres por idioma):
 
 | Collection | Patron | Campos obligatorios |
 |---|---|---|
-| `courses` | `courses/**/index.md` | `description`, `technology`, `difficulty` |
-| `chapters` | `courses/**/*.md` (sin index) | `title` |
-| `tests` | `tests/**/*.md` | `title`, `description`, `slug`, `category`, `kind`, y segun `kind`: `questions[]` o `algorithm` |
+| `courses_es` / `courses_en` | `{es,en}/courses/**/index.md` | `description`, `technology`, `difficulty` |
+| `chapters_es` / `chapters_en` | `{es,en}/courses/**/*.md` (sin index) | `title` |
+| `tests_es` / `tests_en` | `{es,en}/tests/**/*.md` | `title`, `description`, `slug`, `category`, `kind`, y segun `kind`: `questions[]` o `algorithm` |
+
+**Importante**: nunca llames `getCollection('courses_es')` directamente en paginas — usa los helpers `getCoursesForLocale(lang)`, `getChaptersForCourse(courseId, lang)`, `getTestsForLocale(lang)` de `src/utils/content.ts`. Estos hacen el merge con fallback a espanol cuando falta la traduccion.
 
 ### Tipos de test (`kind`)
 
@@ -205,7 +318,7 @@ Contenido introductorio en Markdown (opcional).
 
 ## Como agregar un curso nuevo
 
-1. Crear una carpeta en `src/content/courses/` con el nombre del curso (ej: `python/`)
+1. Crear una carpeta en `src/content/es/courses/` con el nombre del curso (ej: `python/`)
 2. Agregar `index.md` con el frontmatter requerido:
 
 ```yaml
@@ -233,9 +346,11 @@ Contenido en Markdown...
 
 Las paginas se generan automaticamente. No hay que tocar rutas ni configuracion.
 
+Para publicar el curso en ingles, duplicar los mismos archivos en `src/content/en/courses/<curso>/`. Si no existen en ingles, `/en/cursos/<curso>` hace fallback al contenido en espanol automaticamente.
+
 ## Como agregar un test/quiz nuevo
 
-1. Crear un archivo `.md` en `src/content/tests/` (ej: `mi-quiz.md`)
+1. Crear un archivo `.md` en `src/content/es/tests/` (ej: `mi-quiz.md`) — la version en ingles va en `src/content/en/tests/` con el mismo nombre.
 2. Elegir el `kind` (default: `multiple-choice`). Para tests de ordenar codigo: `kind: "code-ordering"`
 3. El slug en el frontmatter debe ser unico — se valida en runtime
 4. Usar el schema definido en `content.config.ts`
@@ -244,8 +359,10 @@ Las paginas se generan automaticamente. No hay que tocar rutas ni configuracion.
 ### Ejemplo: agregar un test `code-ordering`
 
 ```bash
-# crear archivo
-touch src/content/tests/ordenar-mi-algoritmo.md
+# crear archivo en espanol (default)
+touch src/content/es/tests/ordenar-mi-algoritmo.md
+# (opcional) version en ingles
+touch src/content/en/tests/ordenar-mi-algoritmo.md
 ```
 
 ```yaml
