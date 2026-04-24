@@ -1,0 +1,145 @@
+---
+import { render } from 'astro:content';
+import Layout from '../../../../layouts/Layout.astro';
+import Footer from '../../../../components/Footer.astro';
+import Icon from '../../../../components/Icon.astro';
+import { getCoursesForLocale, getChaptersForCourse } from '../../../../utils/content';
+import { getLocalizedRelativePath } from '../../../../utils/paths';
+import { LOCALES, useTranslations, type Locale } from '../../../../i18n';
+
+export async function getStaticPaths() {
+	const paths = [];
+	for (const lang of LOCALES) {
+		const courses = await getCoursesForLocale(lang);
+		for (const { entry: course } of courses) {
+			const courseSlug = course.id.replace('/index', '');
+			const chapters = await getChaptersForCourse(courseSlug, lang);
+			for (let i = 0; i < chapters.length; i++) {
+				const item = chapters[i];
+				const lessonSlug = item.entry.id.replace(courseSlug + '/', '');
+				paths.push({
+					params: { lang, course: courseSlug, lesson: lessonSlug },
+					props: {
+						course,
+						chapterEntry: item.entry,
+						fallbackUsed: item.fallbackUsed,
+						chapters,
+						prev: chapters[i - 1] ?? null,
+						next: chapters[i + 1] ?? null,
+						currentIndex: i,
+						totalChapters: chapters.length,
+						courseSlug,
+					},
+				});
+			}
+		}
+	}
+	return paths;
+}
+
+const { course, chapterEntry, fallbackUsed, chapters, prev, next, currentIndex, totalChapters, courseSlug } = Astro.props;
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+const { Content } = await render(chapterEntry);
+
+const prevSlug = prev ? prev.entry.id.replace(courseSlug + '/', '') : null;
+const nextSlug = next ? next.entry.id.replace(courseSlug + '/', '') : null;
+---
+
+<Layout title={`${chapterEntry.data.title} - ${course.data.technology} - Programierds`}>
+	<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+		<main class="flex flex-1 items-start">
+			<div class="hidden lg:block lg:w-72 lg:shrink-0" aria-hidden="true"></div>
+			<aside class="hidden lg:fixed lg:left-0 lg:top-16 lg:z-40 lg:flex lg:h-[calc(100vh-4rem)] lg:w-72 lg:flex-col lg:border-r lg:border-primary/10 lg:bg-background-dark/95 lg:backdrop-blur-sm">
+				<div class="flex h-full flex-col overflow-hidden">
+					<div class="border-b border-primary/10 p-4">
+						<a href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}`)} class="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors">
+							<Icon name="arrow_back" class="w-4 h-4" />
+							<span class="text-xs font-bold uppercase tracking-widest">{course.data.technology}</span>
+						</a>
+					</div>
+					<nav class="custom-scrollbar flex flex-1 flex-col overflow-y-auto py-2">
+						{chapters.map(({ entry: ch }, index) => {
+							const slug = ch.id.replace(courseSlug + '/', '');
+							const isActive = index === currentIndex;
+							return (
+								<a
+									href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}/${slug}`)}
+									class:list={[
+										'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+										isActive
+											? 'bg-primary/10 text-primary font-bold border-r-2 border-primary'
+											: 'text-slate-400 hover:bg-primary/5 hover:text-slate-200',
+									]}
+								>
+									<span class:list={[
+										'flex size-6 shrink-0 items-center justify-center rounded text-xs font-bold',
+										isActive ? 'bg-primary/20 text-primary' : 'bg-white/5 text-slate-500',
+									]}>
+										{String(index + 1).padStart(2, '0')}
+									</span>
+									<span class="truncate">{ch.data.title}</span>
+								</a>
+							);
+						})}
+					</nav>
+				</div>
+			</aside>
+
+			<div class="flex-1 px-4 lg:px-16 py-12">
+				<div class="mx-auto max-w-4xl">
+					<a href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}`)} class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-8 lg:hidden">
+						<Icon name="arrow_back" class="w-4 h-4" />
+						<span class="text-sm font-medium">{t('lesson.back')}</span>
+					</a>
+
+					{fallbackUsed && lang === 'en' && (
+						<div class="mb-6 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-200">
+							{t('lesson.untranslatedBanner')}
+						</div>
+					)}
+
+					<div class="mb-8">
+						<span class="text-sm text-slate-500">{t('course.detail.lessonsTitle')} {currentIndex + 1} / {totalChapters}</span>
+						<h1 class="mt-3 text-4xl font-black tracking-tight text-slate-900 dark:text-white lg:text-5xl">
+							{chapterEntry.data.title}
+						</h1>
+					</div>
+
+					<article class="lesson-content prose prose-invert prose-lg max-w-none">
+						<Content />
+					</article>
+
+					<nav class="flex items-center justify-between mt-16 pt-8 border-t border-primary/10">
+						{prev ? (
+							<a href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}/${prevSlug}`)} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors">
+								<Icon name="arrow_back" class="w-5 h-5" />
+								<div class="text-left">
+									<span class="text-xs uppercase tracking-widest block">{t('lesson.prev')}</span>
+									<span class="font-medium text-slate-900 dark:text-white">{prev.entry.data.title}</span>
+								</div>
+							</a>
+						) : <div />}
+						{next ? (
+							<a href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}/${nextSlug}`)} class="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors ml-auto">
+								<div class="text-right">
+									<span class="text-xs uppercase tracking-widest block">{t('lesson.next')}</span>
+									<span class="font-medium text-slate-900 dark:text-white">{next.entry.data.title}</span>
+								</div>
+								<Icon name="arrow_forward" class="w-5 h-5" />
+							</a>
+						) : (
+							<a href={getLocalizedRelativePath(lang, `/cursos/${courseSlug}`)} class="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors ml-auto">
+								<div class="text-right">
+									<span class="text-xs uppercase tracking-widest block">{t('course.detail.back')}</span>
+								</div>
+								<Icon name="arrow_forward" class="w-5 h-5" />
+							</a>
+						)}
+					</nav>
+				</div>
+			</div>
+		</main>
+		<Footer />
+	</div>
+</Layout>

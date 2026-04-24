@@ -1,6 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { getRelativePath } from '../../utils/paths';
+import Layout from '../../../layouts/Layout.astro';
+import { getRelativePath } from '../../../utils/paths';
+export async function getStaticPaths() { return [{ params: { lang: "es" } }, { params: { lang: "en" } }]; }
 ---
 
 <Layout title="Paso por Valor y Punteros en C - Programierds">
