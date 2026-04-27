@@ -1,6 +1,22 @@
 ---
 import { getRelativePath } from '../utils/paths';
 import { DEFAULT_LOCALE } from '../i18n';
+
 const redirectTo = getRelativePath(`/${DEFAULT_LOCALE}/`);
-return Astro.redirect(redirectTo);
 ---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Programierds</title>
+    <link rel="canonical" href={redirectTo} />
+    <meta http-equiv="refresh" content={`0; url=${redirectTo}`} />
+    <script is:inline define:vars={{ redirectTo }}>
+      window.location.replace(redirectTo);
+    </script>
+    <style>
+      html, body { margin: 0; background: #102216; }
+    </style>
+  </head>
+  <body></body>
+</html>
