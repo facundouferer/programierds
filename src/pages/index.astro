@@ -3,20 +3,69 @@ import { getRelativePath } from '../utils/paths';
 import { DEFAULT_LOCALE } from '../i18n';
 
 const redirectTo = getRelativePath(`/${DEFAULT_LOCALE}/`);
+const faviconHref = getRelativePath('/favicon.svg');
 ---
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
   <head>
     <meta charset="utf-8" />
-    <title>Programierds</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>programierds</title>
+    <link rel="icon" type="image/svg+xml" href={faviconHref} />
     <link rel="canonical" href={redirectTo} />
     <meta http-equiv="refresh" content={`0; url=${redirectTo}`} />
     <script is:inline define:vars={{ redirectTo }}>
       window.location.replace(redirectTo);
     </script>
     <style>
-      html, body { margin: 0; background: #102216; }
+      :root { color-scheme: dark; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #102216;
+        color: #f5f8f6;
+        font-family: 'Space Grotesk', system-ui, -apple-system, Segoe UI, sans-serif;
+      }
+      .splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+      }
+      .splash-logo { font-size: 3rem; line-height: 1; }
+      .splash-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #0df259;
+      }
+      .splash-spinner {
+        width: 22px;
+        height: 22px;
+        border: 2px solid rgba(13, 242, 89, 0.2);
+        border-top-color: #0df259;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .splash-spinner { animation: none; }
+      }
     </style>
   </head>
-  <body></body>
+  <body>
+    <div class="splash" role="status" aria-label="Cargando">
+      <span class="splash-logo" aria-hidden="true">💩</span>
+      <span class="splash-name">programierds</span>
+      <span class="splash-spinner" aria-hidden="true"></span>
+      <noscript>
+        <p style="margin-top:1rem">
+          <a href={redirectTo} style="color:#0df259">Continuar al sitio →</a>
+        </p>
+      </noscript>
+    </div>
+  </body>
 </html>
