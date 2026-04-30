@@ -65,7 +65,7 @@ const { lang } = Astro.params as { lang: Locale };
 			font-size: 0.76rem;
 		}
 
-		.arr-title { font-size: clamp(2.5rem, 6vw, 4.35rem); line-height: 0.98; font-weight: 700; margin-top: 1rem; max-width: 10.5ch; }
+		.arr-title { font-size: clamp(1.5rem, 4vw, 3rem); line-height: 0.98; font-weight: 700; margin-top: 1rem; max-width: 10.5ch; }
 		.arr-sub { max-width: 60ch; color: rgba(233, 255, 241, 0.82); font-size: 1.02rem; }
 		.arr-kpis { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.2rem; }
 		.arr-kpi {
@@ -444,8 +444,7 @@ const { lang } = Astro.params as { lang: Locale };
 						</ul>
 					</article>
 				</div>
-				<a class="arr-back" href={getRelativePath('/presentaciones')}>← {lang === 'en' ? 'Back to presentations' : 'Volver a presentaciones'}</a>
-			</section>
+</section>
 		</main>
 	</div>
 

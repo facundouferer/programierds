@@ -24,11 +24,11 @@ const t = useTranslations(lang);
 				radial-gradient(circle at 18% 16%, rgba(13, 242, 89, 0.1), transparent 32%),
 				linear-gradient(140deg, #02090b 0%, var(--sc-bg) 100%);
 		}
-		.sc-shell { max-width: 1260px; margin: 0 auto; padding: 2.2rem 1rem 3rem; }
-		.sc-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.05; }
-		.sc-sub { max-width: 74ch; color: rgba(230, 254, 255, 0.84); }
-		.sc-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
-		.sc-card { border-radius: 1rem; border: 1px solid rgba(34, 211, 238, 0.28); background: linear-gradient(160deg, rgba(8, 25, 31, 0.92), rgba(4, 18, 24, 0.95)); padding: 1rem; }
+		.sc-shell { max-width: 1260px; margin: 0 auto; padding: 1rem 0.5rem 2rem; }
+		.sc-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; line-height: 1.05; }
+		.sc-sub { max-width: 74ch; color: rgba(230, 254, 255, 0.84); font-size: 0.9rem; }
+		.sc-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0.6rem; }
+		.sc-card { border-radius: 1rem; border: 1px solid rgba(34, 211, 238, 0.28); background: linear-gradient(160deg, rgba(8, 25, 31, 0.92), rgba(4, 18, 24, 0.95)); padding: 0.6rem; }
 		.sc-code, .sc-state, .sc-memory, .sc-console { grid-column: span 12; }
 		@media (min-width: 1100px) {
 			.sc-code { grid-column: span 6; }
@@ -37,32 +37,32 @@ const t = useTranslations(lang);
 			.sc-console { grid-column: span 12; }
 		}
 		.sc-head { display: flex; justify-content: space-between; align-items: center; gap: 0.7rem; margin-bottom: 0.75rem; }
-		.sc-badge { border: 1px solid rgba(13, 242, 89, 0.4); background: rgba(13, 242, 89, 0.12); border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: 'Fira Code', monospace; }
-		.sc-panel { background: rgba(3, 11, 15, 0.88); border: 1px solid rgba(34, 211, 238, 0.24); border-radius: 0.8rem; padding: 0.75rem; }
-		.sc-row { display: grid; grid-template-columns: 2rem 1fr; gap: 0.8rem; padding: 0.42rem 0.5rem; border-radius: 0.55rem; font-family: 'Fira Code', monospace; font-size: 0.84rem; color: rgba(230, 254, 255, 0.92); transition: all 0.2s ease; }
+		.sc-badge { border: 1px solid rgba(13, 242, 89, 0.4); background: rgba(13, 242, 89, 0.12); border-radius: 999px; padding: 0.1rem 0.5rem; font-size: 0.68rem; font-family: 'Fira Code', monospace; }
+		.sc-panel { background: rgba(3, 11, 15, 0.88); border: 1px solid rgba(34, 211, 238, 0.24); border-radius: 0.6rem; padding: 0.4rem; }
+		.sc-row { display: grid; grid-template-columns: 2rem 1fr; gap: 0.6rem; padding: 0.18rem 0.4rem; border-radius: 0.45rem; font-family: 'Fira Code', monospace; font-size: 0.78rem; color: rgba(230, 254, 255, 0.92); transition: all 0.2s ease; }
 		.sc-row.active { background: linear-gradient(90deg, rgba(34, 211, 238, 0.3), rgba(34, 211, 238, 0.06)); outline: 1px solid rgba(34, 211, 238, 0.4); transform: translateX(3px); }
 		.sc-ln { color: rgba(230, 254, 255, 0.38); text-align: right; }
-		.sc-copy { margin-top: 0.8rem; border: 1px solid rgba(34, 211, 238, 0.34); background: rgba(34, 211, 238, 0.1); border-radius: 0.7rem; padding: 0.75rem; }
-		.sc-controls { margin-top: 0.9rem; display: flex; gap: 0.7rem; flex-wrap: wrap; align-items: center; }
-		.sc-btn { border: 1px solid rgba(34, 211, 238, 0.45); background: rgba(34, 211, 238, 0.12); color: #e6feff; border-radius: 0.7rem; padding: 0.55rem 1rem; font-weight: 600; transition: all 0.2s ease; }
+		.sc-copy { margin-top: 0.5rem; border: 1px solid rgba(34, 211, 238, 0.34); background: rgba(34, 211, 238, 0.1); border-radius: 0.6rem; padding: 0.5rem; }
+		.sc-controls { margin-top: 0.6rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+		.sc-btn { border: 1px solid rgba(34, 211, 238, 0.45); background: rgba(34, 211, 238, 0.12); color: #e6feff; border-radius: 0.6rem; padding: 0.4rem 0.8rem; font-weight: 600; transition: all 0.2s ease; font-size: 0.78rem; }
 		.sc-btn:hover:not(:disabled) { background: rgba(34, 211, 238, 0.24); transform: translateY(-1px); }
 		.sc-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 		.sc-select { border: 1px solid rgba(13, 242, 89, 0.4); background: rgba(3, 11, 15, 0.92); color: #e6feff; border-radius: 0.6rem; padding: 0.45rem 0.55rem; font-family: 'Fira Code', monospace; font-size: 0.75rem; }
-		.sc-track { margin-top: 0.8rem; height: 0.55rem; border-radius: 999px; background: rgba(230, 254, 255, 0.12); overflow: hidden; }
+		.sc-track { margin-top: 0.5rem; height: 0.4rem; border-radius: 999px; background: rgba(230, 254, 255, 0.12); overflow: hidden; }
 		.sc-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--sc-primary), var(--sc-accent)); transition: width 0.25s ease; }
-		.sc-state-item { display: flex; justify-content: space-between; gap: 0.7rem; border: 1px solid rgba(13, 242, 89, 0.22); background: rgba(13, 242, 89, 0.08); border-radius: 0.65rem; padding: 0.65rem 0.75rem; margin-bottom: 0.55rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; }
+		.sc-state-item { display: flex; justify-content: space-between; gap: 0.5rem; border: 1px solid rgba(13, 242, 89, 0.22); background: rgba(13, 242, 89, 0.08); border-radius: 0.5rem; padding: 0.4rem 0.55rem; margin-bottom: 0.35rem; font-family: 'Fira Code', monospace; font-size: 0.75rem; }
 		.sc-value { color: var(--sc-primary); font-size: 0.92rem; font-weight: 700; text-align: right; }
-		.sc-memory-wrap { display: flex; flex-direction: column; gap: 0.85rem; }
-		.sc-word { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 0.35rem; }
-		.sc-cell { border: 1px solid rgba(230, 254, 255, 0.14); background: rgba(255, 255, 255, 0.03); border-radius: 0.65rem; padding: 0.5rem 0.2rem; text-align: center; transition: all 0.2s ease; }
+		.sc-memory-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+		.sc-word { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 0.25rem; }
+		.sc-cell { border: 1px solid rgba(230, 254, 255, 0.14); background: rgba(255, 255, 255, 0.03); border-radius: 0.5rem; padding: 0.35rem 0.15rem; text-align: center; transition: all 0.2s ease; }
 		.sc-cell.active { border-color: rgba(34, 211, 238, 0.52); background: rgba(34, 211, 238, 0.14); box-shadow: 0 0 18px rgba(34, 211, 238, 0.18); transform: translateY(-2px); }
 		.sc-char { font-family: 'Fira Code', monospace; font-size: 1rem; color: #fff; }
 		.sc-index { font-family: 'Fira Code', monospace; font-size: 0.66rem; color: rgba(230, 254, 255, 0.48); margin-top: 0.2rem; }
-		.sc-pointer { border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08); border-radius: 0.8rem; padding: 0.75rem; }
-		.sc-pointer-line { display: flex; justify-content: space-between; gap: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; margin-bottom: 0.45rem; }
-		.sc-console-win { border: 1px solid rgba(13, 242, 89, 0.28); border-radius: 0.8rem; overflow: hidden; background: rgba(3, 11, 15, 0.9); }
-		.sc-console-head { display: flex; justify-content: space-between; padding: 0.5rem 0.75rem; font-family: 'Fira Code', monospace; font-size: 0.72rem; background: rgba(13, 242, 89, 0.12); border-bottom: 1px solid rgba(13, 242, 89, 0.2); }
-		.sc-console-body { min-height: 110px; padding: 0.8rem; font-family: 'Fira Code', monospace; font-size: 0.84rem; }
+		.sc-pointer { border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08); border-radius: 0.6rem; padding: 0.5rem; }
+		.sc-pointer-line { display: flex; justify-content: space-between; gap: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.75rem; margin-bottom: 0.3rem; }
+		.sc-console-win { border: 1px solid rgba(13, 242, 89, 0.28); border-radius: 0.6rem; overflow: hidden; background: rgba(3, 11, 15, 0.9); }
+		.sc-console-head { display: flex; justify-content: space-between; padding: 0.35rem 0.6rem; font-family: 'Fira Code', monospace; font-size: 0.68rem; background: rgba(13, 242, 89, 0.12); border-bottom: 1px solid rgba(13, 242, 89, 0.2); }
+		.sc-console-body { min-height: 70px; padding: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.78rem; }
 		.sc-log { opacity: 0; transform: translateY(8px); animation: sc-log 0.35s ease forwards; color: #d6fff3; }
 		@keyframes sc-log { to { opacity: 1; transform: translateY(0); } }
 		.sc-back { display: inline-block; margin-top: 1.4rem; color: var(--sc-accent); text-decoration: none; border-bottom: 1px dashed rgba(13, 242, 89, 0.45); }
@@ -70,7 +70,7 @@ const t = useTranslations(lang);
 
 	<div class="sc-screen">
 		<main class="sc-shell">
-			<header class="mb-6">
+			<header class="mb-4">
 				<p class="sc-badge">{lang === 'en' ? 'strings / pointers / strchr' : 'strings / punteros / strchr'}</p>
 				<h1 class="sc-title mt-3"><code>strchr</code> {lang === 'en' ? 'in C, step by step' : 'en C, paso a paso'}</h1>
 				<p class="sc-sub mt-3">{lang === 'en' ? 'This presentation shows how strchr() traverses palabra, returns a pointer to the found character, and how the position is calculated with ptr - palabra.' : 'Esta presentacion muestra como strchr() recorre palabra, devuelve un puntero al caracter encontrado y como se calcula la posicion con ptr - palabra.'}</p>
@@ -133,7 +133,7 @@ const t = useTranslations(lang);
 				</article>
 			</section>
 
-			<a class="sc-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
+			
 		</main>
 	</div>
 

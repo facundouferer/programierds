@@ -26,7 +26,7 @@ const { lang } = Astro.params as { lang: Locale };
 		}
 
 		.fn-shell { max-width: 1280px; margin: 0 auto; padding: 2.5rem 1rem 3rem; }
-		.fn-title { font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.05; font-weight: 700; }
+		.fn-title { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.05; font-weight: 700; }
 		.fn-sub { max-width: 72ch; color: rgba(241, 236, 255, 0.84); }
 
 		.fn-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
@@ -143,7 +143,6 @@ const { lang } = Astro.params as { lang: Locale };
 				</article>
 			</section>
 
-			<a class="fn-back" href={getRelativePath('/presentaciones')}>← {lang === 'en' ? 'Back to presentations' : 'Volver a presentaciones'}</a>
 		</main>
 	</div>
 

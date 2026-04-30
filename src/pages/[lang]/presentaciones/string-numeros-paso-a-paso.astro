@@ -20,7 +20,7 @@ const t = useTranslations(lang);
 			background: radial-gradient(circle at 78% 18%, rgba(239, 68, 68, 0.2), transparent 40%), linear-gradient(145deg, #0d0406 0%, var(--sn-bg) 100%);
 		}
 		.sn-shell { max-width: 1180px; margin: 0 auto; padding: 2.2rem 1rem 3rem; }
-		.sn-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.05; }
+		.sn-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; line-height: 1.05; }
 		.sn-sub { max-width: 68ch; color: rgba(255, 232, 236, 0.85); }
 		.sn-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
 		.sn-card { border-radius: 1rem; border: 1px solid rgba(239, 68, 68, 0.32); background: linear-gradient(160deg, rgba(46, 16, 22, 0.9), rgba(24, 9, 12, 0.94)); padding: 1rem; }
@@ -99,8 +99,7 @@ const t = useTranslations(lang);
 					</div>
 				</article>
 			</section>
-			<a class="sn-back" href={getRelativePath('/presentaciones')}>{lang === 'en' ? '← Back to presentations' : '← Volver a presentaciones'}</a>
-		</main>
+</main>
 	</div>
 
 	<script>
