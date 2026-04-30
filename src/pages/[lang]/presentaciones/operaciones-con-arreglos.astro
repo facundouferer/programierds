@@ -36,7 +36,7 @@ const { lang } = Astro.params as { lang: Locale };
 		.opa-copy, .opa-visual { grid-column: span 12; }
 		@media (min-width: 1280px) { .opa-copy { grid-column: span 6; } .opa-visual { grid-column: span 6; } }
 		.opa-badge { display: inline-flex; align-items: center; gap: .45rem; border-radius: 999px; padding: .3rem .8rem; background: rgba(34, 211, 238, .1); border: 1px solid rgba(34, 211, 238, .35); font-family: 'Fira Code', monospace; font-size: .76rem; }
-		.opa-title { font-size: clamp(2.5rem, 6vw, 4.4rem); line-height: .98; font-weight: 700; margin-top: .9rem; max-width: 10.5ch; }
+		.opa-title { font-size: clamp(1.5rem, 4vw, 3rem); line-height: .98; font-weight: 700; margin-top: .9rem; max-width: 10.5ch; }
 		@media (max-width: 1279px) { .opa-title { max-width: none; } .opa-hero { min-height: auto; } }
 		.opa-sub { max-width: 62ch; color: rgba(232,255,242,.82); font-size: 1.03rem; }
 		.opa-pills { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.2rem; }
@@ -261,8 +261,7 @@ const { lang } = Astro.params as { lang: Locale };
 					<article class="opa-card span-4"><strong>{lang === 'en' ? 'Search' : 'Buscar'}</strong><p class="mt-2">{lang === 'en' ? 'It\'s comparing one by one until you find the data or finish the traversal.' : 'Es comparar uno por uno hasta encontrar el dato o terminar el recorrido.'}</p></article>
 					<article class="opa-card span-4"><strong>{lang === 'en' ? 'Insert' : 'Insertar'}</strong><p class="mt-2">{lang === 'en' ? 'It\'s making room and only then saving the new value.' : 'Es hacer lugar y recién después guardar el nuevo valor.'}</p></article>
 				</div>
-				<a class="opa-back" href={getRelativePath('/presentaciones')}>← {lang === 'en' ? 'Back to presentations' : 'Volver a presentaciones'}</a>
-			</section>
+</section>
 		</main>
 	</div>
 
