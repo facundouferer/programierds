@@ -33,7 +33,7 @@ export const es = {
   'home.quickLinks.playground.description': 'Editor online para tirar código y probar ideas.',
 
   'courses.index.title': 'Cursos',
-  'courses.index.subtitle': 'Elegí la tecnología que te copa y arrancá.',
+
   'courses.index.empty': 'Todavía no hay cursos publicados.',
   'courses.card.startButton': 'Empezar',
   'courses.card.lessons': 'lecciones',
@@ -51,7 +51,6 @@ export const es = {
   'lesson.untranslatedBanner': 'Esta lección todavía no está traducida a inglés. Mostramos la versión en español.',
 
   'tests.index.title': 'Tests',
-  'tests.index.subtitle': 'Resolvé quizzes y ordenamientos de código contra reloj.',
   'tests.index.empty': 'Todavía no hay tests publicados.',
   'tests.card.startButton': 'Empezar',
   'tests.card.questions': 'preguntas',
@@ -73,7 +72,6 @@ export const es = {
   'tests.runner.timeExpired': 'Se acabó el tiempo',
 
   'presentations.index.title': 'Presentaciones',
-  'presentations.index.subtitle': 'Slides interactivas para aprender visualmente.',
   'presentations.index.empty': 'Pronto más presentaciones.',
   'presentations.card.open': 'Abrir',
   'presentations.untranslatedBanner': 'Esta presentación todavía no está traducida a inglés. Mostramos la versión en español.',

@@ -35,7 +35,6 @@ export const en: Record<TranslationKey, string> = {
   'home.quickLinks.playground.description': 'Online editor to hack around and try ideas.',
 
   'courses.index.title': 'Courses',
-  'courses.index.subtitle': 'Pick the tech you like and get going.',
   'courses.index.empty': 'No courses published yet.',
   'courses.card.startButton': 'Start',
   'courses.card.lessons': 'lessons',
@@ -53,7 +52,6 @@ export const en: Record<TranslationKey, string> = {
   'lesson.untranslatedBanner': 'This lesson has not been translated to English yet. Showing the Spanish version.',
 
   'tests.index.title': 'Tests',
-  'tests.index.subtitle': 'Solve quizzes and code-ordering drills against the clock.',
   'tests.index.empty': 'No tests published yet.',
   'tests.card.startButton': 'Start',
   'tests.card.questions': 'questions',
@@ -75,7 +73,6 @@ export const en: Record<TranslationKey, string> = {
   'tests.runner.timeExpired': "Time's up",
 
   'presentations.index.title': 'Presentations',
-  'presentations.index.subtitle': 'Interactive slides to learn visually.',
   'presentations.index.empty': 'More presentations coming soon.',
   'presentations.card.open': 'Open',
   'presentations.untranslatedBanner': 'This presentation has not been translated to English yet. Showing the Spanish version.',
